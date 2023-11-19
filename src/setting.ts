@@ -1,9 +1,9 @@
 import express from "express";
-import {router} from "./routes/route";
+import {videoRouter} from "./routes/route";
 
 export const app = express()
 
 
 app.use(express.json())
 //endpoints
-app.use('/api', router)
+app.use('hometask_01/api', videoRouter)
