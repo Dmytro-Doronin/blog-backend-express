@@ -9,8 +9,12 @@ export let db: VideoTypes[] = []
 //delete all
 export const removeAllDataController = (req: express.Request, res: express.Response) => {
 
-    db = []
-    return res.status(404)
+    db.length = 0
+
+    if (db.length === 0) {
+        return res.status(204).json(db)
+    }
+    return res.status(404).json(db)
 }
 
 //get

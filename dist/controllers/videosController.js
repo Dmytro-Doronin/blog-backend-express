@@ -6,8 +6,11 @@ const { v4: uuidv4 } = require('uuid');
 exports.db = [];
 //delete all
 const removeAllDataController = (req, res) => {
-    exports.db = [];
-    return res.status(404);
+    exports.db.length = 0;
+    if (exports.db.length === 0) {
+        return res.status(204).json(exports.db);
+    }
+    return res.status(404).json(exports.db);
 };
 exports.removeAllDataController = removeAllDataController;
 //get
