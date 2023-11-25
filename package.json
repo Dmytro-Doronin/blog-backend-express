@@ -1,7 +1,7 @@
 {
   "name": "node-hw",
   "version": "1.0.0",
-  "main": "index.js",
+  "main": "dist/index.js",
   "repository": "https://github.com/Dmytro-Doronin/node-hw.git",
   "author": "Dmytro-Doronin <doronindmytro623@gmail.com>",
   "license": "MIT",
