@@ -76,7 +76,7 @@ describe('/videos', () => {
     })
 
     it('Should changed video', async () => {
-        const inputDataForChange = {
+        const inputDataForChangeVideo = {
             title: "La-la",
             author: "Egor",
             availableResolutions: [
@@ -111,18 +111,18 @@ describe('/videos', () => {
 
         await request(app)
             .put(`/api/videos/${createCourse1.id}`)
-            .send(inputDataForChange)
+            .send(inputDataForChangeVideo)
             .expect(204)
 
         //
-        const requestedAllVideosAfterChanges = await request(app)
+        await request(app)
             .get('/api/videos')
             .expect(200, {
                 ...createCourse1,
                 title: "La-la",
                 author: "Egor",
                 availableResolutions: [
-                    "P1080"
+                    "P144"
                 ],
                 canBeDownloaded: true,
                 minAgeRestriction: 18,

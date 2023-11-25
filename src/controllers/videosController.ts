@@ -70,7 +70,7 @@ export const getVideoByIdController = (req: express.Request, res: express.Respon
 
 }
 
-export const putVideoByIdController: express.RequestHandler<Record<string, any>, ReturnedAddVideosError, UpdateInputVideoModel, unknown> = (req, res) => {
+export const putVideoByIdController = (req: express.Request, res: express.Response) => {
 
     const {
         title: currentTitle,
@@ -100,23 +100,21 @@ export const putVideoByIdController: express.RequestHandler<Record<string, any>,
     }
 
     let currentVideo = db.find(item => item.id === +req.params.id)
+    if (currentVideo) {
+        currentVideo = {
+            ...currentVideo,
+            title: currentTitle,
+            author: currentAuthor,
+            minAgeRestriction: currentAgeRestriction,
+            publicationDate: currentPublicationDate,
+            canBeDownloaded: currentCanBeDownloaded
+        }
 
-    if (!currentVideo) {
-        return res.status(404)
+        currentVideo.availableResolutions = currentResolution
+        return res.status(204).send(currentVideo)
+    } else {
+        return res.send(404)
     }
-
-    currentVideo = {
-        ...currentVideo,
-        title: currentTitle,
-        author: currentAuthor,
-        minAgeRestriction: currentAgeRestriction,
-        publicationDate: currentPublicationDate,
-        canBeDownloaded: currentCanBeDownloaded
-    }
-
-    currentVideo.availableResolutions = currentResolution
-
-    return res.status(204)
 }
 
 export const deleteVideoController = (req: express.Request, res: express.Response) => {

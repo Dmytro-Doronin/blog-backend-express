@@ -70,12 +70,14 @@ const putVideoByIdController = (req, res) => {
         });
     }
     let currentVideo = exports.db.find(item => item.id === +req.params.id);
-    if (!currentVideo) {
-        return res.status(404);
+    if (currentVideo) {
+        currentVideo = Object.assign(Object.assign({}, currentVideo), { title: currentTitle, author: currentAuthor, minAgeRestriction: currentAgeRestriction, publicationDate: currentPublicationDate, canBeDownloaded: currentCanBeDownloaded });
+        currentVideo.availableResolutions = currentResolution;
+        return res.status(204).send(currentVideo);
     }
-    currentVideo = Object.assign(Object.assign({}, currentVideo), { title: currentTitle, author: currentAuthor, minAgeRestriction: currentAgeRestriction, publicationDate: currentPublicationDate, canBeDownloaded: currentCanBeDownloaded });
-    currentVideo.availableResolutions = currentResolution;
-    return res.status(204);
+    else {
+        return res.send(404);
+    }
 };
 exports.putVideoByIdController = putVideoByIdController;
 const deleteVideoController = (req, res) => {
