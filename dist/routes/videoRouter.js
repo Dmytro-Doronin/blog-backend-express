@@ -6,4 +6,7 @@ const videosController_1 = require("../controllers/videosController");
 exports.videoRouter = (0, express_1.Router)();
 exports.videoRouter.delete('/testing/all-data', videosController_1.removeAllDataController);
 exports.videoRouter.get('/videos', videosController_1.getAllVideosController);
-// videoRouter.post('/videos', getAllVideosController)
+exports.videoRouter.post('/videos', videosController_1.addVideoController);
+exports.videoRouter.get('/videos/:id', videosController_1.getVideoByIdController);
+exports.videoRouter.put('/videos/:id', videosController_1.putVideoByIdController);
+exports.videoRouter.delete('/videos/:id', videosController_1.deleteVideoController);

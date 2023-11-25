@@ -1,11 +1,12 @@
 import * as express from "express";
 import {postVideoType, ReturnedAddVideosError, UpdateInputVideoModel, VideoTypes, VideoResolution} from "../types/video.types";
 import {db} from "../db/db";
-import {availableParallelism} from "os";
 const { v4: uuidv4 } = require('uuid');
+
+
 export const removeAllDataController = (req: express.Request, res: express.Response) => {
 
-    const db = []
+    const db = deleteVideoController
 
     return res.status(204).json({description: 'All data is deleted'})
 }
@@ -30,7 +31,7 @@ export const addVideoController: express.RequestHandler<Record<string, any>, Vid
 
     const {title,author, availableResolutions } = req.body
 
-    if (!title || !title.trim()) {
+    if (!title || title.trim().length > 40 || !author || author.length > 20 || availableResolutions.length < 1) {
         return res.status(400).json({
             "errorsMessages": [
                 {
@@ -71,7 +72,7 @@ export const getVideoByIdController = (req: express.Request, res: express.Respon
 
 }
 
-export const putVideosByIdController: express.RequestHandler<Record<string, any>, ReturnedAddVideosError, UpdateInputVideoModel, unknown> = (req, res) => {
+export const putVideoByIdController: express.RequestHandler<Record<string, any>, ReturnedAddVideosError, UpdateInputVideoModel, unknown> = (req, res) => {
 
     const {
         title: currentTitle,
@@ -110,12 +111,23 @@ export const putVideosByIdController: express.RequestHandler<Record<string, any>
             publicationDate: currentPublicationDate,
             canBeDownloaded: currentCanBeDownloaded
         }
-        const arr = [VideoResolution.P144]
-        currentVideo.availableResolutions = [...currentVideo.availableResolutions, ...arr]
+
+        currentVideo.availableResolutions = currentResolution
         return res.status(404)
     }
 
+    return res.status(204)
+}
 
+export const deleteVideoController = (req: express.Request, res: express.Response) => {
+
+    const id = +req.params.id
+
+    const currentVideo = db.find(item => item.id === id)
+
+    if (!currentVideo) {
+        return res.status(404)
+    }
 
     return res.status(204)
 }
