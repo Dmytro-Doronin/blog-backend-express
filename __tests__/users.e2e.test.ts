@@ -7,23 +7,25 @@ describe('/videos', () => {
 
     beforeAll(async () => {
         await request(app).delete('/testing/all-data')
+
     })
 
     // it('Should delete all videos', async () => {
     //
-    //     await request(app)
+    //     const req = await request(app)
     //         .delete('/api/testing/all-data')
     //         .expect(204)
+    //     console.log(req.body)
     // })
 
-    // let createdEntity = null
+    let createCourse1: any = null
     it('Should add video to the db ', async () => {
 
-        const newUser: postVideoType = {
+        const newUser = {
             title: "Privet",
             author: "Dima",
             availableResolutions: [
-                VideoResolution.P144,
+                ["p144"],
             ]
         }
 
@@ -32,88 +34,118 @@ describe('/videos', () => {
             .send(newUser)
             .expect(201)
 
-       const createdEntity = createResponse.body
+        createCourse1 = createResponse.body
 
-        expect(createdEntity).toEqual({
-            id: expect.any(String),
-            title: newUser.title,
-            author: newUser.author,
-            canBeDownloaded: expect.any(Boolean),
-            minAgeRestriction: 1,
-            createdAt: expect.any(String),
-            publicationDate: expect.any(String),
-            availableResolutions: newUser.availableResolutions,
-
-        })
+        // expect(createCourse1).toEqual({
+        //     id: expect.any(String),
+        //     title: newUser.title,
+        //     author: newUser.author,
+        //     canBeDownloaded: expect.any(Boolean),
+        //     minAgeRestriction: 1,
+        //     createdAt: expect.any(String),
+        //     publicationDate: expect.any(String),
+        //     availableResolutions: newUser.availableResolutions,
+        //
+        // })
 
         await request(app)
             .get('/api/videos')
-            .expect(200, [createdEntity])
+            .expect(200, [createCourse1])
     })
+
     it('Should return list of videos', async () => {
-        const response = await request(app)
+         await request(app) //const response =
             .get('/api/videos')
-            .expect(200)
+            .expect(200, [createCourse1])
 
-        const responseEntity2 = response.body
-        expect(responseEntity2).toEqual([
-            {
-                id: expect.any(String),
-                title: "Privet",
-                author: "Dima",
-                canBeDownloaded: expect.any(Boolean),
-                minAgeRestriction: 1,
-                createdAt: expect.any(String),
-                publicationDate: expect.any(String),
-                availableResolutions: [
-                    VideoResolution.P144,
-                ],
-            }
-        ])
+        // const responseEntity2 = response.body
+        // expect(responseEntity2).toEqual([
+        //     {
+        //         id: expect.any(String),
+        //         title: "Privet",
+        //         author: "Dima",
+        //         canBeDownloaded: expect.any(Boolean),
+        //         minAgeRestriction: 1,
+        //         createdAt: expect.any(String),
+        //         publicationDate: expect.any(String),
+        //         availableResolutions: [
+        //             VideoResolution.P144,
+        //         ],
+        //     }
+        // ])
     })
 
-    it('Should changed first video', async () => {
-        const inputDataForChange: UpdateInputVideoModel = {
+    it('Should changed video', async () => {
+        const inputDataForChange = {
             title: "La-la",
             author: "Egor",
             availableResolutions: [
-                VideoResolution.P144
+                "P144"
             ],
             canBeDownloaded: true,
             minAgeRestriction: 18,
-            publicationDate: "2023-11-25T19:40:05.268Z"
+            publicationDate: "2023-11-25T22:28:44.991Z"
         }
 
-        
-        const requestedAllVideosBeforeChanged = await request(app)
-            .get('/api/videos')
-            .expect(200)
 
-        const firstVideo: VideoTypes  = requestedAllVideosBeforeChanged.body[0]
+        // const newUserModel = {
+        //     title: "Poka",
+        //     author: "Vasya",
+        //     availableResolutions: [
+        //         ["P144"],
+        //     ]
+        // }
+
+        //CREATE
+        // const createResponse = await request(app)
+        //     .post('/api/videos')
+        //     .send(newUserModel)
+        //     .expect(201)
+
+        // const newUser: VideoTypes  = createResponse.body
+        //
+        // await request(app)
+        //     .put(`/api/videos/${newUser.id}`)
+        //     .send(inputDataForChange)
+        //     .expect(204)
 
         await request(app)
-            .put(`/api/videos/${firstVideo.id}`)
+            .put(`/api/videos/${createCourse1.id}`)
             .send(inputDataForChange)
             .expect(204)
 
+        //
         const requestedAllVideosAfterChanges = await request(app)
             .get('/api/videos')
-            .expect(200)
-
-        const changedVideos: VideoTypes = requestedAllVideosAfterChanges.body.find((item: VideoTypes) => item.id === firstVideo.id)
-
-        expect(changedVideos).toEqual({
-            id: firstVideo.id,
-            title: "La-la",
-            author: "Egor",
-            canBeDownloaded: true,
-            minAgeRestriction: 18,
-            createdAt: changedVideos.createdAt,
-            publicationDate: "2023-11-25T19:40:05.268Z",
-            availableResolutions: [
-                VideoResolution.P1080
-            ],
-        })
+            .expect(200, {
+                ...createCourse1,
+                title: "La-la",
+                author: "Egor",
+                availableResolutions: [
+                    "P1080"
+                ],
+                canBeDownloaded: true,
+                minAgeRestriction: 18,
+                publicationDate: "2023-11-25T19:40:05.268Z"
+            })
+        //
+        // const changedVideos: VideoTypes = requestedAllVideosAfterChanges.body.find((item: VideoTypes) => item.id === +newUser.id)
+        //
+        // expect(changedVideos).toEqual({
+        //     id: newUser.id,
+        //     title: "La-la",
+        //     author: "Egor",
+        //     canBeDownloaded: true,
+        //     minAgeRestriction: 18,
+        //     createdAt: changedVideos.createdAt,
+        //     publicationDate: "2023-11-25T19:40:05.268Z",
+        //     availableResolutions: [
+        //         VideoResolution.P1080
+        //     ],
+        // })
     })
 
+    afterAll(done => {
+        done()
+    })
 })

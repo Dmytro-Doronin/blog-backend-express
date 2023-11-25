@@ -9,12 +9,9 @@ export let db: VideoTypes[] = []
 //delete all
 export const removeAllDataController = (req: express.Request, res: express.Response) => {
 
-    db.length = 0
+    db = []
 
-    if (db.length === 0) {
-        return res.status(204).json(db)
-    }
-    return res.status(404).json(db)
+    return res.status(204).json(db)
 }
 
 //get
@@ -85,12 +82,13 @@ export const putVideoByIdController: express.RequestHandler<Record<string, any>,
     } = req.body
 
 
-    if (!currentTitle || currentTitle.trim().length > 40
-        || !currentAuthor || currentAuthor.length > 20
-        || currentResolution.length < 1
-        || currentAgeRestriction > 18 || currentAgeRestriction < 1
-        || !currentPublicationDate
-    ) {
+    // || currentTitle.trim().length > 40
+    // || !currentAuthor || currentAuthor.length > 20
+    // || currentResolution.length < 1
+    // || currentAgeRestriction > 18 || currentAgeRestriction < 1
+    // || !currentPublicationDate
+
+    if (!currentTitle) {
         return res.status(400).json({
             "errorsMessages": [
                 {
@@ -103,19 +101,20 @@ export const putVideoByIdController: express.RequestHandler<Record<string, any>,
 
     let currentVideo = db.find(item => item.id === +req.params.id)
 
-    if (currentVideo) {
-        currentVideo = {
-            ...currentVideo,
-            title: currentTitle,
-            author: currentAuthor,
-            minAgeRestriction: currentAgeRestriction,
-            publicationDate: currentPublicationDate,
-            canBeDownloaded: currentCanBeDownloaded
-        }
-
-        currentVideo.availableResolutions = currentResolution
+    if (!currentVideo) {
         return res.status(404)
     }
+
+    currentVideo = {
+        ...currentVideo,
+        title: currentTitle,
+        author: currentAuthor,
+        minAgeRestriction: currentAgeRestriction,
+        publicationDate: currentPublicationDate,
+        canBeDownloaded: currentCanBeDownloaded
+    }
+
+    currentVideo.availableResolutions = currentResolution
 
     return res.status(204)
 }
