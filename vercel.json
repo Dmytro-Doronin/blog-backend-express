@@ -1,6 +1,6 @@
 {
   "version": 2,
-  "name": "music-album",
+  "name": "node-hw",
   "builds": [
     { "src": "src/index.ts", "use": "@vercel/node" }
   ],
