@@ -18,7 +18,7 @@ export const getAllVideosController = (req: express.Request, res: express.Respon
         return res.status(400)
     }
 
-    return res.status(200).send(videosInDb)
+    return res.status(200).json(videosInDb)
 }
 
 
@@ -57,7 +57,7 @@ export const addVideoController: express.RequestHandler<Record<string, any>, Vid
 
     const addedVideo = db.find(item => item.id === NewVideo.id)
 
-    return res.status(200).send(addedVideo)
+    return res.status(200).json(addedVideo)
 }
 
 export const getVideoByIdController = (req: express.Request, res: express.Response) => {
@@ -68,7 +68,7 @@ export const getVideoByIdController = (req: express.Request, res: express.Respon
         return res.status(404)
     }
 
-    return res.status(200).send(currentVideo)
+    return res.status(200).json(currentVideo)
 
 }
 
@@ -90,7 +90,7 @@ export const putVideoByIdController: express.RequestHandler<Record<string, any>,
         || currentAgeRestriction > 18 || currentAgeRestriction < 1
         || !currentPublicationDate
     ) {
-        return res.status(400).send({
+        return res.status(400).json({
             "errorsMessages": [
                 {
                     "message": "string",

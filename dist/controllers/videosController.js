@@ -13,7 +13,7 @@ const getAllVideosController = (req, res) => {
     if (!videosInDb || videosInDb.length < 1) {
         return res.status(400);
     }
-    return res.status(200).send(videosInDb);
+    return res.status(200).json(videosInDb);
 };
 exports.getAllVideosController = getAllVideosController;
 //1 type of the params, 2)type of the response body, 3) type of the request body, 4) uri query params
@@ -41,7 +41,7 @@ const addVideoController = (req, res) => {
     };
     db_1.db.push(NewVideo);
     const addedVideo = db_1.db.find(item => item.id === NewVideo.id);
-    return res.status(200).send(addedVideo);
+    return res.status(200).json(addedVideo);
 };
 exports.addVideoController = addVideoController;
 const getVideoByIdController = (req, res) => {
@@ -49,7 +49,7 @@ const getVideoByIdController = (req, res) => {
     if (!currentVideo) {
         return res.status(404);
     }
-    return res.status(200).send(currentVideo);
+    return res.status(200).json(currentVideo);
 };
 exports.getVideoByIdController = getVideoByIdController;
 const putVideoByIdController = (req, res) => {
@@ -59,7 +59,7 @@ const putVideoByIdController = (req, res) => {
         || currentResolution.length < 1
         || currentAgeRestriction > 18 || currentAgeRestriction < 1
         || !currentPublicationDate) {
-        return res.status(400).send({
+        return res.status(400).json({
             "errorsMessages": [
                 {
                     "message": "string",

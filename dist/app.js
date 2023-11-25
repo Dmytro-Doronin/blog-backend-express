@@ -9,4 +9,4 @@ const videoRouter_1 = require("./routes/videoRouter");
 exports.app = (0, express_1.default)();
 exports.app.use(express_1.default.json());
 //endpoints
-exports.app.use('hometask_01/api', videoRouter_1.videoRouter);
+exports.app.use('/api', videoRouter_1.videoRouter);
