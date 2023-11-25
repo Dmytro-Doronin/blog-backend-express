@@ -22,8 +22,6 @@ export const getAllVideosController = (req: express.Request, res: express.Respon
 
     return res.status(200).json(db)
 }
-
-
 //post
 //1 type of the params, 2)type of the response body, 3) type of the request body, 4) uri query params
 export const addVideoController: express.RequestHandler<Record<string, any>, VideoTypes | ReturnedAddVideosError, postVideoType, unknown>
