@@ -49,7 +49,7 @@ export const addVideoController: express.RequestHandler<Record<string, any>, Vid
         author,
         minAgeRestriction: 16,
         createdAt: new Date().toISOString(),
-        publicationDate: new Date().toISOString() + 1,
+        publicationDate: new Date().toISOString(),
         availableResolutions
     }
 

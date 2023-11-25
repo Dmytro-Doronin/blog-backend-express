@@ -36,7 +36,7 @@ const addVideoController = (req, res) => {
         author,
         minAgeRestriction: 16,
         createdAt: new Date().toISOString(),
-        publicationDate: new Date().toISOString() + 1,
+        publicationDate: new Date().toISOString(),
         availableResolutions
     };
     db_1.db.push(NewVideo);
