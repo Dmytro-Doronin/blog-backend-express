@@ -1,21 +1,21 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.deleteVideoController = exports.putVideoByIdController = exports.getVideoByIdController = exports.addVideoController = exports.getAllVideosController = exports.removeAllDataController = void 0;
-const db_1 = require("../db/db");
+exports.deleteVideoController = exports.putVideoByIdController = exports.getVideoByIdController = exports.addVideoController = exports.getAllVideosController = exports.removeAllDataController = exports.db = void 0;
+// import {db} from "../db/db";
 const { v4: uuidv4 } = require('uuid');
+exports.db = [];
+//delete all
 const removeAllDataController = (req, res) => {
-    const db = [];
-    return res.status(204).json({ description: 'All data is deleted' });
+    exports.db = [];
+    return res.status(404);
 };
 exports.removeAllDataController = removeAllDataController;
+//get
 const getAllVideosController = (req, res) => {
-    const videosInDb = db_1.db;
-    if (!videosInDb || videosInDb.length < 1) {
-        return res.status(400);
-    }
-    return res.status(200).json(videosInDb);
+    return res.status(200).json(exports.db);
 };
 exports.getAllVideosController = getAllVideosController;
+//post
 //1 type of the params, 2)type of the response body, 3) type of the request body, 4) uri query params
 const addVideoController = (req, res) => {
     const { title, author, availableResolutions } = req.body;
@@ -39,13 +39,13 @@ const addVideoController = (req, res) => {
         publicationDate: new Date().toISOString(),
         availableResolutions
     };
-    db_1.db.push(NewVideo);
-    const addedVideo = db_1.db.find(item => item.id === NewVideo.id);
+    exports.db.push(NewVideo);
+    const addedVideo = exports.db.find(item => item.id === NewVideo.id);
     return res.status(201).json(addedVideo);
 };
 exports.addVideoController = addVideoController;
 const getVideoByIdController = (req, res) => {
-    const currentVideo = db_1.db.find(item => item.id === +req.params.id);
+    const currentVideo = exports.db.find(item => item.id === +req.params.id);
     if (!currentVideo) {
         return res.status(404);
     }
@@ -68,7 +68,7 @@ const putVideoByIdController = (req, res) => {
             ]
         });
     }
-    let currentVideo = db_1.db.find(item => item.id === +req.params.id);
+    let currentVideo = exports.db.find(item => item.id === +req.params.id);
     if (currentVideo) {
         currentVideo = Object.assign(Object.assign({}, currentVideo), { title: currentTitle, author: currentAuthor, minAgeRestriction: currentAgeRestriction, publicationDate: currentPublicationDate, canBeDownloaded: currentCanBeDownloaded });
         currentVideo.availableResolutions = currentResolution;
@@ -79,7 +79,7 @@ const putVideoByIdController = (req, res) => {
 exports.putVideoByIdController = putVideoByIdController;
 const deleteVideoController = (req, res) => {
     const id = +req.params.id;
-    const currentVideo = db_1.db.find(item => item.id === id);
+    const currentVideo = exports.db.find(item => item.id === id);
     if (!currentVideo) {
         return res.status(404);
     }

@@ -1,27 +1,26 @@
 import * as express from "express";
-import {postVideoType, ReturnedAddVideosError, UpdateInputVideoModel, VideoTypes, VideoResolution} from "../types/video.types";
-import {db} from "../db/db";
+import {postVideoType, ReturnedAddVideosError, UpdateInputVideoModel, VideoTypes} from "../types/video.types";
+// import {db} from "../db/db";
+
+
 const { v4: uuidv4 } = require('uuid');
 
-
+export let db: VideoTypes[] = []
+//delete all
 export const removeAllDataController = (req: express.Request, res: express.Response) => {
 
-    const db = []
-
-    return res.status(204).json({description: 'All data is deleted'})
+    db = []
+    return res.status(404)
 }
+
+//get
 export const getAllVideosController = (req: express.Request, res: express.Response) => {
 
-    const videosInDb = db
-
-    if (!videosInDb || videosInDb.length < 1) {
-        return res.status(400)
-    }
-
-    return res.status(200).json(videosInDb)
+    return res.status(200).json(db)
 }
 
 
+//post
 //1 type of the params, 2)type of the response body, 3) type of the request body, 4) uri query params
 export const addVideoController: express.RequestHandler<Record<string, any>, VideoTypes | ReturnedAddVideosError, postVideoType, unknown>
     = (
