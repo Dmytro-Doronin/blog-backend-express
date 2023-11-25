@@ -4,7 +4,7 @@ exports.deleteVideoController = exports.putVideoByIdController = exports.getVide
 const db_1 = require("../db/db");
 const { v4: uuidv4 } = require('uuid');
 const removeAllDataController = (req, res) => {
-    const db = exports.deleteVideoController;
+    const db = [];
     return res.status(204).json({ description: 'All data is deleted' });
 };
 exports.removeAllDataController = removeAllDataController;

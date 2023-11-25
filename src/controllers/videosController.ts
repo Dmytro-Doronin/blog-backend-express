@@ -6,7 +6,7 @@ const { v4: uuidv4 } = require('uuid');
 
 export const removeAllDataController = (req: express.Request, res: express.Response) => {
 
-    const db = deleteVideoController
+    const db = []
 
     return res.status(204).json({description: 'All data is deleted'})
 }
