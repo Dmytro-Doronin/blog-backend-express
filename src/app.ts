@@ -1,5 +1,5 @@
 import express from "express";
-import {videoRouter} from "./routes/route";
+import {videoRouter} from "./routes/videoRouter";
 
 export const app = express()
 

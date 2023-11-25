@@ -1,4 +1,4 @@
-import { app } from "./setting";
+import { app } from "./app";
 
 
 const PORT = 3001

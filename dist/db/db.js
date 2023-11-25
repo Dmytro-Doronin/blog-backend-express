@@ -1,5 +1,7 @@
-import {videoTypes} from "./types/video.types";
-export let db: videoTypes[] = [
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.db = void 0;
+exports.db = [
     {
         "id": 0,
         "title": "Porn",
@@ -12,4 +14,4 @@ export let db: videoTypes[] = [
             "P144"
         ]
     }
-]
+];
