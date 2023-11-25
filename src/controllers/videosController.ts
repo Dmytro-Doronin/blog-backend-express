@@ -47,7 +47,7 @@ export const addVideoController: express.RequestHandler<Record<string, any>, Vid
         title,
         canBeDownloaded: false,
         author,
-        minAgeRestriction: 16,
+        minAgeRestriction: 1,
         createdAt: new Date().toISOString(),
         publicationDate: new Date().toISOString(),
         availableResolutions
@@ -57,7 +57,7 @@ export const addVideoController: express.RequestHandler<Record<string, any>, Vid
 
     const addedVideo = db.find(item => item.id === NewVideo.id)
 
-    return res.status(200).json(addedVideo)
+    return res.status(201).json(addedVideo)
 }
 
 export const getVideoByIdController = (req: express.Request, res: express.Response) => {

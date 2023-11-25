@@ -34,14 +34,14 @@ const addVideoController = (req, res) => {
         title,
         canBeDownloaded: false,
         author,
-        minAgeRestriction: 16,
+        minAgeRestriction: 1,
         createdAt: new Date().toISOString(),
         publicationDate: new Date().toISOString(),
         availableResolutions
     };
     db_1.db.push(NewVideo);
     const addedVideo = db_1.db.find(item => item.id === NewVideo.id);
-    return res.status(200).json(addedVideo);
+    return res.status(201).json(addedVideo);
 };
 exports.addVideoController = addVideoController;
 const getVideoByIdController = (req, res) => {
