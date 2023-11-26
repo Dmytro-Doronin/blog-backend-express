@@ -89,10 +89,6 @@ export const addVideoController
 
 export const getVideoByIdController = (req: express.Request, res: express.Response) => {
 
-    if (!req.params.id) {
-        res.sendStatus(404)
-    }
-
     const currentVideo = db.find(item => item.id === +req.params.id)
 
     if (!currentVideo) {
@@ -101,11 +97,21 @@ export const getVideoByIdController = (req: express.Request, res: express.Respon
 
     }
 
-    return res.status(200).json(currentVideo)
+    return res.status(200).send(currentVideo)
 
 }
 
 export const putVideoByIdController = (req: express.Request, res: express.Response) => {
+
+    const id = +req.params.id
+    const currentVideoIndex = db.findIndex(v => v.id === id)
+    let currentVideo = db.find(item => item.id === id)
+
+    if (!currentVideo) {
+        res.sendStatus(404)
+        return
+    }
+
 
     let {
         title,
@@ -116,11 +122,6 @@ export const putVideoByIdController = (req: express.Request, res: express.Respon
         publicationDate
     } = req.body
 
-    const id = +req.params.id
-
-    if (!id) {
-        res.sendStatus(404)
-    }
 
     let errorObj2: ReturnedAddVideosError = {
         errorsMessages: []
@@ -174,13 +175,13 @@ export const putVideoByIdController = (req: express.Request, res: express.Respon
     // || currentAgeRestriction > 18 || currentAgeRestriction < 1
     // || !currentPublicationDate
 
-    const currentVideoIndex = db.findIndex(v => v.id === id)
-    let currentVideo = db.find(item => item.id === +req.params.id)
-
-    if (!currentVideo) {
-        res.sendStatus(404)
-        return
-    }
+    // const currentVideoIndex = db.findIndex(v => v.id === id)
+    // let currentVideo = db.find(item => item.id === +req.params.id)
+    //
+    // if (!currentVideo) {
+    //     res.sendStatus(404)
+    //     return
+    // }
 
         const updatedCurrentVideo = {
             ...currentVideo,
@@ -194,7 +195,9 @@ export const putVideoByIdController = (req: express.Request, res: express.Respon
 
         db.splice(currentVideoIndex, 1, updatedCurrentVideo)
 
-        return res.sendStatus(204)
+        res.sendStatus(204)
+        return
+
 
 }
 

@@ -64,23 +64,23 @@ const addVideoController = (req, res) => {
 };
 exports.addVideoController = addVideoController;
 const getVideoByIdController = (req, res) => {
-    if (!req.params.id) {
-        res.sendStatus(404);
-    }
     const currentVideo = exports.db.find(item => item.id === +req.params.id);
     if (!currentVideo) {
         res.sendStatus(404);
         return;
     }
-    return res.status(200).json(currentVideo);
+    return res.status(200).send(currentVideo);
 };
 exports.getVideoByIdController = getVideoByIdController;
 const putVideoByIdController = (req, res) => {
-    let { title, author, availableResolutions, canBeDownloaded, minAgeRestriction, publicationDate } = req.body;
     const id = +req.params.id;
-    if (!id) {
+    const currentVideoIndex = exports.db.findIndex(v => v.id === id);
+    let currentVideo = exports.db.find(item => item.id === id);
+    if (!currentVideo) {
         res.sendStatus(404);
+        return;
     }
+    let { title, author, availableResolutions, canBeDownloaded, minAgeRestriction, publicationDate } = req.body;
     let errorObj2 = {
         errorsMessages: []
     };
@@ -124,15 +124,17 @@ const putVideoByIdController = (req, res) => {
     // || currentResolution.length < 1
     // || currentAgeRestriction > 18 || currentAgeRestriction < 1
     // || !currentPublicationDate
-    const currentVideoIndex = exports.db.findIndex(v => v.id === id);
-    let currentVideo = exports.db.find(item => item.id === +req.params.id);
-    if (!currentVideo) {
-        res.sendStatus(404);
-        return;
-    }
+    // const currentVideoIndex = db.findIndex(v => v.id === id)
+    // let currentVideo = db.find(item => item.id === +req.params.id)
+    //
+    // if (!currentVideo) {
+    //     res.sendStatus(404)
+    //     return
+    // }
     const updatedCurrentVideo = Object.assign(Object.assign({}, currentVideo), { title: title, author: author, minAgeRestriction: minAgeRestriction, publicationDate: publicationDate, canBeDownloaded: canBeDownloaded, availableResolutions: availableResolutions ? availableResolutions : currentVideo.availableResolutions });
     exports.db.splice(currentVideoIndex, 1, updatedCurrentVideo);
-    return res.sendStatus(204);
+    res.sendStatus(204);
+    return;
 };
 exports.putVideoByIdController = putVideoByIdController;
 const deleteVideoController = (req, res) => {
