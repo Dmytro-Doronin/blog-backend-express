@@ -18,27 +18,30 @@ exports.getAllVideosController = getAllVideosController;
 //post
 //1 type of the params, 2)type of the response body, 3) type of the request body, 4) uri query params
 const addVideoController = (req, res) => {
-    const { title, author, availableResolutions } = req.body;
-    const errorObj = {
+    let { title, author, availableResolutions } = req.body;
+    let errorObj = {
         errorsMessages: []
     };
-    if (!title) {
+    if (!title || title.trim().length < 1 || title.trim().length > 40) {
         errorObj.errorsMessages.push({ message: "Title is required", field: "title" });
     }
-    if (title.trim().length > 40) {
-        errorObj.errorsMessages.push({ message: "Title length should be less than or equal to 40 characters", field: "title" });
-    }
-    if (!author) {
+    if (!author || author.trim().length < 1 || author.trim().length > 20) {
         errorObj.errorsMessages.push({ message: "Author is required", field: "author" });
     }
-    if (author.length > 20) {
-        errorObj.errorsMessages.push({ message: "Author length must be less then 20", field: "author" });
+    if (Array.isArray(availableResolutions)) {
+        availableResolutions.map(p => {
+            !availableResolutions.includes(p) && errorObj.errorsMessages.push({
+                message: "At least one resolution should be available",
+                field: "availableResolutions"
+            });
+        });
     }
-    if (availableResolutions.length < 1) {
-        errorObj.errorsMessages.push({ message: "At least one resolution should be available", field: "availableResolutions" });
+    else {
+        availableResolutions = [];
     }
-    if (errorObj.errorsMessages.length > 0) {
-        return res.status(400).json(errorObj);
+    if (errorObj.errorsMessages.length) {
+        res.status(400).send(errorObj);
+        return;
     }
     const currentDate = new Date();
     const tomorrowDate = new Date(currentDate);
@@ -71,37 +74,46 @@ const getVideoByIdController = (req, res) => {
 };
 exports.getVideoByIdController = getVideoByIdController;
 const putVideoByIdController = (req, res) => {
-    const { title, author, availableResolutions, canBeDownloaded, minAgeRestriction, publicationDate } = req.body;
+    let { title, author, availableResolutions, canBeDownloaded, minAgeRestriction, publicationDate } = req.body;
     const id = +req.params.id;
     if (!id) {
         res.sendStatus(404);
     }
-    const errorObj = {
+    let errorObj2 = {
         errorsMessages: []
     };
-    if (!title || title.trim().length > 40) {
-        errorObj.errorsMessages.push({ message: "Title is required", field: "title" });
+    if (!title || title.trim().length < 1 || title.trim().length > 40) {
+        errorObj2.errorsMessages.push({ message: "Title is required", field: "title" });
     }
-    if (!author || author.length > 20) {
-        errorObj.errorsMessages.push({ message: "Author is required", field: "author" });
+    if (!author || author.trim().length < 1 || author.trim().length > 20) {
+        errorObj2.errorsMessages.push({ message: "Author is required", field: "author" });
     }
-    if (availableResolutions.length < 1) {
-        errorObj.errorsMessages.push({ message: "At least one resolution should be available", field: "availableResolutions" });
+    if (Array.isArray(availableResolutions)) {
+        availableResolutions.map(p => {
+            !availableResolutions.includes(p) && errorObj2.errorsMessages.push({
+                message: "At least one resolution should be available",
+                field: "availableResolutions"
+            });
+        });
     }
-    if (minAgeRestriction > 18 || minAgeRestriction < 1) {
-        errorObj.errorsMessages.push({ message: "Not currentAgeRestriction range", field: "currentAgeRestriction" });
+    else {
+        availableResolutions = [];
     }
-    if (!minAgeRestriction) {
-        errorObj.errorsMessages.push({ message: "Not currentPublicationDate", field: "currentPublicationDate" });
+    if (typeof minAgeRestriction !== 'undefined' || true) {
+        minAgeRestriction > 18 || minAgeRestriction < 1 && errorObj2.errorsMessages.push({ message: "Not currentAgeRestriction range", field: "currentAgeRestriction" });
     }
-    if (!canBeDownloaded || typeof canBeDownloaded !== 'boolean') {
-        errorObj.errorsMessages.push({ message: "Not canBeDownloaded", field: "canBeDownloaded" });
+    else {
+        minAgeRestriction = null;
+    }
+    if (typeof canBeDownloaded === 'undefined') {
+        canBeDownloaded = false;
     }
     if (!publicationDate) {
-        errorObj.errorsMessages.push({ message: "Not publicationDate", field: "publicationDate" });
+        errorObj2.errorsMessages.push({ message: "Not publicationDate", field: "publicationDate" });
     }
-    if (errorObj.errorsMessages.length > 0) {
-        return res.status(400).json(errorObj);
+    if (errorObj2.errorsMessages.length > 0) {
+        res.status(400).send(errorObj2);
+        return;
     }
     // || currentTitle.trim().length > 40
     // || !currentAuthor || currentAuthor.length > 20
