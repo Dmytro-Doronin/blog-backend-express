@@ -34,7 +34,7 @@ const addVideoController = (req, res) => {
     tomorrowDate.setDate(currentDate.getDate() + 1);
     const isoStringWithAddedDay = tomorrowDate.toISOString();
     const NewVideo = {
-        id: +uuidv4(),
+        id: (+new Date() * 1000),
         title,
         canBeDownloaded: false,
         author,

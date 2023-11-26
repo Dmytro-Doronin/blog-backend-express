@@ -46,7 +46,7 @@ export const addVideoController: express.RequestHandler<Record<string, any>, Vid
     const isoStringWithAddedDay = tomorrowDate.toISOString();
 
     const NewVideo: VideoTypes  = {
-        id: +uuidv4(),
+        id: (+new Date() * 1000),
         title,
         canBeDownloaded: false,
         author,
