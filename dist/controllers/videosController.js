@@ -93,6 +93,9 @@ const putVideoByIdController = (req, res) => {
     if (!currentPublicationDate) {
         errorObj.errorsMessages.push({ message: "Not currentPublicationDate", field: "currentPublicationDate" });
     }
+    if (!currentCanBeDownloaded || typeof currentCanBeDownloaded !== 'boolean') {
+        errorObj.errorsMessages.push({ message: "Not currentCanBeDownloaded", field: "currentCanBeDownloaded" });
+    }
     if (errorObj.errorsMessages.length > 0) {
         return res.status(400).json(errorObj);
     }
@@ -103,8 +106,7 @@ const putVideoByIdController = (req, res) => {
     // || !currentPublicationDate
     let currentVideo = exports.db.find(item => item.id === +req.params.id);
     if (currentVideo) {
-        currentVideo = Object.assign(Object.assign({}, currentVideo), { title: currentTitle, author: currentAuthor, minAgeRestriction: currentAgeRestriction, publicationDate: currentPublicationDate, canBeDownloaded: currentCanBeDownloaded });
-        currentVideo.availableResolutions = currentResolution;
+        currentVideo = Object.assign(Object.assign({}, currentVideo), { title: currentTitle, author: currentAuthor, minAgeRestriction: currentAgeRestriction, publicationDate: currentPublicationDate, canBeDownloaded: currentCanBeDownloaded, availableResolutions: currentResolution });
         return res.status(204).send(currentVideo);
     }
     else {

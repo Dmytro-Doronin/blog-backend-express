@@ -133,6 +133,11 @@ export const putVideoByIdController = (req: express.Request, res: express.Respon
     if (!currentPublicationDate ) {
         errorObj.errorsMessages.push({message: "Not currentPublicationDate", field: "currentPublicationDate"})
     }
+
+    if (!currentCanBeDownloaded || typeof currentCanBeDownloaded !== 'boolean') {
+        errorObj.errorsMessages.push({message: "Not currentCanBeDownloaded", field: "currentCanBeDownloaded"})
+    }
+
     if (errorObj.errorsMessages.length > 0) {
         return res.status(400).json(errorObj);
     }
@@ -151,10 +156,10 @@ export const putVideoByIdController = (req: express.Request, res: express.Respon
             author: currentAuthor,
             minAgeRestriction: currentAgeRestriction,
             publicationDate: currentPublicationDate,
-            canBeDownloaded: currentCanBeDownloaded
+            canBeDownloaded: currentCanBeDownloaded,
+            availableResolutions: currentResolution
         }
 
-        currentVideo.availableResolutions = currentResolution
         return res.status(204).send(currentVideo)
     } else {
         return res.send(404)
