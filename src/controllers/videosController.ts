@@ -27,10 +27,10 @@ export const getAllVideosController = (req: express.Request, res: express.Respon
 }
 //post
 //1 type of the params, 2)type of the response body, 3) type of the request body, 4) uri query params
-export const addVideoController: express.RequestHandler<Record<string, any>, VideoTypes | ReturnedAddVideosError, postVideoType, unknown>
+export const addVideoController
     = (
-        req,
-        res
+        req: express.Request,
+        res: express.Response
     ) => {
 
     const {title,author, availableResolutions } = req.body
@@ -109,6 +109,10 @@ export const putVideoByIdController = (req: express.Request, res: express.Respon
         publicationDate
     } = req.body
 
+    console.log(availableResolutions)
+
+    const id = +req.params.id
+
     const errorObj: ReturnedAddVideosError = {
         errorsMessages: []
     }
@@ -149,23 +153,28 @@ export const putVideoByIdController = (req: express.Request, res: express.Respon
     // || currentAgeRestriction > 18 || currentAgeRestriction < 1
     // || !currentPublicationDate
 
-
+    const currentVideoIndex = db.findIndex(v => v.id === id)
     let currentVideo = db.find(item => item.id === +req.params.id)
-    if (currentVideo) {
-        currentVideo = {
+
+    if (!currentVideo) {
+        res.sendStatus(404)
+        return
+    }
+
+        const updatedCurrentVideo = {
             ...currentVideo,
             title: title,
             author: author,
             minAgeRestriction: minAgeRestriction,
             publicationDate: publicationDate,
             canBeDownloaded: canBeDownloaded,
-            availableResolutions: availableResolutions
+            availableResolutions: availableResolutions ? availableResolutions : currentVideo.availableResolutions
         }
 
-        return res.status(204).send(currentVideo)
-    } else {
-        return res.send(404)
-    }
+        db.splice(currentVideoIndex, 1, updatedCurrentVideo)
+
+        return res.sendStatus(204)
+
 }
 
 export const deleteVideoController = (req: express.Request, res: express.Response) => {
@@ -178,5 +187,5 @@ export const deleteVideoController = (req: express.Request, res: express.Respons
         return res.status(404)
     }
 
-    return res.status(204)
+    return res.status(204).json(currentVideo)
 }
