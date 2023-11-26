@@ -69,7 +69,6 @@ const getVideoByIdController = (req, res) => {
 exports.getVideoByIdController = getVideoByIdController;
 const putVideoByIdController = (req, res) => {
     const { title, author, availableResolutions, canBeDownloaded, minAgeRestriction, publicationDate } = req.body;
-    console.log(availableResolutions);
     const id = +req.params.id;
     const errorObj = {
         errorsMessages: []
@@ -116,10 +115,12 @@ const putVideoByIdController = (req, res) => {
 exports.putVideoByIdController = putVideoByIdController;
 const deleteVideoController = (req, res) => {
     const id = +req.params.id;
+    const indexCurrentVideo = exports.db.findIndex(v => v.id === id);
     const currentVideo = exports.db.find(item => item.id === id);
     if (!currentVideo) {
         return res.status(404);
     }
-    return res.status(204).json(currentVideo);
+    exports.db.splice(indexCurrentVideo, 1);
+    return res.sendStatus(204);
 };
 exports.deleteVideoController = deleteVideoController;

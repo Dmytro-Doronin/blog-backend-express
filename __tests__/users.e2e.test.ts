@@ -116,8 +116,10 @@ describe('/videos', () => {
 
         //
         await request(app)
-            .get('/api/videos')
-            .expect(200, {
+            .get(`/api/videos/${createCourse1.id}`)
+            .expect(200)
+            .expect(res => {
+            expect(res.body).toMatchObject({
                 ...createCourse1,
                 title: "La-la",
                 author: "Egor",
@@ -128,6 +130,10 @@ describe('/videos', () => {
                 minAgeRestriction: 18,
                 publicationDate: "2023-11-25T19:40:05.268Z"
             })
+                // expect(new Date(res.body.createdAt).getTime()).toBeCloseTo(new Date(createCourse1.createdAt).getTime(), 1000 );
+                // expect(new Date(res.body.publicationDate).getTime()).toBeCloseTo(new Date(createCourse1.publicationDate).getTime(), 1000 * 60);
+            })
+
         //
         // const changedVideos: VideoTypes = requestedAllVideosAfterChanges.body.find((item: VideoTypes) => item.id === +newUser.id)
         //
@@ -143,6 +149,31 @@ describe('/videos', () => {
         //         VideoResolution.P1080
         //     ],
         // })
+    })
+
+    it('Should delete video from the the db ', async () => {
+
+        const id = createCourse1.id
+
+        await request(app)
+            .delete(`/api/videos/${id}`)
+            .expect(204)
+
+
+
+        // expect(createCourse1).toEqual({
+        //     id: expect.any(String),
+        //     title: newUser.title,
+        //     author: newUser.author,
+        //     canBeDownloaded: expect.any(Boolean),
+        //     minAgeRestriction: 1,
+        //     createdAt: expect.any(String),
+        //     publicationDate: expect.any(String),
+        //     availableResolutions: newUser.availableResolutions,
+        //
+        // })
+
+
     })
 
     afterAll(done => {

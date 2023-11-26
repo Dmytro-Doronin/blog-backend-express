@@ -109,8 +109,6 @@ export const putVideoByIdController = (req: express.Request, res: express.Respon
         publicationDate
     } = req.body
 
-    console.log(availableResolutions)
-
     const id = +req.params.id
 
     const errorObj: ReturnedAddVideosError = {
@@ -181,11 +179,14 @@ export const deleteVideoController = (req: express.Request, res: express.Respons
 
     const id = +req.params.id
 
+    const indexCurrentVideo = db.findIndex(v => v.id === id)
     const currentVideo = db.find(item => item.id === id)
 
     if (!currentVideo) {
         return res.status(404)
     }
 
-    return res.status(204).json(currentVideo)
+    db.splice(indexCurrentVideo, 1)
+
+    return res.sendStatus(204)
 }
