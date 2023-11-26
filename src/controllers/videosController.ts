@@ -40,14 +40,19 @@ export const addVideoController: express.RequestHandler<Record<string, any>, Vid
         })
     }
 
+    const currentDate = new Date();
+    const tomorrowDate = new Date(currentDate);
+    tomorrowDate.setDate(currentDate.getDate() + 1);
+    const isoStringWithAddedDay = tomorrowDate.toISOString();
+
     const NewVideo: VideoTypes  = {
-        id: uuidv4(),
+        id: +uuidv4(),
         title,
         canBeDownloaded: false,
         author,
-        minAgeRestriction: 1,
-        createdAt: new Date().toISOString(),
-        publicationDate: new Date().toISOString(),
+        minAgeRestriction: null,
+        createdAt: currentDate.toISOString(),
+        publicationDate: isoStringWithAddedDay,
         availableResolutions
     }
 
