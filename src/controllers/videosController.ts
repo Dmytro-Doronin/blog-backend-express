@@ -152,16 +152,14 @@ export const putVideoByIdController = (req: express.Request, res: express.Respon
 
     let currentVideo = db.find(item => item.id === +req.params.id)
     if (currentVideo) {
-
-
         currentVideo = {
             ...currentVideo,
-            title,
-            author,
-            minAgeRestriction,
-            publicationDate,
-            canBeDownloaded,
-            availableResolutions
+            title: title,
+            author: author,
+            minAgeRestriction: minAgeRestriction,
+            publicationDate: publicationDate,
+            canBeDownloaded: canBeDownloaded,
+            availableResolutions: availableResolutions
         }
 
         return res.status(204).send(currentVideo)

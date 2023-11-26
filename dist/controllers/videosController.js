@@ -103,12 +103,7 @@ const putVideoByIdController = (req, res) => {
     // || !currentPublicationDate
     let currentVideo = exports.db.find(item => item.id === +req.params.id);
     if (currentVideo) {
-        currentVideo = Object.assign(Object.assign({}, currentVideo), { title,
-            author,
-            minAgeRestriction,
-            publicationDate,
-            canBeDownloaded,
-            availableResolutions });
+        currentVideo = Object.assign(Object.assign({}, currentVideo), { title: title, author: author, minAgeRestriction: minAgeRestriction, publicationDate: publicationDate, canBeDownloaded: canBeDownloaded, availableResolutions: availableResolutions });
         return res.status(204).send(currentVideo);
     }
     else {
