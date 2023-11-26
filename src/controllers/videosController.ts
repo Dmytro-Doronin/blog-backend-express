@@ -183,7 +183,8 @@ export const deleteVideoController = (req: express.Request, res: express.Respons
     const currentVideo = db.find(item => item.id === id)
 
     if (!currentVideo) {
-        return res.status(404)
+        res.sendStatus(404)
+        return
     }
 
     db.splice(indexCurrentVideo, 1)
