@@ -9,7 +9,7 @@ export enum VideoResolution {
     P2160 = "P2160",
 }
 
-type ResolutionsType = [
+export type ResolutionsType = [
     VideoResolution.P144?,
     VideoResolution.P240?,
     VideoResolution.P360?,

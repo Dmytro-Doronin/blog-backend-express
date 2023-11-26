@@ -1,5 +1,11 @@
 import * as express from "express";
-import {postVideoType, ReturnedAddVideosError, UpdateInputVideoModel, VideoTypes} from "../types/video.types";
+import {
+    postVideoType,
+    ResolutionsType,
+    ReturnedAddVideosError,
+    UpdateInputVideoModel, VideoResolution,
+    VideoTypes
+} from "../types/video.types";
 // import {db} from "../db/db";
 
 
@@ -95,47 +101,43 @@ export const getVideoByIdController = (req: express.Request, res: express.Respon
 export const putVideoByIdController = (req: express.Request, res: express.Response) => {
 
     const {
-        title: currentTitle,
-        author: currentAuthor,
-        availableResolutions: currentResolution,
-        canBeDownloaded: currentCanBeDownloaded,
-        minAgeRestriction:currentAgeRestriction,
-        publicationDate: currentPublicationDate
+        title,
+        author,
+        availableResolutions,
+        canBeDownloaded,
+        minAgeRestriction,
+        publicationDate
     } = req.body
 
     const errorObj: ReturnedAddVideosError = {
         errorsMessages: []
     }
 
-    if (!currentTitle) {
+    if (!title || title.trim().length > 40) {
         errorObj.errorsMessages.push({message: "Title is required", field: "title"})
     }
 
-    if (currentAuthor.trim().length > 40) {
-        errorObj.errorsMessages.push({message: "Title length should be less than or equal to 40 characters", field: "title"})
-    }
-
-    if (!currentAuthor) {
+    if (!author || author.length > 20) {
         errorObj.errorsMessages.push({message: "Author is required", field: "author"})
     }
 
-    if (currentAuthor.length > 20) {
-        errorObj.errorsMessages.push({message: "Author length must be less then 20", field: "author"})
-    }
-
-    if (currentResolution.length < 1) {
+    if (availableResolutions.length < 1) {
         errorObj.errorsMessages.push({message: "At least one resolution should be available", field: "availableResolutions"})
     }
 
-    if (currentAgeRestriction > 18 || currentAgeRestriction < 1) {
+    if (minAgeRestriction > 18 || minAgeRestriction < 1) {
         errorObj.errorsMessages.push({message: "Not currentAgeRestriction range", field: "currentAgeRestriction"})
     }
-    if (!currentPublicationDate ) {
+    if (!minAgeRestriction ) {
         errorObj.errorsMessages.push({message: "Not currentPublicationDate", field: "currentPublicationDate"})
     }
 
-    if (!currentCanBeDownloaded || typeof currentCanBeDownloaded !== 'boolean') {
-        errorObj.errorsMessages.push({message: "Not currentCanBeDownloaded", field: "currentCanBeDownloaded"})
+    if (!canBeDownloaded || typeof canBeDownloaded !== 'boolean') {
+        errorObj.errorsMessages.push({message: "Not canBeDownloaded", field: "canBeDownloaded"})
+    }
+
+    if (!publicationDate) {
+        errorObj.errorsMessages.push({message: "Not publicationDate", field: "publicationDate"})
     }
 
     if (errorObj.errorsMessages.length > 0) {
@@ -150,14 +152,16 @@ export const putVideoByIdController = (req: express.Request, res: express.Respon
 
     let currentVideo = db.find(item => item.id === +req.params.id)
     if (currentVideo) {
+
+
         currentVideo = {
             ...currentVideo,
-            title: currentTitle,
-            author: currentAuthor,
-            minAgeRestriction: currentAgeRestriction,
-            publicationDate: currentPublicationDate,
-            canBeDownloaded: currentCanBeDownloaded,
-            availableResolutions: currentResolution
+            title,
+            author,
+            minAgeRestriction,
+            publicationDate,
+            canBeDownloaded,
+            availableResolutions
         }
 
         return res.status(204).send(currentVideo)

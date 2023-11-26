@@ -68,33 +68,30 @@ const getVideoByIdController = (req, res) => {
 };
 exports.getVideoByIdController = getVideoByIdController;
 const putVideoByIdController = (req, res) => {
-    const { title: currentTitle, author: currentAuthor, availableResolutions: currentResolution, canBeDownloaded: currentCanBeDownloaded, minAgeRestriction: currentAgeRestriction, publicationDate: currentPublicationDate } = req.body;
+    const { title, author, availableResolutions, canBeDownloaded, minAgeRestriction, publicationDate } = req.body;
     const errorObj = {
         errorsMessages: []
     };
-    if (!currentTitle) {
+    if (!title || title.trim().length > 40) {
         errorObj.errorsMessages.push({ message: "Title is required", field: "title" });
     }
-    if (currentAuthor.trim().length > 40) {
-        errorObj.errorsMessages.push({ message: "Title length should be less than or equal to 40 characters", field: "title" });
-    }
-    if (!currentAuthor) {
+    if (!author || author.length > 20) {
         errorObj.errorsMessages.push({ message: "Author is required", field: "author" });
     }
-    if (currentAuthor.length > 20) {
-        errorObj.errorsMessages.push({ message: "Author length must be less then 20", field: "author" });
-    }
-    if (currentResolution.length < 1) {
+    if (availableResolutions.length < 1) {
         errorObj.errorsMessages.push({ message: "At least one resolution should be available", field: "availableResolutions" });
     }
-    if (currentAgeRestriction > 18 || currentAgeRestriction < 1) {
+    if (minAgeRestriction > 18 || minAgeRestriction < 1) {
         errorObj.errorsMessages.push({ message: "Not currentAgeRestriction range", field: "currentAgeRestriction" });
     }
-    if (!currentPublicationDate) {
+    if (!minAgeRestriction) {
         errorObj.errorsMessages.push({ message: "Not currentPublicationDate", field: "currentPublicationDate" });
     }
-    if (!currentCanBeDownloaded || typeof currentCanBeDownloaded !== 'boolean') {
-        errorObj.errorsMessages.push({ message: "Not currentCanBeDownloaded", field: "currentCanBeDownloaded" });
+    if (!canBeDownloaded || typeof canBeDownloaded !== 'boolean') {
+        errorObj.errorsMessages.push({ message: "Not canBeDownloaded", field: "canBeDownloaded" });
+    }
+    if (!publicationDate) {
+        errorObj.errorsMessages.push({ message: "Not publicationDate", field: "publicationDate" });
     }
     if (errorObj.errorsMessages.length > 0) {
         return res.status(400).json(errorObj);
@@ -106,7 +103,12 @@ const putVideoByIdController = (req, res) => {
     // || !currentPublicationDate
     let currentVideo = exports.db.find(item => item.id === +req.params.id);
     if (currentVideo) {
-        currentVideo = Object.assign(Object.assign({}, currentVideo), { title: currentTitle, author: currentAuthor, minAgeRestriction: currentAgeRestriction, publicationDate: currentPublicationDate, canBeDownloaded: currentCanBeDownloaded, availableResolutions: currentResolution });
+        currentVideo = Object.assign(Object.assign({}, currentVideo), { title,
+            author,
+            minAgeRestriction,
+            publicationDate,
+            canBeDownloaded,
+            availableResolutions });
         return res.status(204).send(currentVideo);
     }
     else {
