@@ -29,15 +29,59 @@ export const addVideoController: express.RequestHandler<Record<string, any>, Vid
 
     const {title,author, availableResolutions } = req.body
 
-    if (!title || title.trim().length > 40 || !author || author.length > 20 || availableResolutions.length < 1) {
+    if (!title) {
         return res.status(400).json({
             "errorsMessages": [
                 {
-                    message: "has incorrect values",
-                    field: "field"
+                    message: "Title is required",
+                    field: "title"
                 }
             ]
-        })
+        });
+    }
+
+    if (title.trim().length > 40) {
+        return res.status(400).json({
+            "errorsMessages": [
+                {
+                    message: "Title length should be less than or equal to 40 characters",
+                    field: "title"
+                }
+            ]
+        });
+    }
+
+    if (!author) {
+        return res.status(400).json({
+            "errorsMessages": [
+                {
+                    message: "Author is required",
+                    field: "author"
+                }
+            ]
+        });
+    }
+
+    if (author.length > 20) {
+        return res.status(400).json({
+            "errorsMessages": [
+                {
+                    message: "Author length should be less than or equal to 20 characters",
+                    field: "author"
+                }
+            ]
+        });
+    }
+
+    if (availableResolutions.length < 1) {
+        return res.status(400).json({
+            "errorsMessages": [
+                {
+                    message: "At least one resolution should be available",
+                    field: "availableResolutions"
+                }
+            ]
+        });
     }
 
     const currentDate = new Date();
