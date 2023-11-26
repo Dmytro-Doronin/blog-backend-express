@@ -145,7 +145,7 @@ describe('/videos', () => {
             .expect(204)
     })
 
-    it('Should not delete video from the db with incorrect input ', async () => {
+    it('Should not delete video from the db with incorrect id ', async () => {
 
         const id = 123123123123123
 

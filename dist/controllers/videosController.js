@@ -69,7 +69,8 @@ const getVideoByIdController = (req, res) => {
     }
     const currentVideo = exports.db.find(item => item.id === +req.params.id);
     if (!currentVideo) {
-        return res.status(404);
+        res.sendStatus(404);
+        return;
     }
     return res.status(200).json(currentVideo);
 };
@@ -136,9 +137,6 @@ const putVideoByIdController = (req, res) => {
 exports.putVideoByIdController = putVideoByIdController;
 const deleteVideoController = (req, res) => {
     const id = +req.params.id;
-    if (!id) {
-        res.sendStatus(404);
-    }
     const indexCurrentVideo = exports.db.findIndex(v => v.id === id);
     const currentVideo = exports.db.find(item => item.id === id);
     if (!currentVideo) {
