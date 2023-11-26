@@ -17,7 +17,7 @@ describe('/videos', () => {
             title: "Privet",
             author: "Dima",
             availableResolutions: [
-                ["p144"],
+                "P144",
             ]
         }
 
@@ -39,7 +39,7 @@ describe('/videos', () => {
             title: null,
             author: "Dima",
             availableResolutions: [
-                "p144",
+                "P144",
             ]
         }
 
@@ -56,7 +56,7 @@ describe('/videos', () => {
             title: "Good luck",
             author: "Dima",
             availableResolutions: [
-                "p144", "Invalid"
+                "P144", "Invalid"
             ]
         }
 
@@ -130,6 +130,28 @@ describe('/videos', () => {
             .expect(400, {
                 errorsMessages: [
                     {message: "Title is required", field: "title"}
+                ]
+            })
+    })
+
+    it('Should not changed video with incorrect canBeDownloaded', async () => {
+        const inputDataForChangeVideo2 = {
+            title: "Vsem Privet",
+            author: "Egor",
+            availableResolutions: [
+                "P144"
+            ],
+            canBeDownloaded: undefined,
+            minAgeRestriction: 18,
+            publicationDate: "2023-11-25T22:28:44.991Z"
+        }
+
+        await request(app)
+            .put(`/api/videos/${createCourse1.id}`)
+            .send(inputDataForChangeVideo2)
+            .expect(400, {
+                errorsMessages: [
+                    {message: "Not correct canBeDownloaded", field: "canBeDownloaded"}
                 ]
             })
     })

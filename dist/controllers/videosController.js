@@ -109,8 +109,8 @@ const putVideoByIdController = (req, res) => {
     else {
         minAgeRestriction = null;
     }
-    if (typeof canBeDownloaded === 'undefined') {
-        canBeDownloaded = false;
+    if (typeof canBeDownloaded !== 'boolean' || typeof canBeDownloaded === 'undefined') {
+        errorObj2.errorsMessages.push({ message: "Not correct canBeDownloaded", field: "canBeDownloaded" });
     }
     if (!publicationDate) {
         errorObj2.errorsMessages.push({ message: "Not publicationDate", field: "publicationDate" });
