@@ -17,13 +17,14 @@ export const removeAllDataController = (req: express.Request, res: express.Respo
 
     db = []
 
-    return res.status(204).json(db)
+    res.sendStatus(204)
+    return
 }
 
 //get
 export const getAllVideosController = (req: express.Request, res: express.Response) => {
-
-    return res.status(200).json(db)
+    res.status(200).send(db)
+    return
 }
 //post
 //1 type of the params, 2)type of the response body, 3) type of the request body, 4) uri query params
@@ -34,6 +35,7 @@ export const addVideoController
     ) => {
 
     let {title,author, availableResolutions } = req.body
+
     let errorObj: ReturnedAddVideosError = {
         errorsMessages: []
     }
@@ -84,7 +86,9 @@ export const addVideoController
 
     const addedVideo = db.find(item => item.id === NewVideo.id)
 
-    return res.status(201).json(addedVideo)
+    res.status(201).send(addedVideo)
+    return
+
 }
 
 export const getVideoByIdController = (req: express.Request, res: express.Response) => {
@@ -214,6 +218,6 @@ export const deleteVideoController = (req: express.Request, res: express.Respons
     }
 
     db.splice(indexCurrentVideo, 1)
-
-    return res.sendStatus(204)
+    res.sendStatus(204)
+    return
 }

@@ -8,12 +8,14 @@ exports.db = [];
 //delete all
 const removeAllDataController = (req, res) => {
     exports.db = [];
-    return res.status(204).json(exports.db);
+    res.sendStatus(204);
+    return;
 };
 exports.removeAllDataController = removeAllDataController;
 //get
 const getAllVideosController = (req, res) => {
-    return res.status(200).json(exports.db);
+    res.status(200).send(exports.db);
+    return;
 };
 exports.getAllVideosController = getAllVideosController;
 //post
@@ -60,7 +62,8 @@ const addVideoController = (req, res) => {
     };
     exports.db.push(NewVideo);
     const addedVideo = exports.db.find(item => item.id === NewVideo.id);
-    return res.status(201).json(addedVideo);
+    res.status(201).send(addedVideo);
+    return;
 };
 exports.addVideoController = addVideoController;
 const getVideoByIdController = (req, res) => {
@@ -146,6 +149,7 @@ const deleteVideoController = (req, res) => {
         return;
     }
     exports.db.splice(indexCurrentVideo, 1);
-    return res.sendStatus(204);
+    res.sendStatus(204);
+    return;
 };
 exports.deleteVideoController = deleteVideoController;
