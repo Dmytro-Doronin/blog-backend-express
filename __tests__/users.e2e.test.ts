@@ -39,7 +39,7 @@ describe('/videos', () => {
             title: null,
             author: "Dima",
             availableResolutions: [
-                ["p144"],
+                "p144",
             ]
         }
 
@@ -48,11 +48,23 @@ describe('/videos', () => {
             .send(newUser)
             .expect(400, { errorsMessages: [{message: "Title is required", field: "title"}] })
 
-        // createCourse1 = createResponse.body
-        //
-        // await request(app)
-        //     .get('/api/videos')
-        //     .expect(200, [createCourse1])
+    })
+
+    it('Should not add video to the db with incorrect availableResolutions', async () => {
+
+        const newUser = {
+            title: "Good luck",
+            author: "Dima",
+            availableResolutions: [
+                "p144", "Invalid"
+            ]
+        }
+
+        await request(app)
+            .post('/api/videos')
+            .send(newUser)
+            .expect(400, { errorsMessages: [{message: "At least one resolution should be available", field: "availableResolutions"}] })
+
     })
 
     it('Should return list of videos', async () => {
@@ -120,27 +132,9 @@ describe('/videos', () => {
                     {message: "Title is required", field: "title"}
                 ]
             })
-
-        //
-        // await request(app)
-        //     .get(`/api/videos/${createCourse1.id}`)
-        //     .expect(200)
-        //     .expect(res => {
-        //         expect(res.body).toMatchObject({
-        //             ...createCourse1,
-        //             title: "La-la",
-        //             author: "Egor",
-        //             availableResolutions: [
-        //                 "P144"
-        //             ],
-        //             canBeDownloaded: true,
-        //             minAgeRestriction: 18,
-        //             publicationDate: "2023-11-25T19:40:05.268Z"
-        //         })
-        //         // expect(new Date(res.body.createdAt).getTime()).toBeCloseTo(new Date(createCourse1.createdAt).getTime(), 1000 );
-        //         // expect(new Date(res.body.publicationDate).getTime()).toBeCloseTo(new Date(createCourse1.publicationDate).getTime(), 1000 * 60);
-        //     })
     })
+
+
 
     it('Should delete video from the the db ', async () => {
 

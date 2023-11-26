@@ -8,7 +8,7 @@ import {
 } from "../types/video.types";
 // import {db} from "../db/db";
 
-
+const resolutionsToCheck = ["P144", "P240", "P360","P480", "P720","P1080", "P1440","P2160"];
 const { v4: uuidv4 } = require('uuid');
 
 export let db: VideoTypes[] = []
@@ -48,7 +48,7 @@ export const addVideoController
 
     if (Array.isArray(availableResolutions)) {
         availableResolutions.map(p => {
-            !availableResolutions.includes(p) && errorObj.errorsMessages.push({
+            !resolutionsToCheck.includes(p) && errorObj.errorsMessages.push({
                 message: "At least one resolution should be available",
                 field: "availableResolutions"
             })
@@ -134,10 +134,12 @@ export const putVideoByIdController = (req: express.Request, res: express.Respon
 
     if (Array.isArray(availableResolutions)) {
         availableResolutions.map(p => {
-            !availableResolutions.includes(p) && errorObj2.errorsMessages.push({
-                message: "At least one resolution should be available",
-                field: "availableResolutions"
-            })
+            if (!resolutionsToCheck.includes(p)) {
+                errorObj2.errorsMessages.push({
+                    message: "At least one resolution should be available",
+                    field: "availableResolutions"
+                })
+            }
         })
 
     } else {

@@ -2,6 +2,7 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.deleteVideoController = exports.putVideoByIdController = exports.getVideoByIdController = exports.addVideoController = exports.getAllVideosController = exports.removeAllDataController = exports.db = void 0;
 // import {db} from "../db/db";
+const resolutionsToCheck = ["P144", "P240", "P360", "P480", "P720", "P1080", "P1440", "P2160"];
 const { v4: uuidv4 } = require('uuid');
 exports.db = [];
 //delete all
@@ -30,7 +31,7 @@ const addVideoController = (req, res) => {
     }
     if (Array.isArray(availableResolutions)) {
         availableResolutions.map(p => {
-            !availableResolutions.includes(p) && errorObj.errorsMessages.push({
+            !resolutionsToCheck.includes(p) && errorObj.errorsMessages.push({
                 message: "At least one resolution should be available",
                 field: "availableResolutions"
             });
@@ -90,10 +91,12 @@ const putVideoByIdController = (req, res) => {
     }
     if (Array.isArray(availableResolutions)) {
         availableResolutions.map(p => {
-            !availableResolutions.includes(p) && errorObj2.errorsMessages.push({
-                message: "At least one resolution should be available",
-                field: "availableResolutions"
-            });
+            if (!resolutionsToCheck.includes(p)) {
+                errorObj2.errorsMessages.push({
+                    message: "At least one resolution should be available",
+                    field: "availableResolutions"
+                });
+            }
         });
     }
     else {
