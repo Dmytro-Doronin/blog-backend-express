@@ -29,59 +29,32 @@ export const addVideoController: express.RequestHandler<Record<string, any>, Vid
 
     const {title,author, availableResolutions } = req.body
 
+    const errorObj: ReturnedAddVideosError = {
+        errorsMessages: []
+    }
+
     if (!title) {
-        return res.status(400).json({
-            "errorsMessages": [
-                {
-                    message: "Title is required",
-                    field: "title"
-                }
-            ]
-        });
+        errorObj.errorsMessages.push({message: "Title is required", field: "title"})
     }
 
     if (title.trim().length > 40) {
-        return res.status(400).json({
-            "errorsMessages": [
-                {
-                    message: "Title length should be less than or equal to 40 characters",
-                    field: "title"
-                }
-            ]
-        });
+        errorObj.errorsMessages.push({message: "Title length should be less than or equal to 40 characters", field: "title"})
     }
 
     if (!author) {
-        return res.status(400).json({
-            "errorsMessages": [
-                {
-                    message: "Author is required",
-                    field: "author"
-                }
-            ]
-        });
+        errorObj.errorsMessages.push({message: "Author is required", field: "author"})
     }
 
     if (author.length > 20) {
-        return res.status(400).json({
-            "errorsMessages": [
-                {
-                    message: "Author length should be less than or equal to 20 characters",
-                    field: "author"
-                }
-            ]
-        });
+        errorObj.errorsMessages.push({message: "Author length must be less then 20", field: "author"})
     }
 
     if (availableResolutions.length < 1) {
-        return res.status(400).json({
-            "errorsMessages": [
-                {
-                    message: "At least one resolution should be available",
-                    field: "availableResolutions"
-                }
-            ]
-        });
+        errorObj.errorsMessages.push({message: "At least one resolution should be available", field: "availableResolutions"})
+    }
+
+    if (errorObj.errorsMessages.length > 0) {
+        return res.status(400).json(errorObj);
     }
 
     const currentDate = new Date();
@@ -130,23 +103,45 @@ export const putVideoByIdController = (req: express.Request, res: express.Respon
         publicationDate: currentPublicationDate
     } = req.body
 
+    const errorObj: ReturnedAddVideosError = {
+        errorsMessages: []
+    }
 
+    if (!currentTitle) {
+        errorObj.errorsMessages.push({message: "Title is required", field: "title"})
+    }
+
+    if (currentAuthor.trim().length > 40) {
+        errorObj.errorsMessages.push({message: "Title length should be less than or equal to 40 characters", field: "title"})
+    }
+
+    if (!currentAuthor) {
+        errorObj.errorsMessages.push({message: "Author is required", field: "author"})
+    }
+
+    if (currentAuthor.length > 20) {
+        errorObj.errorsMessages.push({message: "Author length must be less then 20", field: "author"})
+    }
+
+    if (currentResolution.length < 1) {
+        errorObj.errorsMessages.push({message: "At least one resolution should be available", field: "availableResolutions"})
+    }
+
+    if (currentAgeRestriction > 18 || currentAgeRestriction < 1) {
+        errorObj.errorsMessages.push({message: "Not currentAgeRestriction range", field: "currentAgeRestriction"})
+    }
+    if (!currentPublicationDate ) {
+        errorObj.errorsMessages.push({message: "Not currentPublicationDate", field: "currentPublicationDate"})
+    }
+    if (errorObj.errorsMessages.length > 0) {
+        return res.status(400).json(errorObj);
+    }
     // || currentTitle.trim().length > 40
     // || !currentAuthor || currentAuthor.length > 20
     // || currentResolution.length < 1
     // || currentAgeRestriction > 18 || currentAgeRestriction < 1
     // || !currentPublicationDate
 
-    if (!currentTitle) {
-        return res.status(400).json({
-            "errorsMessages": [
-                {
-                    "message": "string",
-                    "field": "string"
-                }
-            ]
-        })
-    }
 
     let currentVideo = db.find(item => item.id === +req.params.id)
     if (currentVideo) {

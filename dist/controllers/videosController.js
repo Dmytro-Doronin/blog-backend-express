@@ -19,55 +19,26 @@ exports.getAllVideosController = getAllVideosController;
 //1 type of the params, 2)type of the response body, 3) type of the request body, 4) uri query params
 const addVideoController = (req, res) => {
     const { title, author, availableResolutions } = req.body;
+    const errorObj = {
+        errorsMessages: []
+    };
     if (!title) {
-        return res.status(400).json({
-            "errorsMessages": [
-                {
-                    message: "Title is required",
-                    field: "title"
-                }
-            ]
-        });
+        errorObj.errorsMessages.push({ message: "Title is required", field: "title" });
     }
     if (title.trim().length > 40) {
-        return res.status(400).json({
-            "errorsMessages": [
-                {
-                    message: "Title length should be less than or equal to 40 characters",
-                    field: "title"
-                }
-            ]
-        });
+        errorObj.errorsMessages.push({ message: "Title length should be less than or equal to 40 characters", field: "title" });
     }
     if (!author) {
-        return res.status(400).json({
-            "errorsMessages": [
-                {
-                    message: "Author is required",
-                    field: "author"
-                }
-            ]
-        });
+        errorObj.errorsMessages.push({ message: "Author is required", field: "author" });
     }
     if (author.length > 20) {
-        return res.status(400).json({
-            "errorsMessages": [
-                {
-                    message: "Author length should be less than or equal to 20 characters",
-                    field: "author"
-                }
-            ]
-        });
+        errorObj.errorsMessages.push({ message: "Author length must be less then 20", field: "author" });
     }
     if (availableResolutions.length < 1) {
-        return res.status(400).json({
-            "errorsMessages": [
-                {
-                    message: "At least one resolution should be available",
-                    field: "availableResolutions"
-                }
-            ]
-        });
+        errorObj.errorsMessages.push({ message: "At least one resolution should be available", field: "availableResolutions" });
+    }
+    if (errorObj.errorsMessages.length > 0) {
+        return res.status(400).json(errorObj);
     }
     const currentDate = new Date();
     const tomorrowDate = new Date(currentDate);
@@ -98,21 +69,38 @@ const getVideoByIdController = (req, res) => {
 exports.getVideoByIdController = getVideoByIdController;
 const putVideoByIdController = (req, res) => {
     const { title: currentTitle, author: currentAuthor, availableResolutions: currentResolution, canBeDownloaded: currentCanBeDownloaded, minAgeRestriction: currentAgeRestriction, publicationDate: currentPublicationDate } = req.body;
+    const errorObj = {
+        errorsMessages: []
+    };
+    if (!currentTitle) {
+        errorObj.errorsMessages.push({ message: "Title is required", field: "title" });
+    }
+    if (currentAuthor.trim().length > 40) {
+        errorObj.errorsMessages.push({ message: "Title length should be less than or equal to 40 characters", field: "title" });
+    }
+    if (!currentAuthor) {
+        errorObj.errorsMessages.push({ message: "Author is required", field: "author" });
+    }
+    if (currentAuthor.length > 20) {
+        errorObj.errorsMessages.push({ message: "Author length must be less then 20", field: "author" });
+    }
+    if (currentResolution.length < 1) {
+        errorObj.errorsMessages.push({ message: "At least one resolution should be available", field: "availableResolutions" });
+    }
+    if (currentAgeRestriction > 18 || currentAgeRestriction < 1) {
+        errorObj.errorsMessages.push({ message: "Not currentAgeRestriction range", field: "currentAgeRestriction" });
+    }
+    if (!currentPublicationDate) {
+        errorObj.errorsMessages.push({ message: "Not currentPublicationDate", field: "currentPublicationDate" });
+    }
+    if (errorObj.errorsMessages.length > 0) {
+        return res.status(400).json(errorObj);
+    }
     // || currentTitle.trim().length > 40
     // || !currentAuthor || currentAuthor.length > 20
     // || currentResolution.length < 1
     // || currentAgeRestriction > 18 || currentAgeRestriction < 1
     // || !currentPublicationDate
-    if (!currentTitle) {
-        return res.status(400).json({
-            "errorsMessages": [
-                {
-                    "message": "string",
-                    "field": "string"
-                }
-            ]
-        });
-    }
     let currentVideo = exports.db.find(item => item.id === +req.params.id);
     if (currentVideo) {
         currentVideo = Object.assign(Object.assign({}, currentVideo), { title: currentTitle, author: currentAuthor, minAgeRestriction: currentAgeRestriction, publicationDate: currentPublicationDate, canBeDownloaded: currentCanBeDownloaded });

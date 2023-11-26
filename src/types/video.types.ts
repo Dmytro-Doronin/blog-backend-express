@@ -37,13 +37,13 @@ export type postVideoType = {
     "availableResolutions": ResolutionsType
 }
 
+type errorObj = {
+    "message": string,
+    "field": string
+}
+
 export type ReturnedAddVideosError = {
-    "errorsMessages": [
-        {
-            "message": string,
-            "field": string
-        }
-    ]
+    "errorsMessages": errorObj[]
 }
 
 export type UpdateInputVideoModel = {
