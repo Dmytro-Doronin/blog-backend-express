@@ -88,6 +88,10 @@ export const addVideoController
 
 export const getVideoByIdController = (req: express.Request, res: express.Response) => {
 
+    if (!req.params.id) {
+        res.sendStatus(404)
+    }
+
     const currentVideo = db.find(item => item.id === +req.params.id)
 
     if (!currentVideo) {
@@ -110,6 +114,10 @@ export const putVideoByIdController = (req: express.Request, res: express.Respon
     } = req.body
 
     const id = +req.params.id
+
+    if (!id) {
+        res.sendStatus(404)
+    }
 
     const errorObj: ReturnedAddVideosError = {
         errorsMessages: []
@@ -178,6 +186,10 @@ export const putVideoByIdController = (req: express.Request, res: express.Respon
 export const deleteVideoController = (req: express.Request, res: express.Response) => {
 
     const id = +req.params.id
+
+    if (!id) {
+        res.sendStatus(404)
+    }
 
     const indexCurrentVideo = db.findIndex(v => v.id === id)
     const currentVideo = db.find(item => item.id === id)

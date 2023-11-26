@@ -60,6 +60,9 @@ const addVideoController = (req, res) => {
 };
 exports.addVideoController = addVideoController;
 const getVideoByIdController = (req, res) => {
+    if (!req.params.id) {
+        res.sendStatus(404);
+    }
     const currentVideo = exports.db.find(item => item.id === +req.params.id);
     if (!currentVideo) {
         return res.status(404);
@@ -70,6 +73,9 @@ exports.getVideoByIdController = getVideoByIdController;
 const putVideoByIdController = (req, res) => {
     const { title, author, availableResolutions, canBeDownloaded, minAgeRestriction, publicationDate } = req.body;
     const id = +req.params.id;
+    if (!id) {
+        res.sendStatus(404);
+    }
     const errorObj = {
         errorsMessages: []
     };
@@ -115,6 +121,9 @@ const putVideoByIdController = (req, res) => {
 exports.putVideoByIdController = putVideoByIdController;
 const deleteVideoController = (req, res) => {
     const id = +req.params.id;
+    if (!id) {
+        res.sendStatus(404);
+    }
     const indexCurrentVideo = exports.db.findIndex(v => v.id === id);
     const currentVideo = exports.db.find(item => item.id === id);
     if (!currentVideo) {
