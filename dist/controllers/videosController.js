@@ -115,7 +115,7 @@ const putVideoByIdController = (req, res) => {
     if (typeof canBeDownloaded !== 'boolean' || typeof canBeDownloaded === 'undefined') {
         errorObj2.errorsMessages.push({ message: "Not correct canBeDownloaded", field: "canBeDownloaded" });
     }
-    if (!publicationDate) {
+    if (!publicationDate || typeof publicationDate !== 'string') {
         errorObj2.errorsMessages.push({ message: "Not publicationDate", field: "publicationDate" });
     }
     if (errorObj2.errorsMessages.length) {
