@@ -154,8 +154,8 @@ export const putVideoByIdController = (req: express.Request, res: express.Respon
     }
 
 
-    if (!minAgeRestriction || typeof minAgeRestriction === 'undefined' ) {
-        minAgeRestriction > 18 || minAgeRestriction < 1 && errorObj2.errorsMessages.push({message: "Not currentAgeRestriction range", field: "currentAgeRestriction"})
+    if (typeof minAgeRestriction === 'undefined' || minAgeRestriction > 18 || minAgeRestriction < 1 ) {
+       errorObj2.errorsMessages.push({message: "Not currentAgeRestriction range", field: "currentAgeRestriction"})
     } else {
         minAgeRestriction = null
     }
