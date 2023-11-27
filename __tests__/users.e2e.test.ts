@@ -156,7 +156,27 @@ describe('/videos', () => {
             })
     })
 
+    it('Should not change video with incorrect minAgeRestriction', async () => {
+        const inputDataForChangeVideo2 = {
+            title: "Vsem Privet",
+            author: "Egor",
+            availableResolutions: [
+                "P144"
+            ],
+            canBeDownloaded: false,
+            minAgeRestriction: 25,
+            publicationDate: "2023-11-25T22:28:44.991Z"
+        }
 
+        await request(app)
+            .put(`/api/videos/${createCourse1.id}`)
+            .send(inputDataForChangeVideo2)
+            .expect(400, {
+                errorsMessages: [
+                    {message: "Not currentAgeRestriction range", field: "minAgeRestriction"}
+                ]
+            })
+    })
 
     it('Should delete video from the the db ', async () => {
 
