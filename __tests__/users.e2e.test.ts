@@ -112,7 +112,7 @@ describe('/videos', () => {
             })
     })
 
-    it('Should not changed video with incorrect title', async () => {
+    it('Should not change video with incorrect title', async () => {
         const inputDataForChangeVideo2 = {
             title: null,
             author: "Egor",
@@ -134,7 +134,7 @@ describe('/videos', () => {
             })
     })
 
-    it('Should not changed video with incorrect canBeDownloaded', async () => {
+    it('Should not change video with incorrect canBeDownloaded', async () => {
         const inputDataForChangeVideo2 = {
             title: "Vsem Privet",
             author: "Egor",

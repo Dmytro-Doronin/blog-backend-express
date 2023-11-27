@@ -154,7 +154,7 @@ export const putVideoByIdController = (req: express.Request, res: express.Respon
     }
 
 
-    if (typeof minAgeRestriction !== 'undefined' || true ) {
+    if (!minAgeRestriction || typeof minAgeRestriction === 'undefined' ) {
         minAgeRestriction > 18 || minAgeRestriction < 1 && errorObj2.errorsMessages.push({message: "Not currentAgeRestriction range", field: "currentAgeRestriction"})
     } else {
         minAgeRestriction = null
@@ -168,24 +168,11 @@ export const putVideoByIdController = (req: express.Request, res: express.Respon
         errorObj2.errorsMessages.push({message: "Not publicationDate", field: "publicationDate"})
     }
 
-    if (errorObj2.errorsMessages.length > 0) {
+    if (errorObj2.errorsMessages.length) {
         res.status(400).send(errorObj2);
         return
 
     }
-    // || currentTitle.trim().length > 40
-    // || !currentAuthor || currentAuthor.length > 20
-    // || currentResolution.length < 1
-    // || currentAgeRestriction > 18 || currentAgeRestriction < 1
-    // || !currentPublicationDate
-
-    // const currentVideoIndex = db.findIndex(v => v.id === id)
-    // let currentVideo = db.find(item => item.id === +req.params.id)
-    //
-    // if (!currentVideo) {
-    //     res.sendStatus(404)
-    //     return
-    // }
 
         const updatedCurrentVideo = {
             ...currentVideo,
