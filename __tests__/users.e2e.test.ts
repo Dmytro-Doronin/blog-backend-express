@@ -151,21 +151,20 @@ describe('/videos', () => {
             .send(inputDataForChangeVideo2)
             .expect(400, {
                 errorsMessages: [
-                    {message: "Not correct canBeDownloaded", field: "canBeDownloaded"}
+                    {message: "Not correct canBeDownloaded", field: "canBeDownloaded"},
                 ]
             })
     })
 
-    it('Should not change video with incorrect minAgeRestriction', async () => {
+    it('Should not change video with incorrect minAgeRestriction and title', async () => {
         const inputDataForChangeVideo2 = {
-            title: "Vsem Privet",
-            author: "Egor",
-            availableResolutions: [
-                "P144"
-            ],
-            canBeDownloaded: false,
-            minAgeRestriction: 25,
-            publicationDate: "2023-11-25T22:28:44.991Z"
+            title:"length_41-oGuSMzyRUxdnN7ClQA7QbIEk5eMianm",
+            author:"valid author",
+            availableResolutions:["P720"],
+            canBeDownloaded:true,
+            minAgeRestriction:25,
+            publicationDate: "2023-11-30T13:33:22.536Z"
+
         }
 
         await request(app)
@@ -173,7 +172,10 @@ describe('/videos', () => {
             .send(inputDataForChangeVideo2)
             .expect(400, {
                 errorsMessages: [
+                    {message: "Title is required", field: "title"},
                     {message: "Not currentAgeRestriction range", field: "minAgeRestriction"}
+
+
                 ]
             })
     })

@@ -164,7 +164,7 @@ export const putVideoByIdController = (req: express.Request, res: express.Respon
         errorObj2.errorsMessages.push({message: "Not correct canBeDownloaded", field: "canBeDownloaded"})
     }
 
-    if (!publicationDate) {
+    if (!publicationDate || typeof publicationDate !== 'string') {
         errorObj2.errorsMessages.push({message: "Not publicationDate", field: "publicationDate"})
     }
 
