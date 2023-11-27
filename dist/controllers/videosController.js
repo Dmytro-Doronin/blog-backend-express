@@ -107,7 +107,7 @@ const putVideoByIdController = (req, res) => {
         availableResolutions = [];
     }
     if (typeof minAgeRestriction !== 'undefined' && typeof minAgeRestriction === 'number') {
-        minAgeRestriction > 18 || minAgeRestriction < 1 && errorObj2.errorsMessages.push({ message: "Not currentAgeRestriction range", field: "currentAgeRestriction" });
+        minAgeRestriction > 18 || minAgeRestriction < 1 && errorObj2.errorsMessages.push({ message: "Not currentAgeRestriction range", field: "minAgeRestriction" });
     }
     else {
         minAgeRestriction = null;
