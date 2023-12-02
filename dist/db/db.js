@@ -1,4 +1,8 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.db = void 0;
+exports.blogDB = exports.db = void 0;
 exports.db = [];
+exports.blogDB = {
+    blogs: [],
+    posts: []
+};

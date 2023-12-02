@@ -7,6 +7,8 @@ import {
     VideoTypes
 } from "../types/video.types";
 // import {db} from "../db/db";
+import {blogDB} from "../db/db";
+
 
 const resolutionsToCheck = ["P144", "P240", "P360","P480", "P720","P1080", "P1440","P2160"];
 const { v4: uuidv4 } = require('uuid');
@@ -16,6 +18,8 @@ export let db: VideoTypes[] = []
 export const removeAllDataController = (req: express.Request, res: express.Response) => {
 
     db = []
+    blogDB.blogs = []
+    blogDB.posts = []
 
     res.sendStatus(204)
     return

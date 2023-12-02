@@ -8,5 +8,5 @@ export const app = express()
 app.use(express.json())
 //endpoints
 app.use('/api', videoRouter)
-app.use('/blogs', blogsRouter)
+app.use('/api/blogs', blogsRouter)
 // app.use('/posts', videoRouter)

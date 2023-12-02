@@ -1,13 +1,12 @@
 import request = require('supertest')
-import {app} from "../src/app";
-import {postVideoType, UpdateInputVideoModel, VideoResolution, VideoTypes} from "../src/types/video.types";
+import {app} from "../../src/app";
+import {postVideoType, UpdateInputVideoModel, VideoResolution, VideoTypes} from "../../src/types/video.types";
 import {before} from "node:test";
 
 describe('/videos', () => {
 
     beforeAll(async () => {
         await request(app).delete('/testing/all-data')
-
     })
 
     let createCourse1: any = null

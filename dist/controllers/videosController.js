@@ -2,12 +2,15 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.deleteVideoController = exports.putVideoByIdController = exports.getVideoByIdController = exports.addVideoController = exports.getAllVideosController = exports.removeAllDataController = exports.db = void 0;
 // import {db} from "../db/db";
+const db_1 = require("../db/db");
 const resolutionsToCheck = ["P144", "P240", "P360", "P480", "P720", "P1080", "P1440", "P2160"];
 const { v4: uuidv4 } = require('uuid');
 exports.db = [];
 //delete all
 const removeAllDataController = (req, res) => {
     exports.db = [];
+    db_1.blogDB.blogs = [];
+    db_1.blogDB.posts = [];
     res.sendStatus(204);
     return;
 };
