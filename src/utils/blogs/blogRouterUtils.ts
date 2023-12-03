@@ -4,6 +4,12 @@ const { v4: uuidv4 } = require('uuid');
 
 export const blogRouterUtils = {
 
+    getAllBlog() {
+
+        const res = blogDB.blogs
+        return res
+    },
+
     createBlog ({name, description, websiteUrl}: BlogInputModelType) {
 
         const newBlog: BlogViewModelType = {
@@ -29,9 +35,9 @@ export const blogRouterUtils = {
 
     changeBlogById ({id ,name, description, websiteUrl}: BlogViewModelType) {
 
-        const foundBlog = blogDB.blogs.find(item => item.id === item.id)
+        const foundBlog = blogDB.blogs.find(item => item.id === id)
 
-        if (!foundBlog) {
+        if (foundBlog === undefined) {
             return null
         }
 
@@ -51,9 +57,9 @@ export const blogRouterUtils = {
     },
 
     deleteBlogById (id: string) {
-        const foundBlog = blogDB.blogs.find(item => item.id === item.id)
+        const foundBlog = blogDB.blogs.find(item => item.id === id)
 
-        if (!foundBlog) {
+        if (foundBlog === undefined) {
             return null
         }
 

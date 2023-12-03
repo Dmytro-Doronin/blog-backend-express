@@ -1,7 +1,6 @@
 import {Request, Response} from "express";
 import {BlogInputModelType, RequestWithParamsAndBody} from "../types/commonBlogTypeAndPosts.types";
 import {RequestWithBody, RequestWithParams, ParamsType} from "../types/commonBlogTypeAndPosts.types";
-import {blogDB} from "../db/db";
 import {blogRouterUtils} from "../utils/blogs/blogRouterUtils";
 
 // export const deleteAllDataFromBlogsAndPostsController = (req: Request, res: Response) => {
@@ -9,7 +8,8 @@ import {blogRouterUtils} from "../utils/blogs/blogRouterUtils";
 // }
 
 export const getAllBlogsController = (req: Request, res: Response) => {
-    return res.status(200).send(blogDB.blogs)
+    const result = blogRouterUtils.getAllBlog()
+    return res.status(200).send(result)
 }
 
 export const createNewBlogController = (req: RequestWithBody<BlogInputModelType> , res: Response) => {
@@ -41,9 +41,9 @@ export const changeBlogsByIdController = (req: RequestWithParamsAndBody<ParamsTy
     const {name, description, websiteUrl} = req.body
     const id = req.params.id
 
-    const rusult = blogRouterUtils.changeBlogById({id, name, description, websiteUrl})
+    const result = blogRouterUtils.changeBlogById({id, name, description, websiteUrl})
 
-    if (rusult === null) {
+    if (result === null) {
         return res.sendStatus(404)
     }
 

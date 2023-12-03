@@ -1,16 +1,20 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.blogWebsiteUrl = exports.blogDescription = exports.blogName = void 0;
+exports.blogValidationModelMiddleware = exports.blogWebsiteUrl = exports.blogDescription = exports.blogName = void 0;
 const express_validator_1 = require("express-validator");
-exports.blogName = (0, express_validator_1.body)('name').trim().isLength({ min: 1, max: 15 });
-exports.blogDescription = (0, express_validator_1.body)('description').trim().isLength({ max: 500 });
-exports.blogWebsiteUrl = (0, express_validator_1.body)('websiteUrl')
+exports.blogName = (0, express_validator_1.check)('name')
+    .isString()
     .trim()
-    .isLength({ max: 100 })
-    .custom(WebsiteUrl => {
-    const pattern = /^https:\/\/([a-zA-Z0-9_-]+\.)+[a-zA-Z0-9_-]+(\/[a-zA-Z0-9_-]+)*\/?$/;
-    if (!pattern.test(WebsiteUrl)) {
-        return { message: 'invalid WebsiteUrl', field: 'websiteUrl' };
-    }
-    return true;
-});
+    .isLength({ min: 1, max: 15 }).withMessage('The field must not be more then 15 symbols');
+exports.blogDescription = (0, express_validator_1.check)('description')
+    .isString()
+    .trim()
+    .isLength({ min: 1, max: 500 }).withMessage('The field must not be more then 500 symbols');
+exports.blogWebsiteUrl = (0, express_validator_1.check)('websiteUrl')
+    .isString()
+    .trim()
+    .isLength({ min: 1, max: 100 }).withMessage('The field must not be more then 100 symbols')
+    .matches('^https://([a-zA-Z0-9_-]+\\.)+[a-zA-Z0-9_-]+(\\/[a-zA-Z0-9_-]+)*\\/?$')
+    .withMessage('Incorrect websiteUrl');
+const blogValidationModelMiddleware = () => [exports.blogName, exports.blogDescription, exports.blogWebsiteUrl];
+exports.blogValidationModelMiddleware = blogValidationModelMiddleware;

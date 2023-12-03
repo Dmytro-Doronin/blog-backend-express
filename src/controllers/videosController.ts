@@ -18,7 +18,7 @@ export let db: VideoTypes[] = []
 export const removeAllDataController = (req: express.Request, res: express.Response) => {
 
     db = []
-    blogDB.blogs = []
+    blogDB.blogs.length = 0
     blogDB.posts = []
 
     res.sendStatus(204)

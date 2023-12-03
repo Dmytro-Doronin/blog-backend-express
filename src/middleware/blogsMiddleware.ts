@@ -1,16 +1,32 @@
-import {Response, NextFunction} from "express";
+import {Request, Response, NextFunction} from "express";
 import {ParamsType, RequestWithBody, RequestWithParamsAndBody} from "../types/commonBlogTypeAndPosts.types";
 import {BlogInputModelType} from "../types/commonBlogTypeAndPosts.types";
 import {validationResult} from "express-validator";
 
-export const createBlogMiddleware = (req: RequestWithBody<BlogInputModelType>, res: Response, next: NextFunction) => {
+export const blogMiddleware = (req: Request, res: Response, next: NextFunction) => {
 
-    const errors = validationResult(req.body)
+    const errors = validationResult(req).formatWith(error => {
+        switch (error.type) {
+            case "field": {
+                return {
+                    message: error.msg,
+                    field: error.path
+                }
+            }
+            default:
+                return {
+                    message: error.msg,
+                    field: "not found"
+                }
+        }
+    })
 
     if (!errors.isEmpty()) {
-        res.status(400).send({errorMessage: errors.array()})
+        const err = errors.array({onlyFirstError: true})
+
+        return res.status(400).json({errorsMessages: err})
     } else {
-        next()
+        return next();
     }
 }
 
@@ -23,7 +39,7 @@ export const changeBlogsByIdMiddleware = (
     const errors = validationResult(req.body)
 
     if (!errors.isEmpty()) {
-        res.status(400).send({errorMessage: errors.array()})
+        res.status(400).send({errorsMessages: errors.array()})
     } else {
         next()
     }

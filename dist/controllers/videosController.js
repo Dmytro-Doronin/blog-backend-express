@@ -9,7 +9,7 @@ exports.db = [];
 //delete all
 const removeAllDataController = (req, res) => {
     exports.db = [];
-    db_1.blogDB.blogs = [];
+    db_1.blogDB.blogs.length = 0;
     db_1.blogDB.posts = [];
     res.sendStatus(204);
     return;

@@ -1,13 +1,13 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.deleteBlogsByIdController = exports.changeBlogsByIdController = exports.getBlogsByIdController = exports.createNewBlogController = exports.getAllBlogsController = void 0;
-const db_1 = require("../db/db");
 const blogRouterUtils_1 = require("../utils/blogs/blogRouterUtils");
 // export const deleteAllDataFromBlogsAndPostsController = (req: Request, res: Response) => {
 //     return res.status(200).send(blogDB.blogs)
 // }
 const getAllBlogsController = (req, res) => {
-    return res.status(200).send(db_1.blogDB.blogs);
+    const result = blogRouterUtils_1.blogRouterUtils.getAllBlog();
+    return res.status(200).send(result);
 };
 exports.getAllBlogsController = getAllBlogsController;
 const createNewBlogController = (req, res) => {
@@ -27,8 +27,8 @@ exports.getBlogsByIdController = getBlogsByIdController;
 const changeBlogsByIdController = (req, res) => {
     const { name, description, websiteUrl } = req.body;
     const id = req.params.id;
-    const rusult = blogRouterUtils_1.blogRouterUtils.changeBlogById({ id, name, description, websiteUrl });
-    if (rusult === null) {
+    const result = blogRouterUtils_1.blogRouterUtils.changeBlogById({ id, name, description, websiteUrl });
+    if (result === null) {
         return res.sendStatus(404);
     }
     return res.sendStatus(204);

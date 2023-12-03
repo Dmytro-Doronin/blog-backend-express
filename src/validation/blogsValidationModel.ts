@@ -1,16 +1,20 @@
-import {body} from 'express-validator'
+import {body, check} from 'express-validator'
 
-export const blogName = body('name').trim().isLength({min: 1, max: 15})
-export const blogDescription = body('description').trim().isLength({ max: 500})
-export const blogWebsiteUrl = body('websiteUrl')
+export const blogName = check('name')
+    .isString()
     .trim()
-    .isLength({ max: 100})
-    .custom(WebsiteUrl => {
-        const pattern = /^https:\/\/([a-zA-Z0-9_-]+\.)+[a-zA-Z0-9_-]+(\/[a-zA-Z0-9_-]+)*\/?$/
+    .isLength({min: 1, max: 15}).withMessage('The field must not be more then 15 symbols')
 
-        if (!pattern.test(WebsiteUrl)) {
-            return {message: 'invalid WebsiteUrl', field: 'websiteUrl'}
-        }
+export const blogDescription = check('description')
+    .isString()
+    .trim()
+    .isLength({min: 1, max: 500}).withMessage('The field must not be more then 500 symbols')
 
-        return true
-    })
+export const blogWebsiteUrl = check('websiteUrl')
+    .isString()
+    .trim()
+    .isLength({min: 1, max: 100}).withMessage('The field must not be more then 100 symbols')
+    .matches('^https://([a-zA-Z0-9_-]+\\.)+[a-zA-Z0-9_-]+(\\/[a-zA-Z0-9_-]+)*\\/?$')
+    .withMessage('Incorrect websiteUrl')
+
+export const blogValidationModelMiddleware = () => [blogName, blogDescription, blogWebsiteUrl]

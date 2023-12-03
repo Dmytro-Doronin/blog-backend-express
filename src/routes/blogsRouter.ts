@@ -5,22 +5,17 @@ import {
     getAllBlogsController,
     getBlogsByIdController
 } from "../controllers/blogsController";
-import {blogName, blogDescription, blogWebsiteUrl} from "../validation/blogsValidationModel";
-import {createBlogMiddleware} from "../middleware/blogsMiddleware";
+import {blogValidationModelMiddleware} from "../validation/blogsValidationModel";
+import {blogMiddleware} from "../middleware/blogsMiddleware";
+import {body} from "express-validator";
+import {authMiddleware} from "../middleware/authMiddleware";
 
 export const blogsRouter = Router()
 
+
 blogsRouter.get('/', getAllBlogsController)
-blogsRouter.post('/', [
-    blogName,
-    blogDescription,
-    blogWebsiteUrl
-],createBlogMiddleware, createNewBlogController)
+blogsRouter.post('/',authMiddleware, blogValidationModelMiddleware(),blogMiddleware, createNewBlogController)
 
 blogsRouter.get('/:id', getBlogsByIdController)
-blogsRouter.put('/:id', [
-    blogName,
-    blogDescription,
-    blogWebsiteUrl
-], changeBlogsByIdController)
-blogsRouter.delete('/:id', deleteBlogsByIdController)
+blogsRouter.put('/:id',authMiddleware, blogValidationModelMiddleware(),blogMiddleware, changeBlogsByIdController)
+blogsRouter.delete('/:id',authMiddleware, deleteBlogsByIdController)
