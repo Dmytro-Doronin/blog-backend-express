@@ -19,4 +19,4 @@ export const postBlogId  = body('blogId')
     .isString()
     .trim()
 
-export const blogValidationModelMiddleware = () => [postTitle, postShortDescription, postContent, postBlogId]
+export const postsValidationModelMiddleware = () => [postTitle, postShortDescription, postContent, postBlogId]

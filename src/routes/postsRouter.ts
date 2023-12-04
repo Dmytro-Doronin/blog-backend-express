@@ -6,7 +6,7 @@ import {
     getAllPostsController,
     getPostByIdController
 } from "../controllers/postsControllers";
-import {blogValidationModelMiddleware} from "../validation/postsValidationModel";
+import { postsValidationModelMiddleware} from "../validation/postsValidationModel";
 import {errorMiddleware} from "../middleware/blogsMiddleware";
 import {removeAllDataController} from "../controllers/deleteController";
 
@@ -15,9 +15,9 @@ export const postsRouter = Router()
 
 
 postsRouter.get('/', getAllPostsController)
-postsRouter.post('/', blogValidationModelMiddleware(), errorMiddleware, createNewPostController)
+postsRouter.post('/', postsValidationModelMiddleware(), errorMiddleware, createNewPostController)
 
 postsRouter.get('/:id', getPostByIdController)
-postsRouter.put('/:id', blogValidationModelMiddleware(), errorMiddleware, changePostByIdController)
+postsRouter.put('/:id', postsValidationModelMiddleware(), errorMiddleware, changePostByIdController)
 postsRouter.delete('/:id', deletePostByIdController)
 postsRouter.delete('/testing/all-data', removeAllDataController)

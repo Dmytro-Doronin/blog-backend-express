@@ -1,6 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.blogValidationModelMiddleware = exports.postBlogId = exports.postContent = exports.postShortDescription = exports.postTitle = void 0;
+exports.postsValidationModelMiddleware = exports.postBlogId = exports.postContent = exports.postShortDescription = exports.postTitle = void 0;
 const express_validator_1 = require("express-validator");
 exports.postTitle = (0, express_validator_1.body)('title')
     .isString()
@@ -17,5 +17,5 @@ exports.postContent = (0, express_validator_1.body)('content')
 exports.postBlogId = (0, express_validator_1.body)('blogId')
     .isString()
     .trim();
-const blogValidationModelMiddleware = () => [exports.postTitle, exports.postShortDescription, exports.postContent, exports.postBlogId];
-exports.blogValidationModelMiddleware = blogValidationModelMiddleware;
+const postsValidationModelMiddleware = () => [exports.postTitle, exports.postShortDescription, exports.postContent, exports.postBlogId];
+exports.postsValidationModelMiddleware = postsValidationModelMiddleware;
