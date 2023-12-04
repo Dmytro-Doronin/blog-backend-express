@@ -12,7 +12,7 @@ const postsRouter_1 = require("./routes/postsRouter");
 exports.app = (0, express_1.default)();
 exports.app.use(express_1.default.json());
 //endpoints
-exports.app.use('/api/testing/all-data', deleteRouter_1.deleteRouter);
+exports.app.use('/testing/all-data', deleteRouter_1.deleteRouter);
 exports.app.use('/api', videoRouter_1.videoRouter);
 exports.app.use('/api/blogs', blogsRouter_1.blogsRouter);
 exports.app.use('/api/posts', postsRouter_1.postsRouter);
