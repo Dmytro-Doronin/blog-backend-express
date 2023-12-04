@@ -15,7 +15,6 @@ exports.postContent = (0, express_validator_1.body)('content')
     .trim()
     .isLength({ min: 1, max: 1000 }).withMessage('The field must not be more then 1000 symbols');
 exports.postBlogId = (0, express_validator_1.body)('blogId')
-    .isString()
-    .trim();
+    .isString();
 const postsValidationModelMiddleware = () => [exports.postTitle, exports.postShortDescription, exports.postContent, exports.postBlogId];
 exports.postsValidationModelMiddleware = postsValidationModelMiddleware;

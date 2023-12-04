@@ -17,6 +17,6 @@ export const postContent = body('content')
 
 export const postBlogId  = body('blogId')
     .isString()
-    .trim()
+
 
 export const postsValidationModelMiddleware = () => [postTitle, postShortDescription, postContent, postBlogId]
