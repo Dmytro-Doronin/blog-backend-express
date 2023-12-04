@@ -9,7 +9,7 @@ export const app = express()
 
 app.use(express.json())
 //endpoints
-// app.use('/testing/all-data', deleteRouter)
+app.use('/api/testing/all-data', deleteRouter)
 app.use('/api', videoRouter)
 app.use('/api/blogs', blogsRouter)
 app.use('/api/posts', postsRouter)

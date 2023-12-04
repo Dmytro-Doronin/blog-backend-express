@@ -20,4 +20,4 @@ postsRouter.post('/', postsValidationModelMiddleware(), errorMiddleware, createN
 postsRouter.get('/:id', getPostByIdController)
 postsRouter.put('/:id', postsValidationModelMiddleware(), errorMiddleware, changePostByIdController)
 postsRouter.delete('/:id', deletePostByIdController)
-postsRouter.delete('/testing/all-data', removeAllDataController)
+// postsRouter.delete('/testing/all-data', removeAllDataController)

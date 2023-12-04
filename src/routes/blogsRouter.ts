@@ -20,4 +20,4 @@ blogsRouter.post('/', blogValidationModelMiddleware(),errorMiddleware, createNew
 blogsRouter.get('/:id', getBlogsByIdController)
 blogsRouter.put('/:id', blogValidationModelMiddleware(),errorMiddleware, changeBlogsByIdController)
 blogsRouter.delete('/:id', deleteBlogsByIdController)
-blogsRouter.delete('/testing/all-data', removeAllDataController)
+// blogsRouter.delete('/testing/all-data', removeAllDataController)
