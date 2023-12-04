@@ -8,6 +8,7 @@ import {
 } from "../controllers/postsControllers";
 import {blogValidationModelMiddleware} from "../validation/postsValidationModel";
 import {errorMiddleware} from "../middleware/blogsMiddleware";
+import {removeAllDataController} from "../controllers/deleteController";
 
 
 export const postsRouter = Router()
@@ -19,3 +20,4 @@ postsRouter.post('/',authMiddleware, blogValidationModelMiddleware(), errorMiddl
 postsRouter.get('/:id', getPostByIdController)
 postsRouter.put('/:id',authMiddleware, blogValidationModelMiddleware(), errorMiddleware, changePostByIdController)
 postsRouter.delete('/:id',authMiddleware, deletePostByIdController)
+postsRouter.delete('/testing/all-data', removeAllDataController)

@@ -9,6 +9,7 @@ import {blogValidationModelMiddleware} from "../validation/blogsValidationModel"
 import {errorMiddleware} from "../middleware/blogsMiddleware";
 import {body} from "express-validator";
 import {authMiddleware} from "../middleware/authMiddleware";
+import {removeAllDataController} from "../controllers/deleteController";
 
 export const blogsRouter = Router()
 
@@ -19,3 +20,4 @@ blogsRouter.post('/',authMiddleware, blogValidationModelMiddleware(),errorMiddle
 blogsRouter.get('/:id', getBlogsByIdController)
 blogsRouter.put('/:id',authMiddleware, blogValidationModelMiddleware(),errorMiddleware, changeBlogsByIdController)
 blogsRouter.delete('/:id',authMiddleware, deleteBlogsByIdController)
+blogsRouter.delete('/testing/all-data', removeAllDataController)
