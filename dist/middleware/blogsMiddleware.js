@@ -1,8 +1,8 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.changeBlogsByIdMiddleware = exports.blogMiddleware = void 0;
+exports.changeBlogsByIdMiddleware = exports.errorMiddleware = void 0;
 const express_validator_1 = require("express-validator");
-const blogMiddleware = (req, res, next) => {
+const errorMiddleware = (req, res, next) => {
     const errors = (0, express_validator_1.validationResult)(req).formatWith(error => {
         switch (error.type) {
             case "field": {
@@ -26,7 +26,7 @@ const blogMiddleware = (req, res, next) => {
         return next();
     }
 };
-exports.blogMiddleware = blogMiddleware;
+exports.errorMiddleware = errorMiddleware;
 const changeBlogsByIdMiddleware = (req, res, next) => {
     const errors = (0, express_validator_1.validationResult)(req.body);
     if (!errors.isEmpty()) {

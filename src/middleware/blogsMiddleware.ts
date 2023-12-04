@@ -3,7 +3,7 @@ import {ParamsType, RequestWithBody, RequestWithParamsAndBody} from "../types/co
 import {BlogInputModelType} from "../types/commonBlogTypeAndPosts.types";
 import {validationResult} from "express-validator";
 
-export const blogMiddleware = (req: Request, res: Response, next: NextFunction) => {
+export const errorMiddleware = (req: Request, res: Response, next: NextFunction) => {
 
     const errors = validationResult(req).formatWith(error => {
         switch (error.type) {
