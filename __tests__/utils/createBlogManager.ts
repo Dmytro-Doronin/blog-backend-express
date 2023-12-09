@@ -1,7 +1,7 @@
 import {BlogInputModelType} from "../../src/types/commonBlogTypeAndPosts.types";
 import {app} from "../../src/app";
 import request = require('supertest')
-import any = jasmine.any;
+
 
 export const createBlogManager = {
 
@@ -10,6 +10,8 @@ export const createBlogManager = {
         const createResponse = await request(app)
             .post('/api/blogs')
             .send(data)
+            .set('Authorization', 'Basic YWRtaW46cXdlcnR5')
+            .withCredentials(true)
             .expect(statusCode)
 
         let createdBlog
