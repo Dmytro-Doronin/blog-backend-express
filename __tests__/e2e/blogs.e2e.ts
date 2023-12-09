@@ -7,7 +7,7 @@ import {blogDB} from "../../src/db/db";
 describe('/blogs', () => {
 
     beforeEach(async () => {
-        await request(app).delete('/testing/all-data')
+        await request(app).delete('/api/testing/all-data')
     })
 
 

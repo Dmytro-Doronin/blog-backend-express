@@ -1,4 +1,5 @@
 import {body} from 'express-validator'
+import {blogRouterUtils} from "../utils/blogs/blogRouterUtils";
 
 export const postTitle = body('title')
     .isString()
@@ -17,6 +18,16 @@ export const postContent = body('content')
 
 export const postBlogId  = body('blogId')
     .isString()
+    .trim()
+    .custom(value => {
+        const blog = blogRouterUtils.getBlogById(value)
+
+        if (!blog) {
+            throw new Error('Incorrect blogId')
+        }
+
+        return true
+    }).withMessage('Incorrect blogId')
 
 
 export const postsValidationModelMiddleware = () => [postTitle, postShortDescription, postContent, postBlogId]
