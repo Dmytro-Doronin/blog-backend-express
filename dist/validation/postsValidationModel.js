@@ -2,6 +2,7 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.postsValidationModelMiddleware = exports.postBlogId = exports.postContent = exports.postShortDescription = exports.postTitle = void 0;
 const express_validator_1 = require("express-validator");
+const blogRouterUtils_1 = require("../utils/blogs/blogRouterUtils");
 exports.postTitle = (0, express_validator_1.body)('title')
     .isString()
     .trim()
@@ -15,6 +16,14 @@ exports.postContent = (0, express_validator_1.body)('content')
     .trim()
     .isLength({ min: 1, max: 1000 }).withMessage('The field must not be more then 1000 symbols');
 exports.postBlogId = (0, express_validator_1.body)('blogId')
-    .isString();
+    .isString()
+    .trim()
+    .custom(value => {
+    const blog = blogRouterUtils_1.blogRouterUtils.getBlogById(value);
+    if (!blog) {
+        throw new Error('Incorrect blogId');
+    }
+    return true;
+}).withMessage('Incorrect blogId');
 const postsValidationModelMiddleware = () => [exports.postTitle, exports.postShortDescription, exports.postContent, exports.postBlogId];
 exports.postsValidationModelMiddleware = postsValidationModelMiddleware;

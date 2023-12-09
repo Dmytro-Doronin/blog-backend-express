@@ -15,9 +15,9 @@ export const blogsRouter = Router()
 
 
 blogsRouter.get('/', getAllBlogsController)
-blogsRouter.post('/', blogValidationModelMiddleware(),errorMiddleware, createNewBlogController)
+blogsRouter.post('/',authMiddleware, blogValidationModelMiddleware(),errorMiddleware, createNewBlogController)
 
 blogsRouter.get('/:id', getBlogsByIdController)
-blogsRouter.put('/:id', blogValidationModelMiddleware(),errorMiddleware, changeBlogsByIdController)
-blogsRouter.delete('/:id', deleteBlogsByIdController)
+blogsRouter.put('/:id',authMiddleware, blogValidationModelMiddleware(),errorMiddleware, changeBlogsByIdController)
+blogsRouter.delete('/:id',authMiddleware, deleteBlogsByIdController)
 // blogsRouter.delete('/testing/all-data', removeAllDataController)
