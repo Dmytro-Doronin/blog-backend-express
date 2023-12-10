@@ -94,7 +94,7 @@ export const postsRouterUtils = {
             const result = await dbPostCollections.updateOne(
                 {_id: new ObjectId(id)},
                 {
-                    $set: {title, shortDescription, content,blogId }
+                    $set: {title, shortDescription, content, blogId }
                 }
             )
 

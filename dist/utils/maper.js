@@ -3,7 +3,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.postMapper = exports.blogMapper = void 0;
 const blogMapper = (blog) => {
     return {
-        id: blog._id.toString(),
+        id: blog.id,
         name: blog.name,
         description: blog.description,
         websiteUrl: blog.websiteUrl,

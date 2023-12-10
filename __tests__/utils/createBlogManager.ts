@@ -20,7 +20,6 @@ export const createBlogManager = {
             createdBlog = createResponse.body
 
             expect(createdBlog).toEqual({
-                _id:expect.any(String),
                 id: expect.any(String),
                 name: data.name,
                 description: data.description,

@@ -21,18 +21,20 @@ export const blogRouterUtils = {
 
     async createBlog ({name, description, websiteUrl}: BlogInputModelType) {
 
-        const newBlog: BlogViewModelType = {
-            id: uuidv4(),
-            name,
-            description,
-            websiteUrl,
-            createdAt: new Date().toISOString(),
-            isMembership: false
-        }
+
 
         try {
+            const newBlog = {
+                id: uuidv4(),
+                name,
+                description,
+                websiteUrl,
+                createdAt: new Date().toISOString(),
+                isMembership: false
+            }
+
+
              await dbBlogCollections.insertOne({
-                _id: new ObjectId(newBlog.id),
                 id: newBlog.id,
                 name: newBlog.name,
                 description: newBlog.description,
@@ -40,8 +42,7 @@ export const blogRouterUtils = {
                 createdAt: newBlog.createdAt,
                 isMembership: newBlog.isMembership
             })
-
-            const result = await dbBlogCollections.findOne({_id: new ObjectId(newBlog.id)})
+            const result = await dbBlogCollections.findOne({id: newBlog.id})
 
             if (!result) {
                 return null
@@ -49,7 +50,7 @@ export const blogRouterUtils = {
 
             return blogMapper(result)
         } catch (e) {
-            throw new Error('Blog was not add')
+            throw new Error('Blog was not created')
         }
 
     },
@@ -57,11 +58,10 @@ export const blogRouterUtils = {
     async getBlogById (id: string): Promise<BlogViewModelType | null>  {
 
         try {
-            const blog = await dbBlogCollections.findOne({_id: new ObjectId(id)})
+            const blog = await dbBlogCollections.findOne({id: id})
             if (!blog) {
                 return null
             }
-
             return blogMapper(blog)
         } catch (e) {
             throw new Error('Blog was not found')
@@ -73,14 +73,14 @@ export const blogRouterUtils = {
 
 
         try {
-            const addedItem = await dbBlogCollections.findOne({_id: new ObjectId(id)})
+            const addedItem = await dbBlogCollections.findOne({id: id})
 
             if (!addedItem) {
                 return null
             }
 
             await dbBlogCollections.updateOne(
-                {_id: new ObjectId(id)},
+                {id: id},
                 {
                     $set: {name, description, websiteUrl}
                 }
@@ -128,7 +128,7 @@ export const blogRouterUtils = {
         // return true
 
         try {
-            const res = await dbBlogCollections.deleteOne({_id: new ObjectId(id)})
+            const res = await dbBlogCollections.deleteOne({id: id})
 
             if (res.deletedCount === 1) {
                 return true

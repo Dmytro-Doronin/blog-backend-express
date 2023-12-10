@@ -11,7 +11,6 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.blogRouterUtils = exports.dbBlogCollections = void 0;
 const db_1 = require("../../db/db");
-const mongodb_1 = require("mongodb");
 const maper_1 = require("../maper");
 const { v4: uuidv4 } = require('uuid');
 exports.dbBlogCollections = db_1.client.db('Blogs').collection('blogs');
@@ -29,17 +28,16 @@ exports.blogRouterUtils = {
     },
     createBlog({ name, description, websiteUrl }) {
         return __awaiter(this, void 0, void 0, function* () {
-            const newBlog = {
-                id: uuidv4(),
-                name,
-                description,
-                websiteUrl,
-                createdAt: new Date().toISOString(),
-                isMembership: false
-            };
             try {
+                const newBlog = {
+                    id: uuidv4(),
+                    name,
+                    description,
+                    websiteUrl,
+                    createdAt: new Date().toISOString(),
+                    isMembership: false
+                };
                 yield exports.dbBlogCollections.insertOne({
-                    _id: new mongodb_1.ObjectId(newBlog.id),
                     id: newBlog.id,
                     name: newBlog.name,
                     description: newBlog.description,
@@ -47,21 +45,21 @@ exports.blogRouterUtils = {
                     createdAt: newBlog.createdAt,
                     isMembership: newBlog.isMembership
                 });
-                const result = yield exports.dbBlogCollections.findOne({ _id: new mongodb_1.ObjectId(newBlog.id) });
+                const result = yield exports.dbBlogCollections.findOne({ id: newBlog.id });
                 if (!result) {
                     return null;
                 }
                 return (0, maper_1.blogMapper)(result);
             }
             catch (e) {
-                throw new Error('Blog was not add');
+                throw new Error('Blog was not created');
             }
         });
     },
     getBlogById(id) {
         return __awaiter(this, void 0, void 0, function* () {
             try {
-                const blog = yield exports.dbBlogCollections.findOne({ _id: new mongodb_1.ObjectId(id) });
+                const blog = yield exports.dbBlogCollections.findOne({ id: id });
                 if (!blog) {
                     return null;
                 }
@@ -75,11 +73,11 @@ exports.blogRouterUtils = {
     changeBlogById({ id, name, description, websiteUrl }) {
         return __awaiter(this, void 0, void 0, function* () {
             try {
-                const addedItem = yield exports.dbBlogCollections.findOne({ _id: new mongodb_1.ObjectId(id) });
+                const addedItem = yield exports.dbBlogCollections.findOne({ id: id });
                 if (!addedItem) {
                     return null;
                 }
-                yield exports.dbBlogCollections.updateOne({ _id: new mongodb_1.ObjectId(id) }, {
+                yield exports.dbBlogCollections.updateOne({ id: id }, {
                     $set: { name, description, websiteUrl }
                 });
                 return true;
@@ -123,7 +121,7 @@ exports.blogRouterUtils = {
             //
             // return true
             try {
-                const res = yield exports.dbBlogCollections.deleteOne({ _id: new mongodb_1.ObjectId(id) });
+                const res = yield exports.dbBlogCollections.deleteOne({ id: id });
                 if (res.deletedCount === 1) {
                     return true;
                 }

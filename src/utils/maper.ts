@@ -3,7 +3,7 @@ import {BlogViewModelType, PostViewModelType} from "../types/commonBlogTypeAndPo
 
 export const blogMapper = (blog: WithId<BlogViewModelType>): BlogViewModelType  => {
     return {
-        id:	blog._id.toString(),
+        id:	blog.id,
         name: blog.name,
         description: blog.description,
         websiteUrl:	blog.websiteUrl,
