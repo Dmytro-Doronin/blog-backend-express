@@ -14,7 +14,7 @@ const blogMapper = (blog) => {
 exports.blogMapper = blogMapper;
 const postMapper = (post) => {
     return {
-        id: post._id.toString(),
+        id: post.id,
         title: post.title,
         shortDescription: post.shortDescription,
         content: post.content,

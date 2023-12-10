@@ -14,7 +14,7 @@ export const blogMapper = (blog: WithId<BlogViewModelType>): BlogViewModelType  
 
 export const postMapper = (post: WithId<PostViewModelType>): PostViewModelType  => {
     return {
-        id:	post._id.toString(),
+        id:	post.id,
         title: post.title,
         shortDescription: post.shortDescription,
         content: post.content,
