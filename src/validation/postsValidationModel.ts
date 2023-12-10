@@ -19,8 +19,8 @@ export const postContent = body('content')
 export const postBlogId  = body('blogId')
     .isString()
     .trim()
-    .custom(value => {
-        const blog = blogRouterUtils.getBlogById(value)
+    .custom(async (value) => {
+        const blog = await blogRouterUtils.getBlogById(value)
 
         if (!blog) {
             throw new Error('Incorrect blogId')
