@@ -12,7 +12,6 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.postsRouterUtils = exports.dbPostCollections = void 0;
 const db_1 = require("../../db/db");
 const maper_1 = require("../maper");
-const mongodb_1 = require("mongodb");
 const { v4: uuidv4 } = require('uuid');
 exports.dbPostCollections = db_1.client.db('Blogs').collection('posts');
 exports.postsRouterUtils = {
@@ -40,7 +39,6 @@ exports.postsRouterUtils = {
                     blogName: ''
                 };
                 const result = yield exports.dbPostCollections.insertOne({
-                    _id: new mongodb_1.ObjectId(newPost.id),
                     id: newPost.id,
                     title: newPost.title,
                     shortDescription: newPost.shortDescription,
@@ -49,7 +47,7 @@ exports.postsRouterUtils = {
                     createdAt: newPost.createdAt,
                     blogName: newPost.blogName
                 });
-                return yield exports.dbPostCollections.findOne({ _id: new mongodb_1.ObjectId(newPost.id) });
+                return yield exports.dbPostCollections.findOne({ id: newPost.id });
             }
             catch (e) {
                 throw new Error('Post was not add');
@@ -59,7 +57,7 @@ exports.postsRouterUtils = {
     getPostById(id) {
         return __awaiter(this, void 0, void 0, function* () {
             try {
-                return yield exports.dbPostCollections.findOne({ _id: new mongodb_1.ObjectId(id) });
+                return yield exports.dbPostCollections.findOne({ id: id });
             }
             catch (e) {
                 throw new Error('Blog was not found');
@@ -88,11 +86,11 @@ exports.postsRouterUtils = {
             //
             // return true
             try {
-                const addedItem = yield exports.dbPostCollections.findOne({ _id: new mongodb_1.ObjectId(id) });
+                const addedItem = yield exports.dbPostCollections.findOne({ id: id });
                 if (!addedItem) {
                     return null;
                 }
-                const result = yield exports.dbPostCollections.updateOne({ _id: new mongodb_1.ObjectId(id) }, {
+                const result = yield exports.dbPostCollections.updateOne({ id: id }, {
                     $set: { title, shortDescription, content, blogId }
                 });
                 return !!result.matchedCount;
@@ -116,7 +114,7 @@ exports.postsRouterUtils = {
             //
             // return true
             try {
-                const res = yield exports.dbPostCollections.deleteOne({ _id: new mongodb_1.ObjectId(id) });
+                const res = yield exports.dbPostCollections.deleteOne({ id: id });
                 if (res.deletedCount === 1) {
                     return true;
                 }

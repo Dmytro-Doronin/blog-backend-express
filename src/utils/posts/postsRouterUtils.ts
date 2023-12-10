@@ -20,7 +20,6 @@ export const postsRouterUtils = {
         } catch (e) {
             throw new Error('Posts was not get')
         }
-
     },
 
     async createPost ({title, shortDescription, content, blogId}: PostInputModelType) {
@@ -37,7 +36,6 @@ export const postsRouterUtils = {
             }
 
             const result = await dbPostCollections.insertOne({
-                _id: new ObjectId(newPost.id),
                 id: newPost.id,
                 title: newPost.title,
                 shortDescription: newPost.shortDescription,
@@ -47,7 +45,7 @@ export const postsRouterUtils = {
                 blogName: newPost.blogName
             })
 
-            return await dbPostCollections.findOne({_id: new ObjectId(newPost.id)})
+            return await dbPostCollections.findOne({id: newPost.id})
         } catch (e) {
             throw new Error('Post was not add')
         }
@@ -56,7 +54,7 @@ export const postsRouterUtils = {
 
     async getPostById (id: string) {
         try {
-            return await dbPostCollections.findOne({_id: new ObjectId(id)})
+            return await dbPostCollections.findOne({id: id})
         } catch (e) {
             throw new Error('Blog was not found')
         }
@@ -85,14 +83,14 @@ export const postsRouterUtils = {
         //
         // return true
         try {
-            const addedItem = await dbPostCollections.findOne({_id: new ObjectId(id)})
+            const addedItem = await dbPostCollections.findOne({id: id})
 
             if (!addedItem) {
                 return null
             }
 
             const result = await dbPostCollections.updateOne(
-                {_id: new ObjectId(id)},
+                {id: id},
                 {
                     $set: {title, shortDescription, content, blogId }
                 }
@@ -119,7 +117,7 @@ export const postsRouterUtils = {
         // return true
 
         try {
-            const res = await dbPostCollections.deleteOne({_id: new ObjectId(id)})
+            const res = await dbPostCollections.deleteOne({id: id})
 
             if (res.deletedCount === 1) {
                 return true
