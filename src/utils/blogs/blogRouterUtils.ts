@@ -1,6 +1,5 @@
 import {BlogInputModelType, BlogViewModelType} from "../../types/commonBlogTypeAndPosts.types";
 import {client} from "../../db/db";
-import {ObjectId} from "mongodb";
 import {blogMapper} from "../maper";
 
 const { v4: uuidv4 } = require('uuid');
@@ -24,7 +23,7 @@ export const blogRouterUtils = {
 
 
         try {
-            const newBlog = {
+            const newBlog: BlogViewModelType = {
                 id: uuidv4(),
                 name,
                 description,
@@ -34,14 +33,7 @@ export const blogRouterUtils = {
             }
 
 
-             await dbBlogCollections.insertOne({
-                id: newBlog.id,
-                name: newBlog.name,
-                description: newBlog.description,
-                websiteUrl: newBlog.websiteUrl,
-                createdAt: newBlog.createdAt,
-                isMembership: newBlog.isMembership
-            })
+            await dbBlogCollections.insertOne(newBlog)
             const result = await dbBlogCollections.findOne({id: newBlog.id})
 
             if (!result) {
@@ -91,41 +83,10 @@ export const blogRouterUtils = {
             throw new Error('Blog was not changed by id')
         }
 
-        // const foundBlog = blogDB.blogs.find(item => item.id === id)
-        //
-        // if (foundBlog === undefined) {
-        //     return null
-        // }
-        //
-        // const changedUser = {
-        //     ...foundBlog,
-        //     name,
-        //     description,
-        //     websiteUrl
-        // }
-        //
-        // const indexFoundBlog = blogDB.blogs.findIndex(item => item.id === foundBlog.id)
-        //
-        // blogDB.blogs.splice(indexFoundBlog, 1, changedUser)
-        //
-        // return true
 
     },
 
     async deleteBlogById (id: string) {
-        // const foundBlog = blogDB.blogs.find(item => item.id === id)
-        //
-        // if (foundBlog === undefined) {
-        //     return null
-        // }
-        //
-        //
-        //
-        // const indexFoundBlog = blogDB.blogs.findIndex(item => item.id === foundBlog.id)
-        //
-        // blogDB.blogs.splice(indexFoundBlog, 1)
-        //
-        // return true
 
         try {
             const res = await dbBlogCollections.deleteOne({id: id})
