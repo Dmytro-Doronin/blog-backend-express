@@ -6,6 +6,8 @@ export type BlogViewModelType = {
     name: string
     description: string
     websiteUrl:	string
+    createdAt: string
+    isMembership: boolean
 }
 
 export type PostViewModelType = {
@@ -15,10 +17,12 @@ export type PostViewModelType = {
     content: string
     blogId:	string
     blogName: string
+    createdAt: string
 }
 
-export type BlogInputModelType = Omit<BlogViewModelType, 'id'>
-export type PostInputModelType = Omit<PostViewModelType, 'id' | 'blogName'>
+export type BlogInputModelType = Omit<BlogViewModelType, 'id' | 'createdAt' | 'isMembership'>
+export type PostInputModelType = Omit<PostViewModelType, 'id' | 'blogName' | 'createdAt'>
+
 
 export type FieldErrorType = {
     message: string,
@@ -26,6 +30,7 @@ export type FieldErrorType = {
 }
 
 export type ApiErrorResult = {
+
     errorsMessages: FieldErrorType[]
 }
 

@@ -8,23 +8,35 @@ import {
 } from "../types/commonBlogTypeAndPosts.types";
 import {blogRouterUtils} from "../utils/blogs/blogRouterUtils";
 
-export const getAllPostsController = (req: Request, res: Response) => {
-    const result = postsRouterUtils.getAllPosts()
-    return res.status(200).send(result)
+export const getAllPostsController = async (req: Request, res: Response) => {
+    try {
+        const result = await postsRouterUtils.getAllPosts()
+        return res.status(200).send(result)
+    } catch (e) {
+        throw new Error('Posts does not get')
+    }
+
 }
 
-export const createNewPostController = (req: RequestWithBody<PostInputModelType> , res: Response) => {
+export const createNewPostController = async (req: RequestWithBody<PostInputModelType> , res: Response) => {
 
-    const {title, shortDescription, content, blogId} = req.body
+    try {
+        const {title, shortDescription, content, blogId} = req.body
 
-    const result = postsRouterUtils.createPost({title, shortDescription, content, blogId})
+        const result = postsRouterUtils.createPost({title, shortDescription, content, blogId})
 
-    return res.status(201).send(result)
+        return res.status(201).send(result)
+
+    } catch (e) {
+        throw new Error('Blogs does not create')
+    }
+
+
 }
 
-export const getPostByIdController = (req: RequestWithParams<ParamsType>, res: Response) => {
+export const getPostByIdController = async (req: RequestWithParams<ParamsType>, res: Response) => {
 
-    const result = postsRouterUtils.getPostById(req.params.id)
+    const result = await postsRouterUtils.getPostById(req.params.id)
 
     if (!result) {
         return res.sendStatus(404)
@@ -48,7 +60,7 @@ export const changePostByIdController = (req: RequestWithParamsAndBody<ParamsTyp
     return res.sendStatus(204)
 }
 
-export const deletePostByIdController = (req: RequestWithParams<ParamsType>, res: Response) => {
+export const deletePostByIdController = async (req: RequestWithParams<ParamsType>, res: Response) => {
 
     const result = postsRouterUtils.deletePostById(req.params.id)
 

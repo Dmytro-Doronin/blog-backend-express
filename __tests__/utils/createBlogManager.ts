@@ -10,7 +10,7 @@ export const createBlogManager = {
         const createResponse = await request(app)
             .post('/api/blogs')
             .send(data)
-            .set('Authorization', 'Basic YWRtaW46cXdlcnR5')
+            .set('Authorization', 'Basic YWRtaW46cXVlcnR5')
             .withCredentials(true)
             .expect(statusCode)
 
@@ -20,10 +20,13 @@ export const createBlogManager = {
             createdBlog = createResponse.body
 
             expect(createdBlog).toEqual({
+                _id:expect.any(String),
                 id: expect.any(String),
                 name: data.name,
                 description: data.description,
-                websiteUrl: data.websiteUrl
+                websiteUrl: data.websiteUrl,
+                createdAt: expect.any(String),
+                isMembership: expect.any(Boolean),
             })
         }
 

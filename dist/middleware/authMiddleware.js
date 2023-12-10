@@ -2,7 +2,7 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.authMiddleware = void 0;
 const login = 'admin';
-const password = 'qwerty';
+const password = 'querty';
 const authMiddleware = (req, res, next) => {
     // if (req.headers['authorization'] !== 'Basic YWRtaW46cXVlcnR5') {
     //     res.sendStatus(401)

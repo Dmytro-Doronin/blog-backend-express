@@ -1,10 +1,9 @@
 import * as express from "express";
-import {blogDB} from "../db/db";
+import {deleteAllDataUtil} from "../utils/deleteAllData";
 
-export const removeAllDataController = (req: express.Request, res: express.Response) => {
+export const removeAllDataController = async (req: express.Request, res: express.Response) => {
 
-    blogDB.blogs.length = 0
-    blogDB.posts = []
+    await deleteAllDataUtil.deleteAllData()
 
     res.sendStatus(204)
     return

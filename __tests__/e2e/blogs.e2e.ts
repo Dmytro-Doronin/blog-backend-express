@@ -159,7 +159,7 @@ describe('/blogs', () => {
             .put(`/api/blogs/${createdBlog.id}`)
             .send(newDataForBlog)
             .withCredentials(true)
-            .set('Authorization', 'Basic YWRtaW46cXdlcnR5')
+            .set('Authorization', 'Basic YWRtaW46cXVlcnR5')
             .expect(204)
 
         // await request(app)
@@ -188,7 +188,7 @@ describe('/blogs', () => {
             .put(`/api/blogs/${createdBlog.id}`)
             .send(newDataForBlog)
             .withCredentials(true)
-            .set('Authorization', 'Basic YWRtaW46cXdlcnR5')
+            .set('Authorization', 'Basic YWRtaW46cXVlcnR5')
             .expect(400, {
                 errorsMessages: [
                     {
@@ -224,7 +224,7 @@ describe('/blogs', () => {
             .put(`/api/blogs/${createdBlog.id}`)
             .send(newDataForBlog)
             .withCredentials(true)
-            .set('Authorization', 'Basic YWRtaW46cXdlcnR5')
+            .set('Authorization', 'Basic YWRtaW46cXVlcnR5')
             .expect(400, {
                 errorsMessages: [
                     {
@@ -257,7 +257,7 @@ describe('/blogs', () => {
             .put(`/api/blogs/${createdBlog.id}`)
             .send(newDataForBlog)
             .withCredentials(true)
-            .set('Authorization', 'Basic YWRtaW46cXdlcnR5')
+            .set('Authorization', 'Basic YWRtaW46cXVlcnR5')
             .expect(400, {
                 errorsMessages: [
                     {
@@ -290,7 +290,7 @@ describe('/blogs', () => {
             .put(`/api/blogs/${createdBlog.id}`)
             .send(newDataForBlog)
             .withCredentials(true)
-            .set('Authorization', 'Basic YWRtaW46cXdlcnR5')
+            .set('Authorization', 'Basic YWRtaW46cXVlcnR5')
             .expect(400, {
                 errorsMessages: [
                     {
@@ -314,7 +314,7 @@ describe('/blogs', () => {
             .put(`/api/blogs/asd7a6s5d76a5sd7`)
             .send(newDataForBlog)
             .withCredentials(true)
-            .set('Authorization', 'Basic YWRtaW46cXdlcnR5')
+            .set('Authorization', 'Basic YWRtaW46cXVlcnR5')
             .expect(404)
 
     })
@@ -333,17 +333,16 @@ describe('/blogs', () => {
         await request(app)
             .delete(`/api/blogs/${createdBlog.id}`)
             .withCredentials(true)
-            .set('Authorization', 'Basic YWRtaW46cXdlcnR5')
+            .set('Authorization', 'Basic YWRtaW46cXVlcnR5')
             .expect(204)
 
     })
-
     it ('Should not delete blog by incorrect id ', async () => {
 
         await request(app)
             .delete(`/api/blogs/khj2g34jh2g3jh4`)
             .withCredentials(true)
-            .set('Authorization', 'Basic YWRtaW46cXdlcnR5')
+            .set('Authorization', 'Basic YWRtaW46cXVlcnR5')
             .expect(404)
 
     })

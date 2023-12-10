@@ -1,25 +1,44 @@
 "use strict";
+var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
+    function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
+    return new (P || (P = Promise))(function (resolve, reject) {
+        function fulfilled(value) { try { step(generator.next(value)); } catch (e) { reject(e); } }
+        function rejected(value) { try { step(generator["throw"](value)); } catch (e) { reject(e); } }
+        function step(result) { result.done ? resolve(result.value) : adopt(result.value).then(fulfilled, rejected); }
+        step((generator = generator.apply(thisArg, _arguments || [])).next());
+    });
+};
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.deletePostByIdController = exports.changePostByIdController = exports.getPostByIdController = exports.createNewPostController = exports.getAllPostsController = void 0;
 const postsRouterUtils_1 = require("../utils/posts/postsRouterUtils");
-const getAllPostsController = (req, res) => {
-    const result = postsRouterUtils_1.postsRouterUtils.getAllPosts();
-    return res.status(200).send(result);
-};
+const getAllPostsController = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    try {
+        const result = yield postsRouterUtils_1.postsRouterUtils.getAllPosts();
+        return res.status(200).send(result);
+    }
+    catch (e) {
+        throw new Error('Posts does not get');
+    }
+});
 exports.getAllPostsController = getAllPostsController;
-const createNewPostController = (req, res) => {
-    const { title, shortDescription, content, blogId } = req.body;
-    const result = postsRouterUtils_1.postsRouterUtils.createPost({ title, shortDescription, content, blogId });
-    return res.status(201).send(result);
-};
+const createNewPostController = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    try {
+        const { title, shortDescription, content, blogId } = req.body;
+        const result = postsRouterUtils_1.postsRouterUtils.createPost({ title, shortDescription, content, blogId });
+        return res.status(201).send(result);
+    }
+    catch (e) {
+        throw new Error('Blogs does not create');
+    }
+});
 exports.createNewPostController = createNewPostController;
-const getPostByIdController = (req, res) => {
-    const result = postsRouterUtils_1.postsRouterUtils.getPostById(req.params.id);
+const getPostByIdController = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    const result = yield postsRouterUtils_1.postsRouterUtils.getPostById(req.params.id);
     if (!result) {
         return res.sendStatus(404);
     }
     return res.status(200).send(result);
-};
+});
 exports.getPostByIdController = getPostByIdController;
 const changePostByIdController = (req, res) => {
     const { title, shortDescription, content, blogId } = req.body;
@@ -31,11 +50,11 @@ const changePostByIdController = (req, res) => {
     return res.sendStatus(204);
 };
 exports.changePostByIdController = changePostByIdController;
-const deletePostByIdController = (req, res) => {
+const deletePostByIdController = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const result = postsRouterUtils_1.postsRouterUtils.deletePostById(req.params.id);
     if (result === null) {
         return res.sendStatus(404);
     }
     return res.sendStatus(204);
-};
+});
 exports.deletePostByIdController = deletePostByIdController;

@@ -9,18 +9,19 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
     });
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-const app_1 = require("./app");
-const db_1 = require("./db/db");
-const PORT = 3002;
-const startApp = () => __awaiter(void 0, void 0, void 0, function* () {
-    try {
-        yield (0, db_1.runDB)();
-        app_1.app.listen(PORT, () => {
-            console.log(`Server listening on port ${PORT}`);
+exports.deleteAllDataUtil = void 0;
+const blogRouterUtils_1 = require("./blogs/blogRouterUtils");
+const postsRouterUtils_1 = require("./posts/postsRouterUtils");
+exports.deleteAllDataUtil = {
+    deleteAllData() {
+        return __awaiter(this, void 0, void 0, function* () {
+            try {
+                yield blogRouterUtils_1.dbBlogCollections.deleteMany({});
+                yield postsRouterUtils_1.dbPostCollections.deleteMany({});
+            }
+            catch (e) {
+                throw new Error('All data was not deleted');
+            }
         });
     }
-    catch (e) {
-        console.log(e);
-    }
-});
-startApp();
+};

@@ -1,7 +1,7 @@
 import {NextFunction, Request, Response} from "express";
 
 const login = 'admin'
-const password = 'qwerty'
+const password = 'querty'
 
 export const authMiddleware = (req: Request, res:Response, next: NextFunction) => {
     // if (req.headers['authorization'] !== 'Basic YWRtaW46cXVlcnR5') {
