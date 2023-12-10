@@ -1,12 +1,18 @@
 "use strict";
-Object.defineProperty(exports, "__esModule", { value: true });
-exports.videoRouter = void 0;
-const express_1 = require("express");
-const videosController_1 = require("../controllers/videosController");
-exports.videoRouter = (0, express_1.Router)();
-exports.videoRouter.delete('/testing/all-data', videosController_1.removeAllDataController);
-exports.videoRouter.get('/videos', videosController_1.getAllVideosController);
-exports.videoRouter.post('/videos', videosController_1.addVideoController);
-exports.videoRouter.get('/videos/:id', videosController_1.getVideoByIdController);
-exports.videoRouter.put('/videos/:id', videosController_1.putVideoByIdController);
-exports.videoRouter.delete('/videos/:id', videosController_1.deleteVideoController);
+// import {Router} from 'express'
+// import {
+//     addVideoController, deleteVideoController,
+//     getAllVideosController,
+//     getVideoByIdController,
+//     putVideoByIdController,
+//     removeAllDataController,
+// } from "../controllers/videosController";
+//
+// export const videoRouter = Router()
+//
+// videoRouter.delete('/testing/all-data', removeAllDataController)
+// videoRouter.get('/videos', getAllVideosController)
+// videoRouter.post('/videos', addVideoController)
+// videoRouter.get('/videos/:id', getVideoByIdController)
+// videoRouter.put('/videos/:id', putVideoByIdController)
+// videoRouter.delete('/videos/:id', deleteVideoController)

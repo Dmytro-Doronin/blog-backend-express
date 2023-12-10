@@ -11,13 +11,16 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.postsRouterUtils = exports.dbPostCollections = void 0;
 const db_1 = require("../../db/db");
+const maper_1 = require("../maper");
+const mongodb_1 = require("mongodb");
 const { v4: uuidv4 } = require('uuid');
 exports.dbPostCollections = db_1.client.db('Blogs').collection('posts');
 exports.postsRouterUtils = {
     getAllPosts() {
         return __awaiter(this, void 0, void 0, function* () {
             try {
-                return yield exports.dbPostCollections.find({}).toArray();
+                const post = yield exports.dbPostCollections.find({}).toArray();
+                return post.map(maper_1.postMapper);
             }
             catch (e) {
                 throw new Error('Posts was not get');
@@ -36,8 +39,17 @@ exports.postsRouterUtils = {
                     createdAt: (new Date().toISOString()),
                     blogName: ''
                 };
-                const result = yield exports.dbPostCollections.insertOne(newPost);
-                return yield exports.dbPostCollections.findOne({ id: newPost.id });
+                const result = yield exports.dbPostCollections.insertOne({
+                    _id: new mongodb_1.ObjectId(newPost.id),
+                    id: newPost.id,
+                    title: newPost.title,
+                    shortDescription: newPost.shortDescription,
+                    content: newPost.content,
+                    blogId: newPost.blogId,
+                    createdAt: newPost.createdAt,
+                    blogName: newPost.blogName
+                });
+                return yield exports.dbPostCollections.findOne({ _id: new mongodb_1.ObjectId(newPost.id) });
             }
             catch (e) {
                 throw new Error('Post was not add');
@@ -47,7 +59,7 @@ exports.postsRouterUtils = {
     getPostById(id) {
         return __awaiter(this, void 0, void 0, function* () {
             try {
-                return yield exports.dbPostCollections.findOne({ id: id });
+                return yield exports.dbPostCollections.findOne({ _id: new mongodb_1.ObjectId(id) });
             }
             catch (e) {
                 throw new Error('Blog was not found');
@@ -76,14 +88,14 @@ exports.postsRouterUtils = {
             //
             // return true
             try {
-                const addedItem = yield exports.dbPostCollections.findOne({ id: id });
+                const addedItem = yield exports.dbPostCollections.findOne({ _id: new mongodb_1.ObjectId(id) });
                 if (!addedItem) {
                     return null;
                 }
-                yield exports.dbPostCollections.updateOne({ id: addedItem.id }, {
+                const result = yield exports.dbPostCollections.updateOne({ _id: new mongodb_1.ObjectId(id) }, {
                     $set: { title, shortDescription, content, blogId }
                 });
-                return true;
+                return !!result.matchedCount;
             }
             catch (e) {
                 throw new Error('Blog was not changed by id');
@@ -104,7 +116,7 @@ exports.postsRouterUtils = {
             //
             // return true
             try {
-                const res = yield exports.dbPostCollections.deleteOne({ id: id });
+                const res = yield exports.dbPostCollections.deleteOne({ _id: new mongodb_1.ObjectId(id) });
                 if (res.deletedCount === 1) {
                     return true;
                 }

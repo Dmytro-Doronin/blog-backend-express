@@ -19,8 +19,6 @@ export const createNewBlogController = async (req: RequestWithBody<BlogInputMode
         const result = await blogRouterUtils.createBlog({name, description, websiteUrl})
 
         return res.status(201).send(result)
-
-
 }
 
 

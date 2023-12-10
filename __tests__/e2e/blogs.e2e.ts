@@ -2,7 +2,7 @@ import request = require('supertest')
 import {app} from "../../src/app";
 import {createBlogManager} from "../utils/createBlogManager";
 import {BlogInputModelType} from "../../src/types/commonBlogTypeAndPosts.types";
-import {blogDB} from "../../src/db/db";
+
 
 describe('/blogs', () => {
 

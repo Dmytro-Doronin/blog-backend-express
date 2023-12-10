@@ -1,4 +1,4 @@
-import {blogDB, client} from "../../db/db";
+import {client} from "../../db/db";
 import {
     BlogInputModelType,
     BlogViewModelType,
@@ -6,15 +6,17 @@ import {
     PostViewModelType
 } from "../../types/commonBlogTypeAndPosts.types";
 import {dbBlogCollections} from "../blogs/blogRouterUtils";
-
+import {postMapper} from "../maper";
+import {ObjectId} from "mongodb";
 const { v4: uuidv4 } = require('uuid');
 
-export const dbPostCollections = client.db('Blogs').collection('posts')
+export const dbPostCollections = client.db('Blogs').collection<PostViewModelType>('posts')
 
 export const postsRouterUtils = {
     async getAllPosts () {
         try {
-            return await dbPostCollections.find({}).toArray()
+            const post = await dbPostCollections.find({}).toArray()
+            return post.map(postMapper)
         } catch (e) {
             throw new Error('Posts was not get')
         }
@@ -34,9 +36,18 @@ export const postsRouterUtils = {
                 blogName: ''
             }
 
-            const result = await dbPostCollections.insertOne(newPost)
+            const result = await dbPostCollections.insertOne({
+                _id: new ObjectId(newPost.id),
+                id: newPost.id,
+                title: newPost.title,
+                shortDescription: newPost.shortDescription,
+                content: newPost.content,
+                blogId: newPost.blogId,
+                createdAt: newPost.createdAt,
+                blogName: newPost.blogName
+            })
 
-            return await dbPostCollections.findOne({id: newPost.id})
+            return await dbPostCollections.findOne({_id: new ObjectId(newPost.id)})
         } catch (e) {
             throw new Error('Post was not add')
         }
@@ -45,7 +56,7 @@ export const postsRouterUtils = {
 
     async getPostById (id: string) {
         try {
-            return await dbPostCollections.findOne({id: id})
+            return await dbPostCollections.findOne({_id: new ObjectId(id)})
         } catch (e) {
             throw new Error('Blog was not found')
         }
@@ -74,20 +85,20 @@ export const postsRouterUtils = {
         //
         // return true
         try {
-            const addedItem = await dbPostCollections.findOne({id: id})
+            const addedItem = await dbPostCollections.findOne({_id: new ObjectId(id)})
 
             if (!addedItem) {
                 return null
             }
 
-            await dbPostCollections.updateOne(
-                {id: addedItem.id},
+            const result = await dbPostCollections.updateOne(
+                {_id: new ObjectId(id)},
                 {
                     $set: {title, shortDescription, content,blogId }
                 }
             )
 
-            return true
+            return !!result.matchedCount
         } catch (e) {
             throw new Error('Blog was not changed by id')
         }
@@ -108,7 +119,7 @@ export const postsRouterUtils = {
         // return true
 
         try {
-            const res = await dbPostCollections.deleteOne({id: id})
+            const res = await dbPostCollections.deleteOne({_id: new ObjectId(id)})
 
             if (res.deletedCount === 1) {
                 return true

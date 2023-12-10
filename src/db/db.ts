@@ -4,10 +4,10 @@ import {BlogDbType} from "../types/blogDB.types";
 export let db: VideoTypes[] = []
 
 
-export const blogDB: BlogDbType = {
-    blogs: [],
-    posts: []
-}
+// export const blogDB: BlogDbType = {
+//     blogs: [],
+//     posts: []
+// }
 import * as dotenv from 'dotenv'
 import {MongoClient} from "mongodb";
 

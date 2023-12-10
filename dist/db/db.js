@@ -32,12 +32,12 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
     });
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.runDB = exports.client = exports.blogDB = exports.db = void 0;
+exports.runDB = exports.client = exports.db = void 0;
 exports.db = [];
-exports.blogDB = {
-    blogs: [],
-    posts: []
-};
+// export const blogDB: BlogDbType = {
+//     blogs: [],
+//     posts: []
+// }
 const dotenv = __importStar(require("dotenv"));
 const mongodb_1 = require("mongodb");
 dotenv.config();
