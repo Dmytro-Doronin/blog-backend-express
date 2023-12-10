@@ -23,7 +23,7 @@ export const createNewPostController = async (req: RequestWithBody<PostInputMode
     try {
         const {title, shortDescription, content, blogId} = req.body
 
-        const result = postsRouterUtils.createPost({title, shortDescription, content, blogId})
+        const result = await postsRouterUtils.createPost({title, shortDescription, content, blogId})
 
         return res.status(201).send(result)
 
@@ -46,12 +46,12 @@ export const getPostByIdController = async (req: RequestWithParams<ParamsType>, 
 
 }
 
-export const changePostByIdController = (req: RequestWithParamsAndBody<ParamsType, PostInputModelType>, res: Response) => {
+export const changePostByIdController = async (req: RequestWithParamsAndBody<ParamsType, PostInputModelType>, res: Response) => {
 
     const {title, shortDescription, content, blogId} = req.body
     const id = req.params.id
 
-    const result = postsRouterUtils.changePostById({id, title, shortDescription, content, blogId})
+    const result = await postsRouterUtils.changePostById({id, title, shortDescription, content, blogId})
 
     if (result === null) {
         return res.sendStatus(404)
@@ -62,7 +62,7 @@ export const changePostByIdController = (req: RequestWithParamsAndBody<ParamsTyp
 
 export const deletePostByIdController = async (req: RequestWithParams<ParamsType>, res: Response) => {
 
-    const result = postsRouterUtils.deletePostById(req.params.id)
+    const result = await postsRouterUtils.deletePostById(req.params.id)
 
     if (result === null) {
         return res.sendStatus(404)

@@ -35,7 +35,7 @@ export const postsRouterUtils = {
                 blogName: ''
             }
 
-            const result = await dbPostCollections.insertOne({
+             await dbPostCollections.insertOne({
                 id: newPost.id,
                 title: newPost.title,
                 shortDescription: newPost.shortDescription,
@@ -44,8 +44,13 @@ export const postsRouterUtils = {
                 createdAt: newPost.createdAt,
                 blogName: newPost.blogName
             })
+            const result = await dbPostCollections.findOne({id: newPost.id})
 
-            return await dbPostCollections.findOne({id: newPost.id})
+            if (!result) {
+                return null
+            }
+
+            return postMapper(result)
         } catch (e) {
             throw new Error('Post was not add')
         }
@@ -54,7 +59,13 @@ export const postsRouterUtils = {
 
     async getPostById (id: string) {
         try {
-            return await dbPostCollections.findOne({id: id})
+            const result = await dbPostCollections.findOne({id: id})
+
+            if (!result) {
+                return null
+            }
+
+            return postMapper(result)
         } catch (e) {
             throw new Error('Blog was not found')
         }

@@ -38,7 +38,7 @@ exports.postsRouterUtils = {
                     createdAt: (new Date().toISOString()),
                     blogName: ''
                 };
-                const result = yield exports.dbPostCollections.insertOne({
+                yield exports.dbPostCollections.insertOne({
                     id: newPost.id,
                     title: newPost.title,
                     shortDescription: newPost.shortDescription,
@@ -47,7 +47,11 @@ exports.postsRouterUtils = {
                     createdAt: newPost.createdAt,
                     blogName: newPost.blogName
                 });
-                return yield exports.dbPostCollections.findOne({ id: newPost.id });
+                const result = yield exports.dbPostCollections.findOne({ id: newPost.id });
+                if (!result) {
+                    return null;
+                }
+                return (0, maper_1.postMapper)(result);
             }
             catch (e) {
                 throw new Error('Post was not add');
@@ -57,7 +61,11 @@ exports.postsRouterUtils = {
     getPostById(id) {
         return __awaiter(this, void 0, void 0, function* () {
             try {
-                return yield exports.dbPostCollections.findOne({ id: id });
+                const result = yield exports.dbPostCollections.findOne({ id: id });
+                if (!result) {
+                    return null;
+                }
+                return (0, maper_1.postMapper)(result);
             }
             catch (e) {
                 throw new Error('Blog was not found');

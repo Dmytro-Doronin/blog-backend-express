@@ -24,7 +24,7 @@ exports.getAllPostsController = getAllPostsController;
 const createNewPostController = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
         const { title, shortDescription, content, blogId } = req.body;
-        const result = postsRouterUtils_1.postsRouterUtils.createPost({ title, shortDescription, content, blogId });
+        const result = yield postsRouterUtils_1.postsRouterUtils.createPost({ title, shortDescription, content, blogId });
         return res.status(201).send(result);
     }
     catch (e) {
@@ -40,18 +40,18 @@ const getPostByIdController = (req, res) => __awaiter(void 0, void 0, void 0, fu
     return res.status(200).send(result);
 });
 exports.getPostByIdController = getPostByIdController;
-const changePostByIdController = (req, res) => {
+const changePostByIdController = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const { title, shortDescription, content, blogId } = req.body;
     const id = req.params.id;
-    const result = postsRouterUtils_1.postsRouterUtils.changePostById({ id, title, shortDescription, content, blogId });
+    const result = yield postsRouterUtils_1.postsRouterUtils.changePostById({ id, title, shortDescription, content, blogId });
     if (result === null) {
         return res.sendStatus(404);
     }
     return res.sendStatus(204);
-};
+});
 exports.changePostByIdController = changePostByIdController;
 const deletePostByIdController = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    const result = postsRouterUtils_1.postsRouterUtils.deletePostById(req.params.id);
+    const result = yield postsRouterUtils_1.postsRouterUtils.deletePostById(req.params.id);
     if (result === null) {
         return res.sendStatus(404);
     }
