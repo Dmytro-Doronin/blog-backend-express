@@ -10,7 +10,7 @@ export const createBlogManager = {
         const createResponse = await request(app)
             .post('/api/blogs')
             .send(data)
-            .set('Authorization', 'Basic YWRtaW46cXVlcnR5')
+            .set('Authorization', 'Basic YWRtaW46cXdlcnR5')
             .withCredentials(true)
             .expect(statusCode)
 
