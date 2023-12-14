@@ -37,14 +37,7 @@ exports.blogRouterUtils = {
                     createdAt: new Date().toISOString(),
                     isMembership: false
                 };
-                yield exports.dbBlogCollections.insertOne({
-                    id: newBlog.id,
-                    name: newBlog.name,
-                    description: newBlog.description,
-                    websiteUrl: newBlog.websiteUrl,
-                    createdAt: newBlog.createdAt,
-                    isMembership: newBlog.isMembership
-                });
+                yield exports.dbBlogCollections.insertOne(newBlog);
                 const result = yield exports.dbBlogCollections.findOne({ id: newBlog.id });
                 if (!result) {
                     return null;
@@ -85,41 +78,10 @@ exports.blogRouterUtils = {
             catch (e) {
                 throw new Error('Blog was not changed by id');
             }
-            // const foundBlog = blogDB.blogs.find(item => item.id === id)
-            //
-            // if (foundBlog === undefined) {
-            //     return null
-            // }
-            //
-            // const changedUser = {
-            //     ...foundBlog,
-            //     name,
-            //     description,
-            //     websiteUrl
-            // }
-            //
-            // const indexFoundBlog = blogDB.blogs.findIndex(item => item.id === foundBlog.id)
-            //
-            // blogDB.blogs.splice(indexFoundBlog, 1, changedUser)
-            //
-            // return true
         });
     },
     deleteBlogById(id) {
         return __awaiter(this, void 0, void 0, function* () {
-            // const foundBlog = blogDB.blogs.find(item => item.id === id)
-            //
-            // if (foundBlog === undefined) {
-            //     return null
-            // }
-            //
-            //
-            //
-            // const indexFoundBlog = blogDB.blogs.findIndex(item => item.id === foundBlog.id)
-            //
-            // blogDB.blogs.splice(indexFoundBlog, 1)
-            //
-            // return true
             try {
                 const res = yield exports.dbBlogCollections.deleteOne({ id: id });
                 if (res.deletedCount === 1) {

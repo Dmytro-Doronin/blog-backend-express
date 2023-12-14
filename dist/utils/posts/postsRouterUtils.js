@@ -38,15 +38,7 @@ exports.postsRouterUtils = {
                     createdAt: (new Date().toISOString()),
                     blogName: ''
                 };
-                yield exports.dbPostCollections.insertOne({
-                    id: newPost.id,
-                    title: newPost.title,
-                    shortDescription: newPost.shortDescription,
-                    content: newPost.content,
-                    blogId: newPost.blogId,
-                    createdAt: newPost.createdAt,
-                    blogName: newPost.blogName
-                });
+                yield exports.dbPostCollections.insertOne(newPost);
                 const result = yield exports.dbPostCollections.findOne({ id: newPost.id });
                 if (!result) {
                     return null;
@@ -74,25 +66,6 @@ exports.postsRouterUtils = {
     },
     changePostById({ id, title, shortDescription, content, blogId }) {
         return __awaiter(this, void 0, void 0, function* () {
-            // const foundPost = blogDB.posts.find(item => item.id === id)
-            //
-            // if (foundPost === undefined) {
-            //     return null
-            // }
-            //
-            // const changedUser = {
-            //     ...foundPost,
-            //     title,
-            //     shortDescription,
-            //     content,
-            //     blogId
-            // }
-            //
-            // const indexFoundBlog = blogDB.posts.findIndex(item => item.id === foundPost.id)
-            //
-            // blogDB.posts.splice(indexFoundBlog, 1, changedUser)
-            //
-            // return true
             try {
                 const addedItem = yield exports.dbPostCollections.findOne({ id: id });
                 if (!addedItem) {
@@ -110,17 +83,6 @@ exports.postsRouterUtils = {
     },
     deletePostById(id) {
         return __awaiter(this, void 0, void 0, function* () {
-            // const foundPost = blogDB.posts.find(item => item.id === id)
-            //
-            // if (foundPost === undefined) {
-            //     return null
-            // }
-            //
-            // const indexFoundPost = blogDB.posts.findIndex(item => item.id === foundPost.id)
-            //
-            // blogDB.posts.splice(indexFoundPost, 1)
-            //
-            // return true
             try {
                 const res = yield exports.dbPostCollections.deleteOne({ id: id });
                 if (res.deletedCount === 1) {
