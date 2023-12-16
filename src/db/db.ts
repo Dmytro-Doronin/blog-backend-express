@@ -17,7 +17,7 @@ dotenv.config()
 const url = process.env.MONGO_URL
 
 if (!url) {
-    throw new Error('Url dosen`t find')
+    throw new Error('Url doesn`t find')
 }
 
 export const client = new MongoClient(url)
