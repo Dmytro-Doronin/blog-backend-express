@@ -43,7 +43,7 @@ const mongodb_1 = require("mongodb");
 dotenv.config();
 const url = process.env.MONGO_URL;
 if (!url) {
-    throw new Error('Url dosen`t find');
+    throw new Error('Url doesn`t find');
 }
 exports.client = new mongodb_1.MongoClient(url);
 function runDB() {
