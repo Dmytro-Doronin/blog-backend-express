@@ -10,7 +10,7 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.deleteBlogsByIdController = exports.changeBlogsByIdController = exports.getBlogsByIdController = exports.createNewBlogController = exports.getAllBlogsController = void 0;
-const blogRouterUtils_1 = require("../utils/blogs/blogRouterUtils");
+const blogRouterUtils_1 = require("../repositories/blogs/blogRouterUtils");
 // export const deleteAllDataFromBlogsAndPostsController = (req: Request, res: Response) => {
 //     return res.status(200).send(blogDB.blogs)
 // }

@@ -10,7 +10,7 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.deletePostByIdController = exports.changePostByIdController = exports.getPostByIdController = exports.createNewPostController = exports.getAllPostsController = void 0;
-const postsRouterUtils_1 = require("../utils/posts/postsRouterUtils");
+const postsRouterUtils_1 = require("../repositories/posts/postsRouterUtils");
 const getAllPostsController = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
         const result = yield postsRouterUtils_1.postsRouterUtils.getAllPosts();

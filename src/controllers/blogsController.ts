@@ -1,7 +1,7 @@
 import {Request, Response} from "express";
 import {BlogInputModelType, RequestWithParamsAndBody} from "../types/commonBlogTypeAndPosts.types";
 import {RequestWithBody, RequestWithParams, ParamsType} from "../types/commonBlogTypeAndPosts.types";
-import {blogRouterUtils} from "../utils/blogs/blogRouterUtils";
+import {blogRouterUtils} from "../repositories/blogs/blogRouterUtils";
 
 // export const deleteAllDataFromBlogsAndPostsController = (req: Request, res: Response) => {
 //     return res.status(200).send(blogDB.blogs)

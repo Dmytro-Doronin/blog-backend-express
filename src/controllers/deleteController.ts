@@ -1,5 +1,5 @@
 import * as express from "express";
-import {deleteAllDataUtil} from "../utils/deleteAllData";
+import {deleteAllDataUtil} from "../repositories/deleteAllData";
 
 export const removeAllDataController = async (req: express.Request, res: express.Response) => {
 

@@ -11,7 +11,7 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.postsValidationModelMiddleware = exports.postBlogId = exports.postContent = exports.postShortDescription = exports.postTitle = void 0;
 const express_validator_1 = require("express-validator");
-const blogRouterUtils_1 = require("../utils/blogs/blogRouterUtils");
+const blogRouterUtils_1 = require("../repositories/blogs/blogRouterUtils");
 exports.postTitle = (0, express_validator_1.body)('title')
     .isString()
     .trim()
