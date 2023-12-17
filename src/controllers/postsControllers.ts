@@ -6,11 +6,12 @@ import {
     RequestWithBody,
     RequestWithParams, RequestWithParamsAndBody
 } from "../types/commonBlogTypeAndPosts.types";
-import {blogRouterUtils} from "../repositories/blogs/blogRouterUtils";
+import {postQuery} from "../repositories/queryRepositories/postQuery";
+import {postsService} from "../services/posts/postsService";
 
 export const getAllPostsController = async (req: Request, res: Response) => {
     try {
-        const result = await postsRouterUtils.getAllPosts()
+        const result = await postQuery.getAllPostsFromDb()
         return res.status(200).send(result)
     } catch (e) {
         throw new Error('Posts does not get')
@@ -23,7 +24,7 @@ export const createNewPostController = async (req: RequestWithBody<PostInputMode
     try {
         const {title, shortDescription, content, blogId} = req.body
 
-        const result = await postsRouterUtils.createPost({title, shortDescription, content, blogId})
+        const result = await postsService.createPostService({title, shortDescription, content, blogId})
 
         return res.status(201).send(result)
 
@@ -36,7 +37,7 @@ export const createNewPostController = async (req: RequestWithBody<PostInputMode
 
 export const getPostByIdController = async (req: RequestWithParams<ParamsType>, res: Response) => {
 
-    const result = await postsRouterUtils.getPostById(req.params.id)
+    const result = await postQuery.getPostByIdFromDb(req.params.id)
 
     if (!result) {
         return res.sendStatus(404)
@@ -51,7 +52,7 @@ export const changePostByIdController = async (req: RequestWithParamsAndBody<Par
     const {title, shortDescription, content, blogId} = req.body
     const id = req.params.id
 
-    const result = await postsRouterUtils.changePostById({id, title, shortDescription, content, blogId})
+    const result = await postsService.changePostByIdService({id, title, shortDescription, content, blogId})
 
     if (result === null) {
         return res.sendStatus(404)
@@ -62,7 +63,7 @@ export const changePostByIdController = async (req: RequestWithParamsAndBody<Par
 
 export const deletePostByIdController = async (req: RequestWithParams<ParamsType>, res: Response) => {
 
-    const result = await postsRouterUtils.deletePostById(req.params.id)
+    const result = await postsService.deletePostByIdService(req.params.id)
 
     if (result === null) {
         return res.sendStatus(404)

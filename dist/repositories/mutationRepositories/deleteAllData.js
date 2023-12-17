@@ -9,11 +9,19 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
     });
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.removeAllDataController = void 0;
-const deleteAllData_1 = require("../repositories/mutationRepositories/deleteAllData");
-const removeAllDataController = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    yield deleteAllData_1.deleteAllDataMutation.deleteAllDataFromDb();
-    res.sendStatus(204);
-    return;
-});
-exports.removeAllDataController = removeAllDataController;
+exports.deleteAllDataMutation = void 0;
+const dbCollections_1 = require("../dbCollections");
+const dbCollections_2 = require("../dbCollections");
+exports.deleteAllDataMutation = {
+    deleteAllDataFromDb() {
+        return __awaiter(this, void 0, void 0, function* () {
+            try {
+                yield dbCollections_1.dbBlogCollections.deleteMany({});
+                yield dbCollections_2.dbPostCollections.deleteMany({});
+            }
+            catch (e) {
+                throw new Error('All data was not deleted');
+            }
+        });
+    }
+};

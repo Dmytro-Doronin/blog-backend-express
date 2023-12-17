@@ -1,14 +1,15 @@
 import {Request, Response} from "express";
 import {BlogInputModelType, RequestWithParamsAndBody} from "../types/commonBlogTypeAndPosts.types";
 import {RequestWithBody, RequestWithParams, ParamsType} from "../types/commonBlogTypeAndPosts.types";
-import {blogRouterUtils} from "../repositories/blogs/blogRouterUtils";
+import {blogQuery} from "../repositories/queryRepositories/blogQuery";
+import {blogsService} from "../services/blogs/blogsService";
 
 // export const deleteAllDataFromBlogsAndPostsController = (req: Request, res: Response) => {
 //     return res.status(200).send(blogDB.blogs)
 // }
 
 export const getAllBlogsController = async (req: Request, res: Response) => {
-        const result = await blogRouterUtils.getAllBlog()
+        const result = await blogQuery.getAllBlogInDb()
         return res.status(200).send(result)
 }
 
@@ -16,7 +17,7 @@ export const createNewBlogController = async (req: RequestWithBody<BlogInputMode
 
         const {name,description, websiteUrl} = req.body
 
-        const result = await blogRouterUtils.createBlog({name, description, websiteUrl})
+        const result = await blogsService.createBlogService({name, description, websiteUrl})
 
         return res.status(201).send(result)
 }
@@ -24,7 +25,7 @@ export const createNewBlogController = async (req: RequestWithBody<BlogInputMode
 
 export const getBlogsByIdController = async (req: RequestWithParams<ParamsType>, res: Response) => {
 
-    const result = await blogRouterUtils.getBlogById(req.params.id)
+    const result = await blogQuery.getBlogByIdInDb(req.params.id)
 
     if (!result) {
         return res.sendStatus(404)
@@ -40,7 +41,7 @@ export const changeBlogsByIdController = async (req: RequestWithParamsAndBody<Pa
     const {name, description, websiteUrl} = req.body
     const id = req.params.id
 
-    const result = await blogRouterUtils.changeBlogById({id, name, description, websiteUrl})
+    const result = await blogsService.changeBlogByIdService({id, name, description, websiteUrl})
 
     if (result === null) {
         return res.sendStatus(404)
@@ -51,7 +52,7 @@ export const changeBlogsByIdController = async (req: RequestWithParamsAndBody<Pa
 
 export const deleteBlogsByIdController = async (req: RequestWithParams<ParamsType>, res: Response) => {
 
-    const result = await blogRouterUtils.deleteBlogById(req.params.id)
+    const result = await blogsService.deleteBlogByIdService(req.params.id)
 
     if (result === null) {
         return res.sendStatus(404)

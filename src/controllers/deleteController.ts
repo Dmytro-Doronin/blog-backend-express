@@ -1,9 +1,9 @@
 import * as express from "express";
-import {deleteAllDataUtil} from "../repositories/deleteAllData";
+import {deleteAllDataMutation} from "../repositories/mutationRepositories/deleteAllData";
 
 export const removeAllDataController = async (req: express.Request, res: express.Response) => {
 
-    await deleteAllDataUtil.deleteAllData()
+    await deleteAllDataMutation.deleteAllDataFromDb()
 
     res.sendStatus(204)
     return

@@ -20,8 +20,6 @@ export const blogRouterUtils = {
 
     async createBlog ({name, description, websiteUrl}: BlogInputModelType) {
 
-
-
         try {
             const newBlog: BlogViewModelType = {
                 id: uuidv4(),
