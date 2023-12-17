@@ -1,12 +1,12 @@
 import {Request, Response} from "express";
-import {postsRouterUtils} from "../utils/posts/postsRouterUtils";
+import {postsRouterUtils} from "../repositories/posts/postsRouterUtils";
 import {
     BlogInputModelType, ParamsType,
     PostInputModelType,
     RequestWithBody,
     RequestWithParams, RequestWithParamsAndBody
 } from "../types/commonBlogTypeAndPosts.types";
-import {blogRouterUtils} from "../utils/blogs/blogRouterUtils";
+import {blogRouterUtils} from "../repositories/blogs/blogRouterUtils";
 
 export const getAllPostsController = async (req: Request, res: Response) => {
     try {

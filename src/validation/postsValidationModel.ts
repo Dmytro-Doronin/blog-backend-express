@@ -1,5 +1,5 @@
 import {body} from 'express-validator'
-import {blogRouterUtils} from "../utils/blogs/blogRouterUtils";
+import {blogRouterUtils} from "../repositories/blogs/blogRouterUtils";
 
 export const postTitle = body('title')
     .isString()
