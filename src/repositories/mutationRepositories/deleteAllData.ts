@@ -4,7 +4,6 @@ import {dbPostCollections} from "../dbCollections";
 
 export const deleteAllDataMutation = {
     async deleteAllDataFromDb () {
-
         try {
             await dbBlogCollections.deleteMany({})
             await dbPostCollections.deleteMany({})
