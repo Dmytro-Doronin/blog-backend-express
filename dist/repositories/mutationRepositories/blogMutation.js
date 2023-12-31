@@ -29,6 +29,21 @@ exports.blogMutation = {
             }
         });
     },
+    createPostToBlogInDb(post) {
+        return __awaiter(this, void 0, void 0, function* () {
+            try {
+                yield dbCollections_1.dbPostCollections.insertOne(post);
+                const postFromDb = yield dbCollections_1.dbPostCollections.findOne({ id: post.id });
+                if (!postFromDb) {
+                    return null;
+                }
+                return (0, maper_1.postMapper)(postFromDb);
+            }
+            catch (e) {
+                throw new Error('Blog was not created');
+            }
+        });
+    },
     changeBlogByIdInDb({ id, name, description, websiteUrl }) {
         return __awaiter(this, void 0, void 0, function* () {
             try {

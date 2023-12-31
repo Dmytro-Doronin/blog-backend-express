@@ -1,5 +1,4 @@
 import {body} from 'express-validator'
-import {blogRouterUtils} from "../repositories/blogs/blogRouterUtils";
 import {blogQuery} from "../repositories/queryRepositories/blogQuery";
 
 export const postTitle = body('title')
@@ -32,3 +31,4 @@ export const postBlogId  = body('blogId')
 
 
 export const postsValidationModelMiddleware = () => [postTitle, postShortDescription, postContent, postBlogId]
+export const createPostToBlogModelMiddleware = () => [postTitle, postShortDescription, postContent]

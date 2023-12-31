@@ -9,7 +9,7 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
     });
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.postsValidationModelMiddleware = exports.postBlogId = exports.postContent = exports.postShortDescription = exports.postTitle = void 0;
+exports.createPostToBlogModelMiddleware = exports.postsValidationModelMiddleware = exports.postBlogId = exports.postContent = exports.postShortDescription = exports.postTitle = void 0;
 const express_validator_1 = require("express-validator");
 const blogQuery_1 = require("../repositories/queryRepositories/blogQuery");
 exports.postTitle = (0, express_validator_1.body)('title')
@@ -36,3 +36,5 @@ exports.postBlogId = (0, express_validator_1.body)('blogId')
 })).withMessage('Incorrect blogId');
 const postsValidationModelMiddleware = () => [exports.postTitle, exports.postShortDescription, exports.postContent, exports.postBlogId];
 exports.postsValidationModelMiddleware = postsValidationModelMiddleware;
+const createPostToBlogModelMiddleware = () => [exports.postTitle, exports.postShortDescription, exports.postContent];
+exports.createPostToBlogModelMiddleware = createPostToBlogModelMiddleware;

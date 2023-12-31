@@ -8,3 +8,10 @@ export type QueryBlogInputModel = {
     pageSize?: number
 }
 
+export type QueryBlogToPostsInputModel = {
+    sortBy?: string
+    sortDirection?: SortDirection
+    pageNumber?: number
+    pageSize?: number
+}
+

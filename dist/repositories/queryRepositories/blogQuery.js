@@ -49,6 +49,35 @@ exports.blogQuery = {
             }
         });
     },
+    getAllPostsInBlogFromDb(blogId, sortData) {
+        var _a, _b, _c, _d;
+        return __awaiter(this, void 0, void 0, function* () {
+            const sortBy = (_a = sortData.sortBy) !== null && _a !== void 0 ? _a : 'createdAt';
+            const sortDirection = (_b = sortData.sortDirection) !== null && _b !== void 0 ? _b : 'desc';
+            const pageNumber = (_c = sortData.pageNumber) !== null && _c !== void 0 ? _c : 1;
+            const pageSize = (_d = sortData.pageSize) !== null && _d !== void 0 ? _d : 10;
+            try {
+                const posts = yield dbCollections_1.dbPostCollections
+                    .find({ blogId: blogId })
+                    .sort(sortBy, sortDirection)
+                    .skip((+pageNumber - 1) * +pageSize)
+                    .limit(+pageSize)
+                    .toArray();
+                const totalCount = yield dbCollections_1.dbPostCollections.countDocuments({ blogId: blogId });
+                const pagesCount = Math.ceil(totalCount / +pageSize);
+                return {
+                    pagesCount,
+                    page: pageNumber,
+                    pageSize,
+                    totalCount,
+                    items: posts.map(maper_1.postMapper)
+                };
+            }
+            catch (e) {
+                throw new Error('Posts was not get');
+            }
+        });
+    },
     getBlogByIdInDb(id) {
         return __awaiter(this, void 0, void 0, function* () {
             try {

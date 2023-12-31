@@ -1,14 +1,14 @@
 import {Request, Response} from "express";
 import {
-    BlogInputModelType, BlogOutputModelType,
-    RequestWithParamsAndBody,
+    BlogInputModelType, BlogOutputModelType, CreatePostToBlogType,
+    RequestWithParamsAndBody, RequestWithParamsAndQuery,
     RequestWithQuery,
     ResponseWithData
 } from "../types/commonBlogTypeAndPosts.types";
 import {RequestWithBody, RequestWithParams, ParamsType} from "../types/commonBlogTypeAndPosts.types";
 import {blogQuery} from "../repositories/queryRepositories/blogQuery";
 import {blogsService} from "../services/blogs/blogsService";
-import {QueryBlogInputModel} from "../types/blogs/queryBlog.types";
+import {QueryBlogInputModel, QueryBlogToPostsInputModel} from "../types/blogs/queryBlog.types";
 
 // export const deleteAllDataFromBlogsAndPostsController = (req: Request, res: Response) => {
 //     return res.status(200).send(blogDB.blogs)
@@ -21,6 +21,24 @@ export const getAllBlogsController = async (req: RequestWithQuery<QueryBlogInput
         return res.status(200).send(result)
 }
 
+export const getAllPostInBlogController = async (req: RequestWithParamsAndQuery<ParamsType, QueryBlogToPostsInputModel>, res: Response) => {
+    const blogId = req.params.id
+
+    const sortData = req.query
+
+    const blog = await blogQuery.getBlogByIdInDb(blogId)
+
+    if (!blog) {
+        res.sendStatus(404)
+        return
+    }
+
+    const posts = await blogQuery.getAllPostsInBlogFromDb(blogId, sortData)
+
+    return res.status(200).send(posts)
+
+}
+
 export const createNewBlogController = async (req: RequestWithBody<BlogInputModelType> , res: Response) => {
 
         const {name,description, websiteUrl} = req.body
@@ -30,6 +48,19 @@ export const createNewBlogController = async (req: RequestWithBody<BlogInputMode
         return res.status(201).send(result)
 }
 
+export const createPostToBlogController = async (req: RequestWithParamsAndBody<ParamsType, CreatePostToBlogType>, res: Response) => {
+    const id = req.params
+    const {title, shortDescription, content} = req.body
+
+    const post = await blogsService.createPostToBlogService(id, {title, shortDescription, content})
+
+    if (!post) {
+        res.sendStatus(404)
+        return
+    }
+
+    res.status(201).send(post)
+}
 
 export const getBlogsByIdController = async (req: RequestWithParams<ParamsType>, res: Response) => {
 

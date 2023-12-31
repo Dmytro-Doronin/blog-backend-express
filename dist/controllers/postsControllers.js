@@ -13,8 +13,9 @@ exports.deletePostByIdController = exports.changePostByIdController = exports.ge
 const postQuery_1 = require("../repositories/queryRepositories/postQuery");
 const postsService_1 = require("../services/posts/postsService");
 const getAllPostsController = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    const sortData = req.query;
     try {
-        const result = yield postQuery_1.postQuery.getAllPostsFromDb();
+        const result = yield postQuery_1.postQuery.getAllPostsFromDb(sortData);
         return res.status(200).send(result);
     }
     catch (e) {

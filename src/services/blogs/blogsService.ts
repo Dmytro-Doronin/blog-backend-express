@@ -1,6 +1,13 @@
-import {BlogInputModelType, BlogViewModelType} from "../../types/commonBlogTypeAndPosts.types";
+import {
+    BlogInputModelType,
+    BlogViewModelType,
+    CreatePostToBlogType,
+    ParamsType, PostViewModelType
+} from "../../types/commonBlogTypeAndPosts.types";
 import {blogMutation} from "../../repositories/mutationRepositories/blogMutation";
 import {ChangeBlogByIdTypes} from "../serviceTypes/blogsTypes";
+import {blogQuery} from "../../repositories/queryRepositories/blogQuery";
+import {postQuery} from "../../repositories/queryRepositories/postQuery";
 const { v4: uuidv4 } = require('uuid');
 
 
@@ -26,5 +33,26 @@ export const blogsService = {
 
     async deleteBlogByIdService(id: string) {
         return await blogMutation.deleteBlogByIdInDb(id)
+    },
+
+    async createPostToBlogService({id}: ParamsType, {title, shortDescription, content}: CreatePostToBlogType ) {
+        const blog = await blogQuery.getBlogByIdInDb(id)
+
+        if (!blog) {
+            return null
+        }
+
+        const newPost: PostViewModelType = {
+            id: uuidv4(),
+            title,
+            shortDescription,
+            content,
+            blogId: blog.id,
+            createdAt: (new Date().toISOString()),
+            blogName: blog.name
+        }
+
+        return await blogMutation.createPostToBlogInDb(newPost)
+
     }
 }

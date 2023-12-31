@@ -11,6 +11,7 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.blogsService = void 0;
 const blogMutation_1 = require("../../repositories/mutationRepositories/blogMutation");
+const blogQuery_1 = require("../../repositories/queryRepositories/blogQuery");
 const { v4: uuidv4 } = require('uuid');
 exports.blogsService = {
     createBlogService({ name, description, websiteUrl }) {
@@ -34,6 +35,24 @@ exports.blogsService = {
     deleteBlogByIdService(id) {
         return __awaiter(this, void 0, void 0, function* () {
             return yield blogMutation_1.blogMutation.deleteBlogByIdInDb(id);
+        });
+    },
+    createPostToBlogService({ id }, { title, shortDescription, content }) {
+        return __awaiter(this, void 0, void 0, function* () {
+            const blog = yield blogQuery_1.blogQuery.getBlogByIdInDb(id);
+            if (!blog) {
+                return null;
+            }
+            const newPost = {
+                id: uuidv4(),
+                title,
+                shortDescription,
+                content,
+                blogId: blog.id,
+                createdAt: (new Date().toISOString()),
+                blogName: blog.name
+            };
+            return yield blogMutation_1.blogMutation.createPostToBlogInDb(newPost);
         });
     }
 };

@@ -1,18 +1,21 @@
 import {Request, Response} from "express";
-import {postsRouterUtils} from "../repositories/posts/postsRouterUtils";
 import {
     BlogInputModelType, ParamsType,
-    PostInputModelType,
+    PostInputModelType, PostsOutputModelType,
     RequestWithBody,
-    RequestWithParams, RequestWithParamsAndBody, RequestWithQuery
+    RequestWithParams, RequestWithParamsAndBody, RequestWithQuery, ResponseWithData
 } from "../types/commonBlogTypeAndPosts.types";
 import {postQuery} from "../repositories/queryRepositories/postQuery";
 import {postsService} from "../services/posts/postsService";
+import {QueryBlogInputModel} from "../types/posts/queryPosts.types";
 
 
-export const getAllPostsController = async (req: Request, res: Response) => {
+export const getAllPostsController = async (req: RequestWithQuery<QueryBlogInputModel>, res: ResponseWithData<PostsOutputModelType>) => {
+
+    const sortData = req.query
+
     try {
-        const result = await postQuery.getAllPostsFromDb()
+        const result = await postQuery.getAllPostsFromDb(sortData)
         return res.status(200).send(result)
     } catch (e) {
         throw new Error('Posts does not get')

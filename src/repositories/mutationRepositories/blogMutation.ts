@@ -1,9 +1,15 @@
-import {BlogInputModelType, BlogViewModelType} from "../../types/commonBlogTypeAndPosts.types";
-import {blogMapper} from "../maper";
+import {
+    BlogInputModelType,
+    BlogViewModelType,
+    CreatePostToBlogType,
+    PostViewModelType
+} from "../../types/commonBlogTypeAndPosts.types";
+import {blogMapper, postMapper} from "../maper";
 
 import {client} from "../../db/db";
 import {ChangeBlogByIdTypes} from "../../services/serviceTypes/blogsTypes";
-import {dbBlogCollections} from "../dbCollections";
+import {dbBlogCollections, dbPostCollections} from "../dbCollections";
+import {blogQuery} from "../queryRepositories/blogQuery";
 const { v4: uuidv4 } = require('uuid');
 
 
@@ -11,7 +17,6 @@ const { v4: uuidv4 } = require('uuid');
 
 export const blogMutation = {
     async createBlogInDb (newBlog : BlogViewModelType) {
-
         try {
 
             await dbBlogCollections.insertOne(newBlog)
@@ -22,6 +27,24 @@ export const blogMutation = {
             }
 
             return blogMapper(result)
+        } catch (e) {
+            throw new Error('Blog was not created')
+        }
+
+    },
+
+    async createPostToBlogInDb (post: PostViewModelType) {
+
+        try {
+            await dbPostCollections.insertOne(post)
+            const postFromDb = await dbPostCollections.findOne({id: post.id})
+
+            if (!postFromDb) {
+                return null
+            }
+
+            return postMapper(postFromDb)
+
         } catch (e) {
             throw new Error('Blog was not created')
         }

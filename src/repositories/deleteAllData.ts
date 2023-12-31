@@ -1,6 +1,6 @@
 
-import {dbBlogCollections} from "./blogs/blogRouterUtils";
-import {dbPostCollections} from "./posts/postsRouterUtils";
+import {dbBlogCollections} from "./dbCollections";
+import {dbPostCollections} from "./dbCollections";
 
 export const deleteAllDataUtil = {
     async deleteAllData () {

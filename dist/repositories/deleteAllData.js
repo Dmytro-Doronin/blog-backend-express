@@ -10,14 +10,14 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.deleteAllDataUtil = void 0;
-const blogRouterUtils_1 = require("./blogs/blogRouterUtils");
-const postsRouterUtils_1 = require("./posts/postsRouterUtils");
+const dbCollections_1 = require("./dbCollections");
+const dbCollections_2 = require("./dbCollections");
 exports.deleteAllDataUtil = {
     deleteAllData() {
         return __awaiter(this, void 0, void 0, function* () {
             try {
-                yield blogRouterUtils_1.dbBlogCollections.deleteMany({});
-                yield postsRouterUtils_1.dbPostCollections.deleteMany({});
+                yield dbCollections_1.dbBlogCollections.deleteMany({});
+                yield dbCollections_2.dbPostCollections.deleteMany({});
             }
             catch (e) {
                 throw new Error('All data was not deleted');

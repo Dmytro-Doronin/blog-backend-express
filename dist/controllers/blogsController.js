@@ -9,7 +9,7 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
     });
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.deleteBlogsByIdController = exports.changeBlogsByIdController = exports.getBlogsByIdController = exports.createNewBlogController = exports.getAllBlogsController = void 0;
+exports.deleteBlogsByIdController = exports.changeBlogsByIdController = exports.getBlogsByIdController = exports.createPostToBlogController = exports.createNewBlogController = exports.getAllPostInBlogController = exports.getAllBlogsController = void 0;
 const blogQuery_1 = require("../repositories/queryRepositories/blogQuery");
 const blogsService_1 = require("../services/blogs/blogsService");
 // export const deleteAllDataFromBlogsAndPostsController = (req: Request, res: Response) => {
@@ -21,12 +21,35 @@ const getAllBlogsController = (req, res) => __awaiter(void 0, void 0, void 0, fu
     return res.status(200).send(result);
 });
 exports.getAllBlogsController = getAllBlogsController;
+const getAllPostInBlogController = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    const blogId = req.params.id;
+    const sortData = req.query;
+    const blog = yield blogQuery_1.blogQuery.getBlogByIdInDb(blogId);
+    if (!blog) {
+        res.sendStatus(404);
+        return;
+    }
+    const posts = yield blogQuery_1.blogQuery.getAllPostsInBlogFromDb(blogId, sortData);
+    return res.status(200).send(posts);
+});
+exports.getAllPostInBlogController = getAllPostInBlogController;
 const createNewBlogController = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const { name, description, websiteUrl } = req.body;
     const result = yield blogsService_1.blogsService.createBlogService({ name, description, websiteUrl });
     return res.status(201).send(result);
 });
 exports.createNewBlogController = createNewBlogController;
+const createPostToBlogController = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    const id = req.params;
+    const { title, shortDescription, content } = req.body;
+    const post = yield blogsService_1.blogsService.createPostToBlogService(id, { title, shortDescription, content });
+    if (!post) {
+        res.sendStatus(404);
+        return;
+    }
+    res.status(201).send(post);
+});
+exports.createPostToBlogController = createPostToBlogController;
 const getBlogsByIdController = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const result = yield blogQuery_1.blogQuery.getBlogByIdInDb(req.params.id);
     if (!result) {
