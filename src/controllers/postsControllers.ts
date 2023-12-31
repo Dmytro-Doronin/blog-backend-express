@@ -20,7 +20,6 @@ export const getAllPostsController = async (req: RequestWithQuery<QueryBlogInput
     } catch (e) {
         throw new Error('Posts does not get')
     }
-
 }
 
 export const createNewPostController = async (req: RequestWithBody<PostInputModelType> , res: Response) => {
