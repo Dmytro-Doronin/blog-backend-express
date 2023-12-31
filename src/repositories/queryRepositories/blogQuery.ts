@@ -16,7 +16,7 @@ export const blogQuery = {
 
         if (searchNameTerm) {
             filter = {
-                blogId: {$regex: searchNameTerm, $options: 'i'}
+                name: {$regex: searchNameTerm, $options: 'i'}
             }
         }
 
