@@ -2,7 +2,7 @@ type SortDirection = 'asc' | 'desc'
 
 export type QueryBlogInputModel = {
     sortBy?: string
-    sortDirection?: SortDirection
+    sortDirection?: 'asc' | 'desc'
     pageNumber?: number
     pageSize?: number
 }
