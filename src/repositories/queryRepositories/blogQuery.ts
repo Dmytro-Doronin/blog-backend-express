@@ -8,7 +8,7 @@ export const blogQuery = {
     async getAllBlogInDb(sortData: QueryBlogInputModel) {
         const searchNameTerm = sortData.searchNameTerm ?? null
         const sortBy = sortData.sortBy ?? 'createdAt'
-        const sortDirection = sortData.sortDirection ?? 'desc'
+        const sortDirection = sortData.sortDirection === 'asc' ? 1 :-1
         const pageNumber = sortData.pageNumber ?? 1
         const pageSize = sortData.pageSize ?? 10
 
@@ -49,7 +49,7 @@ export const blogQuery = {
     async getAllPostsInBlogFromDb (blogId: string ,sortData: QueryBlogInputModel) {
 
         const sortBy = sortData.sortBy ?? 'createdAt'
-        const sortDirection = sortData.sortDirection ?? 'desc'
+        const sortDirection = sortData.sortDirection === 'asc' ? 1 :-1
         const pageNumber = sortData.pageNumber ?? 1
         const pageSize = sortData.pageSize ?? 10
 
