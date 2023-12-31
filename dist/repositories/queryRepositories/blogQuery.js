@@ -14,13 +14,13 @@ const maper_1 = require("../maper");
 const dbCollections_1 = require("../dbCollections");
 exports.blogQuery = {
     getAllBlogInDb(sortData) {
-        var _a, _b, _c, _d, _e;
+        var _a, _b, _c, _d;
         return __awaiter(this, void 0, void 0, function* () {
             const searchNameTerm = (_a = sortData.searchNameTerm) !== null && _a !== void 0 ? _a : null;
             const sortBy = (_b = sortData.sortBy) !== null && _b !== void 0 ? _b : 'createdAt';
-            const sortDirection = (_c = sortData.sortDirection) !== null && _c !== void 0 ? _c : 'desc';
-            const pageNumber = (_d = sortData.pageNumber) !== null && _d !== void 0 ? _d : 1;
-            const pageSize = (_e = sortData.pageSize) !== null && _e !== void 0 ? _e : 10;
+            const sortDirection = sortData.sortDirection === 'asc' ? 1 : -1;
+            const pageNumber = (_c = sortData.pageNumber) !== null && _c !== void 0 ? _c : 1;
+            const pageSize = (_d = sortData.pageSize) !== null && _d !== void 0 ? _d : 10;
             let filter = {};
             if (searchNameTerm) {
                 filter = {
@@ -50,12 +50,12 @@ exports.blogQuery = {
         });
     },
     getAllPostsInBlogFromDb(blogId, sortData) {
-        var _a, _b, _c, _d;
+        var _a, _b, _c;
         return __awaiter(this, void 0, void 0, function* () {
             const sortBy = (_a = sortData.sortBy) !== null && _a !== void 0 ? _a : 'createdAt';
-            const sortDirection = (_b = sortData.sortDirection) !== null && _b !== void 0 ? _b : 'desc';
-            const pageNumber = (_c = sortData.pageNumber) !== null && _c !== void 0 ? _c : 1;
-            const pageSize = (_d = sortData.pageSize) !== null && _d !== void 0 ? _d : 10;
+            const sortDirection = sortData.sortDirection === 'asc' ? 1 : -1;
+            const pageNumber = (_b = sortData.pageNumber) !== null && _b !== void 0 ? _b : 1;
+            const pageSize = (_c = sortData.pageSize) !== null && _c !== void 0 ? _c : 10;
             try {
                 const posts = yield dbCollections_1.dbPostCollections
                     .find({ blogId: blogId })
