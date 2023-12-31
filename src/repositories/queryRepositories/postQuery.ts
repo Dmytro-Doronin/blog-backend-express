@@ -10,14 +10,14 @@ export const postQuery = {
     async getAllPostsFromDb (sortData: QueryBlogInputModel) {
 
         const sortBy = sortData.sortBy ??  "createdAt"
-        const sortDirection = sortData.sortDirection === 'asc' ? 1 :-1
+        const sortDirection = sortData.sortDirection ?? 'desc'
         const pageNumber = sortData.pageNumber ?? 1
         const pageSize = sortData.pageSize ?? 10
 
         try {
             const post = await dbPostCollections
                 .find({})
-                .sort(sortBy, sortDirection)
+                .sort({[sortBy]: sortDirection === 'asc' ? 1 : -1})
                 .skip((+pageNumber - 1) * +pageSize)
                 .limit(+pageSize)
                 .toArray()

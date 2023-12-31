@@ -8,7 +8,7 @@ export const blogQuery = {
     async getAllBlogInDb(sortData: QueryBlogInputModel) {
         const searchNameTerm = sortData.searchNameTerm ?? null
         const sortBy = sortData.sortBy ?? 'createdAt'
-        const sortDirection = sortData.sortDirection === 'asc' ? 1 :-1
+        const sortDirection = sortData.sortDirection ?? 'desc'
         const pageNumber = sortData.pageNumber ?? 1
         const pageSize = sortData.pageSize ?? 10
 
@@ -23,7 +23,7 @@ export const blogQuery = {
         try {
             const blogs = await dbBlogCollections
                 .find(filter)
-                .sort(sortBy, sortDirection)
+                .sort({[sortBy]: sortDirection === 'asc' ? 1 : -1})
                 .skip((+pageNumber - 1) * +pageSize)
                 .limit(+pageSize)
                 .toArray()
@@ -49,14 +49,14 @@ export const blogQuery = {
     async getAllPostsInBlogFromDb (blogId: string ,sortData: QueryBlogInputModel) {
 
         const sortBy = sortData.sortBy ?? 'createdAt'
-        const sortDirection = sortData.sortDirection === 'asc' ? 1 :-1
+        const sortDirection = sortData.sortDirection ?? 'desc'
         const pageNumber = sortData.pageNumber ?? 1
         const pageSize = sortData.pageSize ?? 10
 
         try {
             const posts = await dbPostCollections
                 .find({blogId: blogId})
-                .sort(sortBy, sortDirection)
+                .sort({[sortBy]: sortDirection === 'asc' ? 1 : -1})
                 .skip((+pageNumber - 1) * +pageSize)
                 .limit(+pageSize)
                 .toArray()
