@@ -16,7 +16,8 @@ const blogsService_1 = require("../services/blogs/blogsService");
 //     return res.status(200).send(blogDB.blogs)
 // }
 const getAllBlogsController = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    const result = yield blogQuery_1.blogQuery.getAllBlogInDb();
+    const sortData = req.query;
+    const result = yield blogQuery_1.blogQuery.getAllBlogInDb(sortData);
     return res.status(200).send(result);
 });
 exports.getAllBlogsController = getAllBlogsController;

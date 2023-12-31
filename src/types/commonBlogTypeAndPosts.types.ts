@@ -23,6 +23,14 @@ export type PostViewModelType = {
 export type BlogInputModelType = Omit<BlogViewModelType, 'id' | 'createdAt' | 'isMembership'>
 export type PostInputModelType = Omit<PostViewModelType, 'id' | 'blogName' | 'createdAt'>
 
+export type BlogOutputModelType = {
+    pagesCount: number
+    page: number
+    pageSize: number
+    totalCount: number
+    items: BlogViewModelType[]
+}
+
 
 export type FieldErrorType = {
     message: string,
@@ -30,7 +38,6 @@ export type FieldErrorType = {
 }
 
 export type ApiErrorResult = {
-
     errorsMessages: FieldErrorType[]
 }
 
@@ -38,4 +45,6 @@ export type ApiErrorResult = {
 export type ParamsType = {id: string}
 export type RequestWithParams<P> = Request<P, {}, {}, {}>
 export type RequestWithBody<B> = Request<{}, {}, B, {}>
+export type RequestWithQuery<Q> = Request<{}, {}, {}, Q>
 export type RequestWithParamsAndBody<P,B> = Request<P, {}, B, {}>
+export type ResponseWithData<D> = Response<D>

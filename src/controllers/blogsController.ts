@@ -1,15 +1,23 @@
 import {Request, Response} from "express";
-import {BlogInputModelType, RequestWithParamsAndBody} from "../types/commonBlogTypeAndPosts.types";
+import {
+    BlogInputModelType, BlogOutputModelType,
+    RequestWithParamsAndBody,
+    RequestWithQuery,
+    ResponseWithData
+} from "../types/commonBlogTypeAndPosts.types";
 import {RequestWithBody, RequestWithParams, ParamsType} from "../types/commonBlogTypeAndPosts.types";
 import {blogQuery} from "../repositories/queryRepositories/blogQuery";
 import {blogsService} from "../services/blogs/blogsService";
+import {QueryBlogInputModel} from "../types/blogs/queryBlog.types";
 
 // export const deleteAllDataFromBlogsAndPostsController = (req: Request, res: Response) => {
 //     return res.status(200).send(blogDB.blogs)
 // }
 
-export const getAllBlogsController = async (req: Request, res: Response) => {
-        const result = await blogQuery.getAllBlogInDb()
+export const getAllBlogsController = async (req: RequestWithQuery<QueryBlogInputModel>, res: ResponseWithData<BlogOutputModelType>) => {
+        const sortData = req.query
+
+        const result = await blogQuery.getAllBlogInDb(sortData)
         return res.status(200).send(result)
 }
 

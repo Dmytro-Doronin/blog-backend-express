@@ -1,5 +1,6 @@
 import {body} from 'express-validator'
 import {blogRouterUtils} from "../repositories/blogs/blogRouterUtils";
+import {blogQuery} from "../repositories/queryRepositories/blogQuery";
 
 export const postTitle = body('title')
     .isString()
@@ -20,7 +21,7 @@ export const postBlogId  = body('blogId')
     .isString()
     .trim()
     .custom(async (value) => {
-        const blog = await blogRouterUtils.getBlogById(value)
+        const blog = await blogQuery.getBlogByIdInDb(value)
 
         if (!blog) {
             throw new Error('Incorrect blogId')

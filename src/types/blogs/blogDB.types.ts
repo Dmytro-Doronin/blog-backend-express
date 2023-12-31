@@ -1,4 +1,4 @@
-import {BlogViewModelType, PostViewModelType} from "./commonBlogTypeAndPosts.types";
+import {BlogViewModelType, PostViewModelType} from "../commonBlogTypeAndPosts.types";
 
 
 export type BlogDbType = {

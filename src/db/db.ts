@@ -1,6 +1,6 @@
 import {VideoTypes} from "../types/video.types";
 import {VideoResolution} from "../types/video.types";
-import {BlogDbType} from "../types/blogDB.types";
+import {BlogDbType} from "../types/blogs/blogDB.types";
 export let db: VideoTypes[] = []
 
 

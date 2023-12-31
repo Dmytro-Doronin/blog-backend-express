@@ -13,11 +13,36 @@ exports.blogQuery = void 0;
 const maper_1 = require("../maper");
 const dbCollections_1 = require("../dbCollections");
 exports.blogQuery = {
-    getAllBlogInDb() {
+    getAllBlogInDb(sortData) {
+        var _a, _b, _c, _d, _e;
         return __awaiter(this, void 0, void 0, function* () {
+            const searchNameTerm = (_a = sortData.searchNameTerm) !== null && _a !== void 0 ? _a : null;
+            const sortBy = (_b = sortData.sortBy) !== null && _b !== void 0 ? _b : 'createdAt';
+            const sortDirection = (_c = sortData.sortDirection) !== null && _c !== void 0 ? _c : 'desc';
+            const pageNumber = (_d = sortData.pageNumber) !== null && _d !== void 0 ? _d : 1;
+            const pageSize = (_e = sortData.pageSize) !== null && _e !== void 0 ? _e : 10;
+            let filter = {};
+            if (searchNameTerm) {
+                filter = {
+                    name: { $regex: searchNameTerm, $options: 'i' }
+                };
+            }
             try {
-                const blogs = yield dbCollections_1.dbBlogCollections.find({}).toArray();
-                return blogs.map(maper_1.blogMapper);
+                const blogs = yield dbCollections_1.dbBlogCollections
+                    .find(filter)
+                    .sort(sortBy, sortDirection)
+                    .skip((+pageNumber - 1) * +pageSize)
+                    .limit(+pageSize)
+                    .toArray();
+                const totalCount = yield dbCollections_1.dbBlogCollections.countDocuments(filter);
+                const pagesCount = Math.ceil(totalCount / +pageSize);
+                return {
+                    pagesCount,
+                    page: pageNumber,
+                    pageSize,
+                    totalCount,
+                    items: blogs.map(maper_1.blogMapper)
+                };
             }
             catch (e) {
                 throw new Error('Does not get all blogs');

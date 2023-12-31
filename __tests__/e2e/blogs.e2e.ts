@@ -11,7 +11,7 @@ describe('/blogs', () => {
     })
 
 
-    it ('Should create and add blog to the db', async () => {
+    it ('Should create and add blogs to the db', async () => {
 
         const data: BlogInputModelType = {
             name: "Home",
@@ -23,7 +23,7 @@ describe('/blogs', () => {
 
     })
 
-    it ('Should not create blog with incorrect name', async () => {
+    it ('Should not create blogs with incorrect name', async () => {
 
         const data: BlogInputModelType = {
             name: "Home qscacaxcASDCSADFASDCVSCX VXZCVSADFWEDFWADCZXCsDFWFWEFWEF",
@@ -43,7 +43,7 @@ describe('/blogs', () => {
         })
     })
 
-    it ('Should not create blog with incorrect description', async () => {
+    it ('Should not create blogs with incorrect description', async () => {
 
         const data: BlogInputModelType = {
             name: "Home",
@@ -67,7 +67,7 @@ describe('/blogs', () => {
         })
     })
 
-    it ('Should not create blog with incorrect websiteUrl', async () => {
+    it ('Should not create blogs with incorrect websiteUrl', async () => {
 
         const data: BlogInputModelType = {
             name: "Home",
@@ -87,7 +87,7 @@ describe('/blogs', () => {
         })
     })
 
-    it ('Should get all blog', async () => {
+    it ('Should get all blogs', async () => {
 
         const data: BlogInputModelType = {
             name: "Home",
@@ -104,7 +104,7 @@ describe('/blogs', () => {
             .expect(200, [createdBlog])
     })
 
-    it ('Should get blog by id', async () => {
+    it ('Should get blogs by id', async () => {
 
         const data: BlogInputModelType = {
             name: "Home",
@@ -121,7 +121,7 @@ describe('/blogs', () => {
             .expect(200, createdBlog)
     })
 
-    it ('Should not get blog by incorrect id', async () => {
+    it ('Should not get blogs by incorrect id', async () => {
 
         const data: BlogInputModelType = {
             name: "Home",
@@ -138,7 +138,7 @@ describe('/blogs', () => {
             .expect(200, createdBlog)
     })
 
-    it ('Should change blog by id', async () => {
+    it ('Should change blogs by id', async () => {
 
         const data: BlogInputModelType = {
             name: "Home",
@@ -167,7 +167,7 @@ describe('/blogs', () => {
         //     .expect(200, createdBlog)
     })
 
-    it ('Should not change blog by id with incorrect name', async () => {
+    it ('Should not change blogs by id with incorrect name', async () => {
 
         const data: BlogInputModelType = {
             name: "Home",
@@ -199,7 +199,7 @@ describe('/blogs', () => {
             })
     })
 
-    it ('Should not change blog by id with incorrect description', async () => {
+    it ('Should not change blogs by id with incorrect description', async () => {
 
         const data: BlogInputModelType = {
             name: "Home",
@@ -236,7 +236,7 @@ describe('/blogs', () => {
 
     })
 
-    it ('Should not change blog by id with incorrect websiteUrl', async () => {
+    it ('Should not change blogs by id with incorrect websiteUrl', async () => {
 
         const data: BlogInputModelType = {
             name: "Home",
@@ -269,7 +269,7 @@ describe('/blogs', () => {
 
     })
 
-    it ('Should not change blog by id with incorrect websiteUrl pattern', async () => {
+    it ('Should not change blogs by id with incorrect websiteUrl pattern', async () => {
 
         const data: BlogInputModelType = {
             name: "Home",
@@ -302,7 +302,7 @@ describe('/blogs', () => {
 
     })
 
-    it ('Should not change blog by incorrect id', async () => {
+    it ('Should not change blogs by incorrect id', async () => {
 
         const newDataForBlog =  {
             name: "Gyra",
@@ -319,7 +319,7 @@ describe('/blogs', () => {
 
     })
 
-    it ('Should delete blog by id ', async () => {
+    it ('Should delete blogs by id ', async () => {
 
         const data: BlogInputModelType = {
             name: "Home",
@@ -337,7 +337,7 @@ describe('/blogs', () => {
             .expect(204)
 
     })
-    it ('Should not delete blog by incorrect id ', async () => {
+    it ('Should not delete blogs by incorrect id ', async () => {
 
         await request(app)
             .delete(`/api/blogs/khj2g34jh2g3jh4`)

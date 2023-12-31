@@ -4,10 +4,11 @@ import {
     BlogInputModelType, ParamsType,
     PostInputModelType,
     RequestWithBody,
-    RequestWithParams, RequestWithParamsAndBody
+    RequestWithParams, RequestWithParamsAndBody, RequestWithQuery
 } from "../types/commonBlogTypeAndPosts.types";
 import {postQuery} from "../repositories/queryRepositories/postQuery";
 import {postsService} from "../services/posts/postsService";
+
 
 export const getAllPostsController = async (req: Request, res: Response) => {
     try {
