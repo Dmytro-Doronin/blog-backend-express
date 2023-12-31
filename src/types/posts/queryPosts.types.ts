@@ -1,4 +1,4 @@
-type SortDirection = 'asc' | 'desc'
+type SortDirection = string
 
 export type QueryBlogInputModel = {
     sortBy?: string
