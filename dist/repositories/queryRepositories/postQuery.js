@@ -27,7 +27,13 @@ exports.postQuery = {
                     .skip((+pageNumber - 1) * +pageSize)
                     .limit(+pageSize)
                     .toArray();
+                const totalCount = yield dbCollections_1.dbPostCollections.countDocuments({});
+                const pagesCount = Math.ceil(totalCount / +pageSize);
                 return {
+                    pagesCount,
+                    page: +pageNumber,
+                    pageSize: +pageSize,
+                    totalCount,
                     items: post.map(maper_1.postMapper)
                 };
             }

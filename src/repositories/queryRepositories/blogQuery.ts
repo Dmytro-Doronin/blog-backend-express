@@ -35,8 +35,8 @@ export const blogQuery = {
 
             return {
                 pagesCount,
-                page: pageNumber,
-                pageSize,
+                page: +pageNumber,
+                pageSize: +pageSize,
                 totalCount,
                 items: blogs.map(blogMapper)
             }
@@ -67,8 +67,8 @@ export const blogQuery = {
 
             return {
                 pagesCount,
-                page: pageNumber,
-                pageSize,
+                page: +pageNumber,
+                pageSize: +pageSize,
                 totalCount,
                 items: posts.map(postMapper)
             }

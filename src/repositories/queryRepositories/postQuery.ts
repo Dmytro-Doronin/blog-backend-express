@@ -2,7 +2,7 @@ import {postMapper} from "../maper";
 
 import {client} from "../../db/db";
 import {PostViewModelType} from "../../types/commonBlogTypeAndPosts.types";
-import {dbPostCollections} from "../dbCollections";
+import {dbBlogCollections, dbPostCollections} from "../dbCollections";
 import {QueryBlogInputModel} from "../../types/posts/queryPosts.types";
 
 
@@ -21,8 +21,15 @@ export const postQuery = {
                 .skip((+pageNumber - 1) * +pageSize)
                 .limit(+pageSize)
                 .toArray()
-            return {
 
+            const totalCount = await dbPostCollections.countDocuments({})
+
+            const pagesCount = Math.ceil(totalCount / +pageSize)
+            return {
+                pagesCount,
+                page: +pageNumber,
+                pageSize: +pageSize,
+                totalCount,
                 items: post.map(postMapper)
             }
         } catch (e) {
