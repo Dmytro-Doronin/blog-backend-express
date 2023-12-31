@@ -24,7 +24,7 @@ exports.blogQuery = {
             let filter = {};
             if (searchNameTerm) {
                 filter = {
-                    blogId: { $regex: searchNameTerm, $options: 'i' }
+                    name: { $regex: searchNameTerm, $options: 'i' }
                 };
             }
             try {
