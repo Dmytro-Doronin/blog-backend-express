@@ -8,7 +8,6 @@ import {dbPostCollections} from '../dbCollections'
 
 export const postMutation = {
     async createPostInDb (newPost : PostViewModelType) {
-
         try {
 
             await dbPostCollections.insertOne(newPost)

@@ -16,8 +16,8 @@ exports.postQuery = {
     getAllPostsFromDb(sortData) {
         var _a, _b, _c, _d;
         return __awaiter(this, void 0, void 0, function* () {
-            const sortBy = (_a = sortData.sortBy) !== null && _a !== void 0 ? _a : 'createdAt';
-            const sortDirection = (_b = sortData.sortDirection) !== null && _b !== void 0 ? _b : 'desc';
+            const sortBy = (_a = sortData.sortBy) !== null && _a !== void 0 ? _a : "createdAt";
+            const sortDirection = (_b = sortData.sortDirection) !== null && _b !== void 0 ? _b : "desc";
             const pageNumber = (_c = sortData.pageNumber) !== null && _c !== void 0 ? _c : 1;
             const pageSize = (_d = sortData.pageSize) !== null && _d !== void 0 ? _d : 10;
             try {
