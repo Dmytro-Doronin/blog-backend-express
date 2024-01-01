@@ -4,6 +4,7 @@ import {client} from "../../db/db";
 import {PostViewModelType} from "../../types/commonBlogTypeAndPosts.types";
 import {dbBlogCollections, dbPostCollections} from "../dbCollections";
 import {QueryBlogInputModel} from "../../types/posts/queryPosts.types";
+import {filterForSort} from "../../utils/sortUtils";
 
 
 export const postQuery = {
@@ -14,15 +15,6 @@ export const postQuery = {
         const pageNumber = sortData.pageNumber ?? 1
         const pageSize = sortData.pageSize ?? 10
         console.log(sortBy)
-
-        const filterForSort = (sortBy: string, sortDirection: string ): {[key: string]: 1 | -1} => {
-            if (sortDirection === 'asc') {
-                return {[sortBy]: 1}
-            } else {
-                return {[sortBy]: -1 }
-            }
-        }
-
 
         try {
             const post = await dbPostCollections

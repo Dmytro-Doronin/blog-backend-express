@@ -12,6 +12,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.postQuery = void 0;
 const maper_1 = require("../maper");
 const dbCollections_1 = require("../dbCollections");
+const sortUtils_1 = require("../../utils/sortUtils");
 exports.postQuery = {
     getAllPostsFromDb(sortData) {
         var _a, _b, _c, _d;
@@ -21,18 +22,10 @@ exports.postQuery = {
             const pageNumber = (_c = sortData.pageNumber) !== null && _c !== void 0 ? _c : 1;
             const pageSize = (_d = sortData.pageSize) !== null && _d !== void 0 ? _d : 10;
             console.log(sortBy);
-            const filterForSort = (sortBy, sortDirection) => {
-                if (sortDirection === 'asc') {
-                    return { [sortBy]: 1 };
-                }
-                else {
-                    return { [sortBy]: -1 };
-                }
-            };
             try {
                 const post = yield dbCollections_1.dbPostCollections
                     .find({})
-                    .sort(filterForSort(sortBy, sortDirection))
+                    .sort((0, sortUtils_1.filterForSort)(sortBy, sortDirection))
                     .skip((+pageNumber - 1) * +pageSize)
                     .limit(+pageSize)
                     .toArray();

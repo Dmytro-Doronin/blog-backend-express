@@ -12,24 +12,16 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.blogQuery = void 0;
 const maper_1 = require("../maper");
 const dbCollections_1 = require("../dbCollections");
+const sortUtils_1 = require("../../utils/sortUtils");
 exports.blogQuery = {
     getAllBlogInDb(sortData) {
         var _a, _b, _c, _d, _e;
         return __awaiter(this, void 0, void 0, function* () {
             const searchNameTerm = (_a = sortData.searchNameTerm) !== null && _a !== void 0 ? _a : null;
             const sortBy = (_b = sortData.sortBy) !== null && _b !== void 0 ? _b : 'createdAt';
-            console.log(sortBy);
             const sortDirection = (_c = sortData.sortDirection) !== null && _c !== void 0 ? _c : 'desc';
             const pageNumber = (_d = sortData.pageNumber) !== null && _d !== void 0 ? _d : 1;
             const pageSize = (_e = sortData.pageSize) !== null && _e !== void 0 ? _e : 10;
-            const filterForSort = (sortBy, sortDirection) => {
-                if (sortDirection === 'asc') {
-                    return { [sortBy]: 1 };
-                }
-                else {
-                    return { [sortBy]: -1 };
-                }
-            };
             let filter = {};
             if (searchNameTerm) {
                 filter = {
@@ -39,7 +31,7 @@ exports.blogQuery = {
             try {
                 const blogs = yield dbCollections_1.dbBlogCollections
                     .find(filter)
-                    .sort(filterForSort(sortBy, sortDirection))
+                    .sort((0, sortUtils_1.filterForSort)(sortBy, sortDirection))
                     .skip((+pageNumber - 1) * +pageSize)
                     .limit(+pageSize)
                     .toArray();
@@ -65,18 +57,10 @@ exports.blogQuery = {
             const sortDirection = (_b = sortData.sortDirection) !== null && _b !== void 0 ? _b : 'desc';
             const pageNumber = (_c = sortData.pageNumber) !== null && _c !== void 0 ? _c : 1;
             const pageSize = (_d = sortData.pageSize) !== null && _d !== void 0 ? _d : 10;
-            const filterForSort = (sortBy, sortDirection) => {
-                if (sortDirection === 'asc') {
-                    return { [sortBy]: 1 };
-                }
-                else {
-                    return { [sortBy]: -1 };
-                }
-            };
             try {
                 const posts = yield dbCollections_1.dbPostCollections
                     .find({ blogId: blogId })
-                    .sort(filterForSort(sortBy, sortDirection))
+                    .sort((0, sortUtils_1.filterForSort)(sortBy, sortDirection))
                     .skip((+pageNumber - 1) * +pageSize)
                     .limit(+pageSize)
                     .toArray();
