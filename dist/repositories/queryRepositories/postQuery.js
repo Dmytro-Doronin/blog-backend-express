@@ -20,6 +20,7 @@ exports.postQuery = {
             const sortDirection = (_b = sortData.sortDirection) !== null && _b !== void 0 ? _b : 'desc';
             const pageNumber = (_c = sortData.pageNumber) !== null && _c !== void 0 ? _c : 1;
             const pageSize = (_d = sortData.pageSize) !== null && _d !== void 0 ? _d : 10;
+            console.log(sortBy);
             const filterForSort = (sortBy, sortDirection) => {
                 if (sortDirection === 'asc') {
                     return { [sortBy]: 1 };

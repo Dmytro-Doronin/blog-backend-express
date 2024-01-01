@@ -33,6 +33,10 @@ const createNewPostController = (req, res) => __awaiter(void 0, void 0, void 0, 
     try {
         const { title, shortDescription, content, blogId } = req.body;
         const result = yield postsService_1.postsService.createPostService({ title, shortDescription, content, blogId });
+        if (!result) {
+            res.sendStatus(400);
+            return;
+        }
         return res.status(201).send(result);
     }
     catch (e) {

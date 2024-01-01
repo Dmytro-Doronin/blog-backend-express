@@ -13,6 +13,7 @@ export const postQuery = {
         const sortDirection = sortData.sortDirection ?? 'desc'
         const pageNumber = sortData.pageNumber ?? 1
         const pageSize = sortData.pageSize ?? 10
+        console.log(sortBy)
 
         const filterForSort = (sortBy: string, sortDirection: string ): {[key: string]: 1 | -1} => {
             if (sortDirection === 'asc') {

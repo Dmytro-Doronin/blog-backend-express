@@ -1,10 +1,18 @@
 import {PostInputModelType, PostViewModelType} from "../../types/commonBlogTypeAndPosts.types";
 import {postMutation} from "../../repositories/mutationRepositories/postMutation";
 import {CreatePostsServiceType} from "../serviceTypes/postsTypes";
+import {blogQuery} from "../../repositories/queryRepositories/blogQuery";
 const { v4: uuidv4 } = require('uuid');
 
 export const postsService = {
     async createPostService ({title, shortDescription, content, blogId}: PostInputModelType) {
+
+        const blog = await blogQuery.getBlogByIdInDb(blogId)
+
+        if (!blog) {
+            return null
+        }
+
         const newPost: PostViewModelType = {
             id: uuidv4(),
             title,
@@ -12,7 +20,7 @@ export const postsService = {
             content,
             blogId,
             createdAt: (new Date().toISOString()),
-            blogName: ''
+            blogName: blog.name
         }
 
        return await postMutation.createPostInDb(newPost)

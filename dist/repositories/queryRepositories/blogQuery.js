@@ -18,6 +18,7 @@ exports.blogQuery = {
         return __awaiter(this, void 0, void 0, function* () {
             const searchNameTerm = (_a = sortData.searchNameTerm) !== null && _a !== void 0 ? _a : null;
             const sortBy = (_b = sortData.sortBy) !== null && _b !== void 0 ? _b : 'createdAt';
+            console.log(sortBy);
             const sortDirection = (_c = sortData.sortDirection) !== null && _c !== void 0 ? _c : 'desc';
             const pageNumber = (_d = sortData.pageNumber) !== null && _d !== void 0 ? _d : 1;
             const pageSize = (_e = sortData.pageSize) !== null && _e !== void 0 ? _e : 10;

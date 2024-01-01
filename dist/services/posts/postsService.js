@@ -11,10 +11,15 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.postsService = void 0;
 const postMutation_1 = require("../../repositories/mutationRepositories/postMutation");
+const blogQuery_1 = require("../../repositories/queryRepositories/blogQuery");
 const { v4: uuidv4 } = require('uuid');
 exports.postsService = {
     createPostService({ title, shortDescription, content, blogId }) {
         return __awaiter(this, void 0, void 0, function* () {
+            const blog = yield blogQuery_1.blogQuery.getBlogByIdInDb(blogId);
+            if (!blog) {
+                return null;
+            }
             const newPost = {
                 id: uuidv4(),
                 title,
@@ -22,7 +27,7 @@ exports.postsService = {
                 content,
                 blogId,
                 createdAt: (new Date().toISOString()),
-                blogName: ''
+                blogName: blog.name
             };
             return yield postMutation_1.postMutation.createPostInDb(newPost);
         });

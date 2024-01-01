@@ -36,6 +36,11 @@ export const createNewPostController = async (req: RequestWithBody<PostInputMode
 
         const result = await postsService.createPostService({title, shortDescription, content, blogId})
 
+        if (!result) {
+            res.sendStatus(400)
+            return
+        }
+
         return res.status(201).send(result)
 
     } catch (e) {
