@@ -16,14 +16,27 @@ const blogsService_1 = require("../services/blogs/blogsService");
 //     return res.status(200).send(blogDB.blogs)
 // }
 const getAllBlogsController = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    const sortData = req.query;
+    // const sortData = req.query
+    const sortData = {
+        searchNameTerm: req.query.searchNameTerm,
+        sortBy: req.query.sortBy,
+        sortDirection: req.query.sortDirection,
+        pageNumber: req.query.pageNumber,
+        pageSize: req.query.pageSize
+    };
     const result = yield blogQuery_1.blogQuery.getAllBlogInDb(sortData);
     return res.status(200).send(result);
 });
 exports.getAllBlogsController = getAllBlogsController;
 const getAllPostInBlogController = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const blogId = req.params.id;
-    const sortData = req.query;
+    // const sortData = req.query
+    const sortData = {
+        sortBy: req.query.sortBy,
+        sortDirection: req.query.sortDirection,
+        pageNumber: req.query.pageNumber,
+        pageSize: req.query.pageSize
+    };
     const blog = yield blogQuery_1.blogQuery.getBlogByIdInDb(blogId);
     if (!blog) {
         res.sendStatus(404);

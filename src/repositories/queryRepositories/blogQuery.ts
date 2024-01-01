@@ -23,7 +23,7 @@ export const blogQuery = {
         try {
             const blogs = await dbBlogCollections
                 .find(filter)
-                .sort({[sortBy]: sortDirection === 'asc' ? 1 : -1})
+                .sort(sortBy, sortDirection)
                 .skip((+pageNumber - 1) * +pageSize)
                 .limit(+pageSize)
                 .toArray()
@@ -56,7 +56,7 @@ export const blogQuery = {
         try {
             const posts = await dbPostCollections
                 .find({blogId: blogId})
-                .sort({[sortBy]: sortDirection === 'asc' ? 1 : -1})
+                .sort(sortBy, sortDirection)
                 .skip((+pageNumber - 1) * +pageSize)
                 .limit(+pageSize)
                 .toArray()

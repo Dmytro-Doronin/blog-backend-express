@@ -30,7 +30,7 @@ exports.blogQuery = {
             try {
                 const blogs = yield dbCollections_1.dbBlogCollections
                     .find(filter)
-                    .sort({ [sortBy]: sortDirection === 'asc' ? 1 : -1 })
+                    .sort(sortBy, sortDirection)
                     .skip((+pageNumber - 1) * +pageSize)
                     .limit(+pageSize)
                     .toArray();
@@ -59,7 +59,7 @@ exports.blogQuery = {
             try {
                 const posts = yield dbCollections_1.dbPostCollections
                     .find({ blogId: blogId })
-                    .sort({ [sortBy]: sortDirection === 'asc' ? 1 : -1 })
+                    .sort(sortBy, sortDirection)
                     .skip((+pageNumber - 1) * +pageSize)
                     .limit(+pageSize)
                     .toArray();

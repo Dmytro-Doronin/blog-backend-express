@@ -9,7 +9,7 @@ import {QueryBlogInputModel} from "../../types/posts/queryPosts.types";
 export const postQuery = {
     async getAllPostsFromDb (sortData: QueryBlogInputModel) {
 
-        const sortBy = sortData.sortBy ??  "createdAt"
+        const sortBy = sortData.sortBy ?? 'createdAt'
         const sortDirection = sortData.sortDirection ?? 'desc'
         const pageNumber = sortData.pageNumber ?? 1
         const pageSize = sortData.pageSize ?? 10
@@ -17,7 +17,7 @@ export const postQuery = {
         try {
             const post = await dbPostCollections
                 .find({})
-                .sort({[sortBy]: sortDirection === 'asc' ? 1 : -1})
+                .sort(sortBy, sortDirection)
                 .skip((+pageNumber - 1) * +pageSize)
                 .limit(+pageSize)
                 .toArray()

@@ -12,7 +12,14 @@ import {QueryBlogInputModel} from "../types/posts/queryPosts.types";
 
 export const getAllPostsController = async (req: RequestWithQuery<QueryBlogInputModel>, res: ResponseWithData<PostsOutputModelType>) => {
 
-    const sortData = req.query
+    // const sortData = req.query
+
+    const sortData = {
+        sortBy: req.query.sortBy,
+        sortDirection: req.query.sortDirection,
+        pageNumber: req.query.pageNumber,
+        pageSize: req.query.pageSize
+    }
 
     try {
         const result = await postQuery.getAllPostsFromDb(sortData)

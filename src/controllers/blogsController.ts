@@ -15,8 +15,14 @@ import {QueryBlogInputModel, QueryBlogToPostsInputModel} from "../types/blogs/qu
 // }
 
 export const getAllBlogsController = async (req: RequestWithQuery<QueryBlogInputModel>, res: ResponseWithData<BlogOutputModelType>) => {
-        const sortData = req.query
-
+        // const sortData = req.query
+    const sortData = {
+        searchNameTerm: req.query.searchNameTerm,
+        sortBy: req.query.sortBy,
+        sortDirection: req.query.sortDirection,
+        pageNumber: req.query.pageNumber,
+        pageSize: req.query.pageSize
+    }
         const result = await blogQuery.getAllBlogInDb(sortData)
         return res.status(200).send(result)
 }
@@ -24,8 +30,13 @@ export const getAllBlogsController = async (req: RequestWithQuery<QueryBlogInput
 export const getAllPostInBlogController = async (req: RequestWithParamsAndQuery<ParamsType, QueryBlogToPostsInputModel>, res: Response) => {
     const blogId = req.params.id
 
-    const sortData = req.query
-
+    // const sortData = req.query
+    const sortData = {
+        sortBy: req.query.sortBy,
+        sortDirection: req.query.sortDirection,
+        pageNumber: req.query.pageNumber,
+        pageSize: req.query.pageSize
+    }
     const blog = await blogQuery.getBlogByIdInDb(blogId)
 
     if (!blog) {
