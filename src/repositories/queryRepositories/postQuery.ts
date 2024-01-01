@@ -14,10 +14,19 @@ export const postQuery = {
         const pageNumber = sortData.pageNumber ?? 1
         const pageSize = sortData.pageSize ?? 10
 
+        const filterForSort = (sortBy: string, sortDirection: string ): {[key: string]: 1 | -1} => {
+            if (sortDirection === 'asc') {
+                return {[sortBy]: 1}
+            } else {
+                return {[sortBy]: -1 }
+            }
+        }
+
+
         try {
             const post = await dbPostCollections
                 .find({})
-                .sort(sortBy, sortDirection)
+                .sort(filterForSort(sortBy, sortDirection))
                 .skip((+pageNumber - 1) * +pageSize)
                 .limit(+pageSize)
                 .toArray()
