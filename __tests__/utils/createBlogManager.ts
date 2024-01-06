@@ -20,17 +20,24 @@ export const createBlogManager = {
             createdBlog = createResponse.body
 
             expect(createdBlog).toEqual({
-                id: expect.any(String),
-                name: data.name,
-                description: data.description,
-                websiteUrl: data.websiteUrl,
-                createdAt: expect.any(String),
-                isMembership: expect.any(Boolean),
+                pagesCount: 1,
+                page: 1,
+                pageSize: 10,
+                totalCount: 1,
+                items: [
+                    {
+                        id: expect.any(String),
+                        name: data.name,
+                        description: data.description,
+                        websiteUrl: data.websiteUrl,
+                        createdAt: expect.any(String),
+                        isMembership: expect.any(Boolean),
+                    }
+                ]
+
             })
         }
 
         return {createResponse, createdBlog}
     }
-
-
 }
