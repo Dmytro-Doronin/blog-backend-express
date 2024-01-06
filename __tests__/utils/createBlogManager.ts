@@ -1,14 +1,15 @@
 import {BlogInputModelType} from "../../src/types/commonBlogTypeAndPosts.types";
 import {app} from "../../src/app";
 import request = require('supertest')
+import {routePath} from "../../src/variables";
 
 
 export const createBlogManager = {
 
-    async createBlog (data: BlogInputModelType, statusCode: number = 201) {
+    async createBlog (data: BlogInputModelType,statusCode: number = 201, path = routePath.BLOGS ) {
 
         const createResponse = await request(app)
-            .post('/api/blogs')
+            .post(path)
             .send(data)
             .set('Authorization', 'Basic YWRtaW46cXdlcnR5')
             .withCredentials(true)
@@ -19,12 +20,7 @@ export const createBlogManager = {
         if (statusCode === 201) {
             createdBlog = createResponse.body
 
-            expect(createdBlog).toEqual({
-                pagesCount: 1,
-                page: 1,
-                pageSize: 10,
-                totalCount: 1,
-                items: [
+            expect(createdBlog).toEqual(
                     {
                         id: expect.any(String),
                         name: data.name,
@@ -33,9 +29,7 @@ export const createBlogManager = {
                         createdAt: expect.any(String),
                         isMembership: expect.any(Boolean),
                     }
-                ]
-
-            })
+            )
         }
 
         return {createResponse, createdBlog}

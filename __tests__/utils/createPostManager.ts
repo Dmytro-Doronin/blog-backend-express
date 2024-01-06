@@ -26,7 +26,6 @@ export const createPostManager = {
                 blogId: data.blogId,
                 createdAt: expect.any(String),
                 blogName: expect.any(String),
-
             })
         }
 

@@ -6,3 +6,4 @@ export type QueryBlogInputModel = {
     pageNumber?: number
     pageSize?: number
 }
+

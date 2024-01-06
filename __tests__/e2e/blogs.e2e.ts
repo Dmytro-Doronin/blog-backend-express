@@ -1,7 +1,8 @@
 import request = require('supertest')
 import {app} from "../../src/app";
 import {createBlogManager} from "../utils/createBlogManager";
-import {BlogInputModelType} from "../../src/types/commonBlogTypeAndPosts.types";
+import {BlogInputModelType, PostInputModelType} from "../../src/types/commonBlogTypeAndPosts.types";
+import {createPostForBlogManager} from "../utils/createPostForBlogManager";
 
 
 describe('/blogs', () => {
@@ -21,6 +22,26 @@ describe('/blogs', () => {
 
         await createBlogManager.createBlog(data, 201)
 
+    })
+
+    it ('Should create new post for specific blog', async () => {
+
+
+        const data: BlogInputModelType = {
+            name: "Home",
+            description: "a wanna go home",
+            websiteUrl: "https://www.gohome.com"
+        }
+
+        const {createdBlog} =  await createBlogManager.createBlog(data, 201)
+
+        const newPost: PostInputModelType = {
+            title: "Home",
+            shortDescription: "a wanna go home",
+            content: 'Trrololo',
+            blogId: createdBlog.id
+        }
+        await createPostForBlogManager.createPostForBlog(newPost, createdBlog, 201)
     })
 
     it ('Should not create blogs with incorrect name', async () => {
@@ -97,14 +118,18 @@ describe('/blogs', () => {
 
         const {createdBlog} = await createBlogManager.createBlog(data, 201)
 
-
-
         await request(app)
             .get(`/api/blogs`)
-            .expect(200, [createdBlog])
+            .expect(200, {
+                pagesCount: 1,
+                page: 1,
+                pageSize: 10,
+                totalCount: 1,
+                items: [createdBlog]
+            })
     })
 
-    it ('Should get blogs by id', async () => {
+    it ('Should get blog by id', async () => {
 
         const data: BlogInputModelType = {
             name: "Home",
@@ -115,27 +140,46 @@ describe('/blogs', () => {
         const {createdBlog} = await createBlogManager.createBlog(data, 201)
 
 
-
         await request(app)
             .get(`/api/blogs/${createdBlog.id}`)
             .expect(200, createdBlog)
+    })
+
+
+    it ('Should get post for specific blog', async () => {
+
+        const data: BlogInputModelType = {
+            name: "Home",
+            description: "a wanna go home",
+            websiteUrl: "https://www.gohome.com"
+        }
+
+        const {createdBlog} =  await createBlogManager.createBlog(data, 201)
+
+        const newPost: PostInputModelType = {
+            title: "Home",
+            shortDescription: "a wanna go home",
+            content: 'Trrololo',
+            blogId: createdBlog.id
+        }
+        const {createdPostForBlog} = await createPostForBlogManager.createPostForBlog(newPost, createdBlog, 201)
+
+        await request(app)
+            .get(`/api/blogs/${createdBlog.id}/posts`)
+            .expect(200, {
+                pagesCount: 1,
+                page: 1,
+                pageSize: 10,
+                totalCount: 1,
+                items: [createdPostForBlog]})
+
     })
 
     it ('Should not get blogs by incorrect id', async () => {
 
-        const data: BlogInputModelType = {
-            name: "Home",
-            description: "a wanna go home",
-            websiteUrl: "https://gohome.com"
-        }
-
-        const {createdBlog} = await createBlogManager.createBlog(data, 201)
-
-
-
         await request(app)
-            .get(`/api/blogs/${createdBlog.id}`)
-            .expect(200, createdBlog)
+            .get(`/api/blogs/asdasdasd`)
+            .expect(404)
     })
 
     it ('Should change blogs by id', async () => {
@@ -347,9 +391,9 @@ describe('/blogs', () => {
 
     })
 
+
+
     afterAll(done => {
         done()
     })
-
-
 })
