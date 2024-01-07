@@ -16,20 +16,20 @@ export const userQuery = {
 
         let filter: any = {}
 
-        // if (searchEmailTerm) {
-        //     filter['email'] = {$regex: searchEmailTerm, $options: 'i'}
-        // }
-        //
-        // if (searchLoginTerm) {
-        //     filter['login'] = {$regex: searchLoginTerm, $options: 'i'}
-        // }
-
-        filter = {
-            $or: [{
-                email: {$regex: searchEmailTerm, $options: 'i'},
-                login: {$regex: searchEmailTerm, $options: 'i'}
-            }]
+        if (searchEmailTerm) {
+            filter['email'] = {$regex: searchEmailTerm, $options: 'i'}
         }
+
+        if (searchLoginTerm) {
+            filter['login'] = {$regex: searchLoginTerm, $options: 'i'}
+        }
+
+        // filter = {
+        //     $or: [{
+        //         email: {$regex: searchEmailTerm, $options: 'i'},
+        //         login: {$regex: searchEmailTerm, $options: 'i'}
+        //     }]
+        // }
 
         try {
             const users = await dbUsersCollections

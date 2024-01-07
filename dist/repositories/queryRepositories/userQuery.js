@@ -24,19 +24,18 @@ exports.userQuery = {
             const searchLoginTerm = (_e = sortData.searchLoginTerm) !== null && _e !== void 0 ? _e : null;
             const searchEmailTerm = (_f = sortData.searchEmailTerm) !== null && _f !== void 0 ? _f : null;
             let filter = {};
-            // if (searchEmailTerm) {
-            //     filter['email'] = {$regex: searchEmailTerm, $options: 'i'}
+            if (searchEmailTerm) {
+                filter['email'] = { $regex: searchEmailTerm, $options: 'i' };
+            }
+            if (searchLoginTerm) {
+                filter['login'] = { $regex: searchLoginTerm, $options: 'i' };
+            }
+            // filter = {
+            //     $or: [{
+            //         email: {$regex: searchEmailTerm, $options: 'i'},
+            //         login: {$regex: searchEmailTerm, $options: 'i'}
+            //     }]
             // }
-            //
-            // if (searchLoginTerm) {
-            //     filter['login'] = {$regex: searchLoginTerm, $options: 'i'}
-            // }
-            filter = {
-                $or: [{
-                        email: { $regex: searchEmailTerm, $options: 'i' },
-                        login: { $regex: searchEmailTerm, $options: 'i' }
-                    }]
-            };
             try {
                 const users = yield dbCollections_1.dbUsersCollections
                     .find(filter)
