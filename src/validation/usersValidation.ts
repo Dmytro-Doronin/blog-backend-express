@@ -16,7 +16,7 @@ export const userPassword = body('password')
 export const userEmail = body('email')
     .isString()
     .trim()
-    .matches('^[\\w-\\.]+@([\\w-]+\\.)+[\\w-]{2,4}$\n')
-    .withMessage('The field must not be less then 6 symbols and more then 20 symbols')
+    // .matches('^[\\w-\\.]+@([\\w-]+\\.)+[\\w-]{2,4}$\n')
+    .withMessage('Wrong email')
 
 export const userValidationMiddleware = () => [userLogin, userPassword,userEmail]

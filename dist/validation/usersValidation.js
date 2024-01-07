@@ -16,7 +16,7 @@ exports.userPassword = (0, express_validator_1.body)('password')
 exports.userEmail = (0, express_validator_1.body)('email')
     .isString()
     .trim()
-    .matches('^[\\w-\\.]+@([\\w-]+\\.)+[\\w-]{2,4}$\n')
-    .withMessage('The field must not be less then 6 symbols and more then 20 symbols');
+    // .matches('^[\\w-\\.]+@([\\w-]+\\.)+[\\w-]{2,4}$\n')
+    .withMessage('Wrong email');
 const userValidationMiddleware = () => [exports.userLogin, exports.userPassword, exports.userEmail];
 exports.userValidationMiddleware = userValidationMiddleware;
