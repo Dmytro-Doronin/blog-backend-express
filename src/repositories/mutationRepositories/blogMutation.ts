@@ -4,11 +4,11 @@ import {
     CreatePostToBlogType,
     PostViewModelType
 } from "../../types/commonBlogTypeAndPosts.types";
-import {blogMapper, postMapper} from "../maper";
+import {blogMapper, postMapper} from "../../utils/maper";
 
 import {client} from "../../db/db";
 import {ChangeBlogByIdTypes} from "../../services/serviceTypes/blogsTypes";
-import {dbBlogCollections, dbPostCollections} from "../dbCollections";
+import {dbBlogCollections, dbPostCollections} from "../../db/dbCollections";
 import {blogQuery} from "../queryRepositories/blogQuery";
 const { v4: uuidv4 } = require('uuid');
 

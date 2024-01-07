@@ -20,9 +20,31 @@ export type PostViewModelType = {
     createdAt: string
 }
 
+export type UserViewModel = {
+    id: string
+    login: string
+    email: string
+    createdAt: string
+}
+
+export type userDBType = {
+    id: string
+    userNAme: string
+    email: string
+    passwordHash: string
+    passwordSalt: string
+    createdAt: string
+
+}
+
 export type BlogInputModelType = Omit<BlogViewModelType, 'id' | 'createdAt' | 'isMembership'>
 export type PostInputModelType = Omit<PostViewModelType, 'id' | 'blogName' | 'createdAt'>
 export type CreatePostToBlogType = Omit<PostViewModelType, 'id' | 'blogName' | 'createdAt' | 'blogId'>
+export type UsersInputModelType = {
+    login: string
+    password: string
+    email: string
+}
 
 export type BlogOutputModelType = {
     pagesCount?: number
@@ -39,7 +61,13 @@ export type PostsOutputModelType = {
     totalCount?: number
     items: PostViewModelType[]
 }
-
+export type UsersOutputModelType = {
+    pagesCount?: number
+    page?: number
+    pageSize?: number
+    totalCount?: number
+    items: UserViewModel[]
+}
 
 export type FieldErrorType = {
     message: string,

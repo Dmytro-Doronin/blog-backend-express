@@ -1,8 +1,8 @@
 import {PostInputModelType, PostViewModelType} from "../../types/commonBlogTypeAndPosts.types";
-import {postMapper} from "../maper";
+import {postMapper} from "../../utils/maper";
 import {client} from "../../db/db";
 import {CreatePostsServiceType} from "../../services/serviceTypes/postsTypes";
-import {dbPostCollections} from '../dbCollections'
+import {dbPostCollections} from '../../db/dbCollections'
 
 //export const dbPostCollections = client.db('Blogs').collection<PostViewModelType>('posts')
 

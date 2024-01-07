@@ -1,8 +1,8 @@
-import {postMapper} from "../maper";
+import {postMapper} from "../../utils/maper";
 
 import {client} from "../../db/db";
 import {PostViewModelType} from "../../types/commonBlogTypeAndPosts.types";
-import {dbBlogCollections, dbPostCollections} from "../dbCollections";
+import {dbBlogCollections, dbPostCollections} from "../../db/dbCollections";
 import {QueryBlogInputModel} from "../../types/posts/queryPosts.types";
 import {filterForSort} from "../../utils/sortUtils";
 
@@ -14,7 +14,6 @@ export const postQuery = {
         const sortDirection = sortData.sortDirection ?? 'desc'
         const pageNumber = sortData.pageNumber ?? 1
         const pageSize = sortData.pageSize ?? 10
-        console.log(sortBy)
 
         try {
             const post = await dbPostCollections

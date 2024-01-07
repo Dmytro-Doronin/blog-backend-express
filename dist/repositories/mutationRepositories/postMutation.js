@@ -10,8 +10,8 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.postMutation = void 0;
-const maper_1 = require("../maper");
-const dbCollections_1 = require("../dbCollections");
+const maper_1 = require("../../utils/maper");
+const dbCollections_1 = require("../../db/dbCollections");
 //export const dbPostCollections = client.db('Blogs').collection<PostViewModelType>('posts')
 exports.postMutation = {
     createPostInDb(newPost) {

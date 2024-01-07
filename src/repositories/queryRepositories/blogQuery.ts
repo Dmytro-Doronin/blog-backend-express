@@ -1,7 +1,7 @@
-import {blogMapper, postMapper} from "../maper";
+import {blogMapper, postMapper} from "../../utils/maper";
 import {BlogViewModelType, ParamsType} from "../../types/commonBlogTypeAndPosts.types";
 import {client} from "../../db/db";
-import {dbBlogCollections, dbPostCollections} from "../dbCollections";
+import {dbBlogCollections, dbPostCollections} from "../../db/dbCollections";
 import {QueryBlogInputModel} from "../../types/blogs/queryBlog.types";
 import {filterForSort} from "../../utils/sortUtils";
 

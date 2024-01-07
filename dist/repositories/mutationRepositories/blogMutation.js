@@ -10,8 +10,8 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.blogMutation = void 0;
-const maper_1 = require("../maper");
-const dbCollections_1 = require("../dbCollections");
+const maper_1 = require("../../utils/maper");
+const dbCollections_1 = require("../../db/dbCollections");
 const { v4: uuidv4 } = require('uuid');
 exports.blogMutation = {
     createBlogInDb(newBlog) {

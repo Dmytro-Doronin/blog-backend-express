@@ -10,8 +10,8 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.deleteAllDataMutation = void 0;
-const dbCollections_1 = require("../dbCollections");
-const dbCollections_2 = require("../dbCollections");
+const dbCollections_1 = require("../../db/dbCollections");
+const dbCollections_2 = require("../../db/dbCollections");
 exports.deleteAllDataMutation = {
     deleteAllDataFromDb() {
         return __awaiter(this, void 0, void 0, function* () {

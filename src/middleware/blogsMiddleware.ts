@@ -1,5 +1,5 @@
 import {Request, Response, NextFunction} from "express";
-import {ParamsType, RequestWithBody, RequestWithParamsAndBody} from "../types/commonBlogTypeAndPosts.types";
+import {ParamsType, RequestWithParamsAndBody} from "../types/commonBlogTypeAndPosts.types";
 import {BlogInputModelType} from "../types/commonBlogTypeAndPosts.types";
 import {validationResult} from "express-validator";
 
