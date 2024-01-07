@@ -28,7 +28,7 @@ exports.userQuery = {
                 filter['email'] = { $regex: searchEmailTerm, $options: 'i' };
             }
             if (searchLoginTerm) {
-                filter['userName'] = { $regex: searchLoginTerm, $options: 'i' };
+                filter['login'] = { $regex: searchLoginTerm, $options: 'i' };
             }
             try {
                 const users = yield dbCollections_1.dbUsersCollections

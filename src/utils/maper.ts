@@ -27,7 +27,7 @@ export const postMapper = (post: WithId<PostViewModelType>): PostViewModelType  
 export const userMapper = (user: WithId<userDBType>): UserViewModel  => {
     return {
         id:	user.id,
-        login: user.userNAme,
+        login: user.login,
         email: user.email,
         createdAt: user.createdAt
     }

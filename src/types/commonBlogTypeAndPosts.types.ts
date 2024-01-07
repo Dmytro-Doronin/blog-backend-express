@@ -29,7 +29,7 @@ export type UserViewModel = {
 
 export type userDBType = {
     id: string
-    userNAme: string
+    login: string
     email: string
     passwordHash: string
     passwordSalt: string

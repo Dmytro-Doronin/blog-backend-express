@@ -17,7 +17,7 @@ export const userEmail = body('email')
     .isString()
     .trim()
     .isLength({min: 1})
-    // .matches('^[\\w-\\.]+@([\\w-]+\\.)+[\\w-]{2,4}$\n')
+    // .matches('^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$')
     .withMessage('Wrong email')
 
 export const userValidationMiddleware = () => [userLogin, userPassword,userEmail]

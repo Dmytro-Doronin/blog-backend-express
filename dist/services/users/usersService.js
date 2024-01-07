@@ -23,7 +23,7 @@ exports.usersService = {
             const passwordHash = yield this._generateHash(password, passwordSalt);
             const newUser = {
                 id: uuidv4(),
-                userNAme: login,
+                login,
                 email,
                 passwordHash,
                 passwordSalt,

@@ -21,7 +21,7 @@ export const userQuery = {
         }
 
         if (searchLoginTerm) {
-            filter['userName'] = {$regex: searchLoginTerm, $options: 'i'}
+            filter['login'] = {$regex: searchLoginTerm, $options: 'i'}
         }
 
         try {
