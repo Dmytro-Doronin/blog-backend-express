@@ -18,6 +18,7 @@ exports.deleteAllDataMutation = {
             try {
                 yield dbCollections_1.dbBlogCollections.deleteMany({});
                 yield dbCollections_2.dbPostCollections.deleteMany({});
+                yield dbCollections_1.dbUsersCollections.deleteMany({});
             }
             catch (e) {
                 throw new Error('All data was not deleted');

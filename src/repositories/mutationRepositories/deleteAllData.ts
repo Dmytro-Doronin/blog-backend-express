@@ -1,5 +1,5 @@
 
-import {dbBlogCollections} from "../../db/dbCollections";
+import {dbBlogCollections, dbUsersCollections} from "../../db/dbCollections";
 import {dbPostCollections} from "../../db/dbCollections";
 
 export const deleteAllDataMutation = {
@@ -7,6 +7,7 @@ export const deleteAllDataMutation = {
         try {
             await dbBlogCollections.deleteMany({})
             await dbPostCollections.deleteMany({})
+            await dbUsersCollections.deleteMany({})
         } catch (e) {
             throw new Error('All data was not deleted')
         }
