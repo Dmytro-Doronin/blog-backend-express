@@ -57,7 +57,7 @@ export const userQuery = {
     },
 
     async findUserByLoginOrEmail (loginOrEmail: string) {
-        return await dbUsersCollections.findOne({$or: [{email:loginOrEmail },{userNAme: loginOrEmail}]})
+        return await dbUsersCollections.findOne({$or: [{email:loginOrEmail },{userName: loginOrEmail}]})
     },
 
     async findUserById (id: string) {
