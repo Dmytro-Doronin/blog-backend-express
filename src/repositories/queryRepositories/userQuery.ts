@@ -14,22 +14,27 @@ export const userQuery = {
         const searchLoginTerm = sortData.searchLoginTerm ?? null
         const searchEmailTerm = sortData.searchEmailTerm ?? null
 
-        let filter: any = {}
-
-        if (searchEmailTerm) {
-            filter['email'] = {$regex: searchEmailTerm, $options: 'i'}
-        }
-
-        if (searchLoginTerm) {
-            filter['login'] = {$regex: searchLoginTerm, $options: 'i'}
-        }
-
-        // filter = {
-        //     $or: [{
-        //         email: {$regex: searchEmailTerm, $options: 'i'},
-        //         login: {$regex: searchEmailTerm, $options: 'i'}
-        //     }]
+        // let filter: any = {}
+        //
+        // if (searchEmailTerm) {
+        //     filter['email'] = {$regex: searchEmailTerm, $options: 'i'}
         // }
+        //
+        // if (searchLoginTerm) {
+        //     filter['login'] = {$regex: searchLoginTerm, $options: 'i'}
+        // }
+
+        let filter: any = {$or: []};
+        if (searchEmailTerm) {
+            filter['$or']?.push({email: {$regex: searchEmailTerm, $options: 'i'}});
+        }
+        if (searchLoginTerm) {
+            filter['$or']?.push({login: {$regex: searchLoginTerm, $options: 'i'}});
+        }
+        if (filter['$or']?.length === 0) {
+            filter['$or']?.push({});
+        }
+
 
         try {
             const users = await dbUsersCollections

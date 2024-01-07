@@ -15,7 +15,7 @@ const sortUtils_1 = require("../../utils/sortUtils");
 const maper_1 = require("../../utils/maper");
 exports.userQuery = {
     getAllUsers(sortData) {
-        var _a, _b, _c, _d, _e, _f;
+        var _a, _b, _c, _d, _e, _f, _g, _h, _j, _k;
         return __awaiter(this, void 0, void 0, function* () {
             const sortBy = (_a = sortData.sortBy) !== null && _a !== void 0 ? _a : 'createdAt';
             const sortDirection = (_b = sortData.sortDirection) !== null && _b !== void 0 ? _b : 'desc';
@@ -23,19 +23,25 @@ exports.userQuery = {
             const pageSize = (_d = sortData.pageSize) !== null && _d !== void 0 ? _d : 10;
             const searchLoginTerm = (_e = sortData.searchLoginTerm) !== null && _e !== void 0 ? _e : null;
             const searchEmailTerm = (_f = sortData.searchEmailTerm) !== null && _f !== void 0 ? _f : null;
-            let filter = {};
+            // let filter: any = {}
+            //
+            // if (searchEmailTerm) {
+            //     filter['email'] = {$regex: searchEmailTerm, $options: 'i'}
+            // }
+            //
+            // if (searchLoginTerm) {
+            //     filter['login'] = {$regex: searchLoginTerm, $options: 'i'}
+            // }
+            let filter = { $or: [] };
             if (searchEmailTerm) {
-                filter['email'] = { $regex: searchEmailTerm, $options: 'i' };
+                (_g = filter['$or']) === null || _g === void 0 ? void 0 : _g.push({ email: { $regex: searchEmailTerm, $options: 'i' } });
             }
             if (searchLoginTerm) {
-                filter['login'] = { $regex: searchLoginTerm, $options: 'i' };
+                (_h = filter['$or']) === null || _h === void 0 ? void 0 : _h.push({ login: { $regex: searchLoginTerm, $options: 'i' } });
             }
-            // filter = {
-            //     $or: [{
-            //         email: {$regex: searchEmailTerm, $options: 'i'},
-            //         login: {$regex: searchEmailTerm, $options: 'i'}
-            //     }]
-            // }
+            if (((_j = filter['$or']) === null || _j === void 0 ? void 0 : _j.length) === 0) {
+                (_k = filter['$or']) === null || _k === void 0 ? void 0 : _k.push({});
+            }
             try {
                 const users = yield dbCollections_1.dbUsersCollections
                     .find(filter)
