@@ -17,7 +17,7 @@ exports.userEmail = (0, express_validator_1.body)('email')
     .isString()
     .trim()
     .isLength({ min: 1 })
-    // .matches('^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$')
+    .matches('^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$')
     .withMessage('Wrong email');
 const userValidationMiddleware = () => [exports.userLogin, exports.userPassword, exports.userEmail];
 exports.userValidationMiddleware = userValidationMiddleware;
