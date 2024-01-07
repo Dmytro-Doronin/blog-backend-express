@@ -9,5 +9,4 @@ const blogsMiddleware_1 = require("../middleware/blogsMiddleware");
 exports.usersRouter = (0, express_1.Router)();
 exports.usersRouter.post('/', authMiddleware_1.authMiddleware, (0, usersValidation_1.userValidationMiddleware)(), blogsMiddleware_1.errorMiddleware, usersController_1.createUserController);
 exports.usersRouter.get('/', authMiddleware_1.authMiddleware, usersController_1.getAllUsersController);
-exports.usersRouter.post('/auth/login', usersController_1.loginController);
 exports.usersRouter.delete('/:id', authMiddleware_1.authMiddleware, usersController_1.deleteUserByIdController);

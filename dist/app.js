@@ -18,3 +18,4 @@ exports.app.use('/api/testing/all-data', deleteRouter_1.deleteRouter);
 exports.app.use('/api/blogs', blogsRouter_1.blogsRouter);
 exports.app.use('/api/posts', postsRouter_1.postsRouter);
 exports.app.use('/api/users', usersRouter_1.usersRouter);
+exports.app.use('/api/auth', usersRouter_1.usersRouter);

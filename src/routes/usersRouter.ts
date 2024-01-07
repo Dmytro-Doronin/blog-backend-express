@@ -13,5 +13,4 @@ export const usersRouter = Router()
 
 usersRouter.post('/', authMiddleware, userValidationMiddleware(), errorMiddleware, createUserController)
 usersRouter.get('/', authMiddleware, getAllUsersController)
-usersRouter.post('/auth/login', loginController)
 usersRouter.delete('/:id', authMiddleware, deleteUserByIdController)
