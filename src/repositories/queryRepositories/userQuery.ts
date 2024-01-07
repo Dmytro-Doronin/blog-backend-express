@@ -29,7 +29,7 @@ export const userQuery = {
             filter['$or']?.push({email: {$regex: searchEmailTerm, $options: 'i'}});
         }
         if (searchLoginTerm) {
-            filter['$or']?.push({login: {$regex: searchLoginTerm, $options: 'i'}});
+            filter['$or']?.push({userName: {$regex: searchLoginTerm, $options: 'i'}});
         }
         if (filter['$or']?.length === 0) {
             filter['$or']?.push({});
