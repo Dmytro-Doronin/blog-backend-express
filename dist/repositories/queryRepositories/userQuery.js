@@ -60,7 +60,7 @@ exports.userQuery = {
     },
     findUserByLoginOrEmail(loginOrEmail) {
         return __awaiter(this, void 0, void 0, function* () {
-            return yield dbCollections_1.dbUsersCollections.findOne({ $or: [{ email: loginOrEmail }, { userNAme: loginOrEmail }] });
+            return yield dbCollections_1.dbUsersCollections.findOne({ $or: [{ email: loginOrEmail }, { userName: loginOrEmail }] });
         });
     },
     findUserById(id) {
