@@ -10,7 +10,7 @@ export const usersService = {
 
         const newUser: userDBType = {
             id: uuidv4(),
-            userName: login,
+            login: login,
             email,
             passwordHash,
             passwordSalt,

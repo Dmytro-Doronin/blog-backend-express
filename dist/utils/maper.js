@@ -27,7 +27,7 @@ exports.postMapper = postMapper;
 const userMapper = (user) => {
     return {
         id: user.id,
-        login: user.userName,
+        login: user.login,
         email: user.email,
         createdAt: user.createdAt
     };

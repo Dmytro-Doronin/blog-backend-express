@@ -37,7 +37,7 @@ exports.userQuery = {
                 (_g = filter['$or']) === null || _g === void 0 ? void 0 : _g.push({ email: { $regex: searchEmailTerm, $options: 'i' } });
             }
             if (searchLoginTerm) {
-                (_h = filter['$or']) === null || _h === void 0 ? void 0 : _h.push({ userName: { $regex: searchLoginTerm, $options: 'i' } });
+                (_h = filter['$or']) === null || _h === void 0 ? void 0 : _h.push({ login: { $regex: searchLoginTerm, $options: 'i' } });
             }
             if (((_j = filter['$or']) === null || _j === void 0 ? void 0 : _j.length) === 0) {
                 (_k = filter['$or']) === null || _k === void 0 ? void 0 : _k.push({});
