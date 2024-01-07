@@ -15,6 +15,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.usersService = void 0;
 const bcryptjs_1 = __importDefault(require("bcryptjs"));
 const userMutation_1 = require("../../repositories/mutationRepositories/userMutation");
+const userQuery_1 = require("../../repositories/queryRepositories/userQuery");
 const { v4: uuidv4 } = require('uuid');
 exports.usersService = {
     createUser({ email, password, login }) {
@@ -30,6 +31,15 @@ exports.usersService = {
                 createdAt: new Date().toISOString()
             };
             return userMutation_1.userMutation.createUser(newUser);
+        });
+    },
+    checkCredentials(loginOrEmail, password) {
+        return __awaiter(this, void 0, void 0, function* () {
+            const user = yield userQuery_1.userQuery.findUserByLoginOrEmail(loginOrEmail);
+            if (!user)
+                return false;
+            const passwordHash = yield this._generateHash(password, user.passwordSalt);
+            return user.passwordHash === passwordHash;
         });
     },
     _generateHash(password, salt) {

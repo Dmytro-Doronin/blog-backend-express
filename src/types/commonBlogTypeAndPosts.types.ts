@@ -46,6 +46,11 @@ export type UsersInputModelType = {
     email: string
 }
 
+export type LoginType = {
+    loginOrEmail: string
+    password: string
+}
+
 export type BlogOutputModelType = {
     pagesCount?: number
     page?: number

@@ -9,7 +9,7 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
     });
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.deleteUserByIdController = exports.getAllUsersController = exports.createUserController = void 0;
+exports.loginController = exports.deleteUserByIdController = exports.getAllUsersController = exports.createUserController = void 0;
 const usersService_1 = require("../services/users/usersService");
 const userQuery_1 = require("../repositories/queryRepositories/userQuery");
 const createUserController = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
@@ -42,3 +42,15 @@ const deleteUserByIdController = (req, res) => __awaiter(void 0, void 0, void 0,
     return res.sendStatus(204);
 });
 exports.deleteUserByIdController = deleteUserByIdController;
+const loginController = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    const { loginOrEmail, password } = req.body;
+    const result = yield usersService_1.usersService.checkCredentials(loginOrEmail, password);
+    if (!result) {
+        res.sendStatus(401);
+        return;
+    }
+    res.sendStatus(204);
+    return;
+    // const result = await userQuery.findUserByLoginOrEmail()
+});
+exports.loginController = loginController;
