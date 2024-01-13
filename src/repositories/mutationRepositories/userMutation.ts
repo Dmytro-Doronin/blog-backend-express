@@ -15,7 +15,7 @@ export const userMutation = {
 
             return userMapper(findUser)
         } catch (e) {
-            throw new Error('Blog was not created')
+            throw new Error('User was not created')
         }
     },
 
@@ -30,7 +30,7 @@ export const userMutation = {
             return null
 
         } catch (e) {
-            throw new Error('Blog was nod deleted')
+            throw new Error('User was not deleted')
         }
     }
 }
