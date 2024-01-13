@@ -9,7 +9,7 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
     });
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.deletePostByIdController = exports.changePostByIdController = exports.getPostByIdController = exports.createNewPostController = exports.getAllPostsController = void 0;
+exports.createCommentForPostController = exports.deletePostByIdController = exports.changePostByIdController = exports.getPostByIdController = exports.createNewPostController = exports.getAllPostsController = void 0;
 const postQuery_1 = require("../repositories/queryRepositories/postQuery");
 const postsService_1 = require("../services/posts/postsService");
 const getAllPostsController = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
@@ -70,3 +70,6 @@ const deletePostByIdController = (req, res) => __awaiter(void 0, void 0, void 0,
     return res.sendStatus(204);
 });
 exports.deletePostByIdController = deletePostByIdController;
+const createCommentForPostController = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+});
+exports.createCommentForPostController = createCommentForPostController;

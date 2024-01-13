@@ -27,7 +27,13 @@ export const usersService = {
 
         const passwordHash = await this._generateHash(password, user.passwordSalt)
 
-        return user.passwordHash === passwordHash
+        if (user.passwordHash === passwordHash) {
+            return user
+        } else {
+            return false
+        }
+
+
     },
 
     async _generateHash(password: string, salt: string) {

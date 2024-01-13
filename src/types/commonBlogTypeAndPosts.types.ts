@@ -37,6 +37,18 @@ export type userDBType = {
 
 }
 
+type CommentatorInfoType = {
+    userId:	string
+    userLogin:	string
+}
+
+export type CommentViewModelType = {
+    id: string
+    content: string
+    commentatorInfo: CommentatorInfoType
+    createdAt: string
+}
+
 export type BlogInputModelType = Omit<BlogViewModelType, 'id' | 'createdAt' | 'isMembership'>
 export type PostInputModelType = Omit<PostViewModelType, 'id' | 'blogName' | 'createdAt'>
 export type CreatePostToBlogType = Omit<PostViewModelType, 'id' | 'blogName' | 'createdAt' | 'blogId'>
@@ -44,6 +56,10 @@ export type UsersInputModelType = {
     login: string
     password: string
     email: string
+}
+
+export type CommentInputModelType = {
+    content: string
 }
 
 export type LoginType = {

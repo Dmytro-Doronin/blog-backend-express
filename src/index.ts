@@ -12,7 +12,6 @@ const startApp = async () => {
     } catch (e) {
         console.log(e)
     }
-
 }
 startApp()
 

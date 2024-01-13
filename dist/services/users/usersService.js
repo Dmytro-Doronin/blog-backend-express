@@ -39,7 +39,12 @@ exports.usersService = {
             if (!user)
                 return false;
             const passwordHash = yield this._generateHash(password, user.passwordSalt);
-            return user.passwordHash === passwordHash;
+            if (user.passwordHash === passwordHash) {
+                return user;
+            }
+            else {
+                return false;
+            }
         });
     },
     _generateHash(password, salt) {

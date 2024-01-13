@@ -1,31 +1,56 @@
 "use strict";
+var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
+    function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
+    return new (P || (P = Promise))(function (resolve, reject) {
+        function fulfilled(value) { try { step(generator.next(value)); } catch (e) { reject(e); } }
+        function rejected(value) { try { step(generator["throw"](value)); } catch (e) { reject(e); } }
+        function step(result) { result.done ? resolve(result.value) : adopt(result.value).then(fulfilled, rejected); }
+        step((generator = generator.apply(thisArg, _arguments || [])).next());
+    });
+};
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.authMiddleware = void 0;
+const jwtService_1 = require("../application/jwtService");
+const userQuery_1 = require("../repositories/queryRepositories/userQuery");
 const login = 'admin';
 const password = 'qwerty';
-const authMiddleware = (req, res, next) => {
-    // if (req.headers['authorization'] !== 'Basic YWRtaW46cXVlcnR5') {
+const authMiddleware = (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
+    // const auth = req.headers['authorization']
+    //
+    // if (!auth) {
     //     res.sendStatus(401)
     //     return
     // }
     //
-    // return next();
-    const auth = req.headers['authorization'];
-    if (!auth) {
+    // const [basic, token] = auth.split(" ")
+    //
+    // if (basic !== 'Basic') {
+    //     res.sendStatus(401)
+    //     return
+    // }
+    //
+    //
+    // const decodedData = Buffer.from(token, "base64").toString()
+    //
+    // const [decodedLogin, decodedPassword] = decodedData.split(':')
+    //
+    // if (decodedLogin !== login || decodedPassword !== password) {
+    //     res.sendStatus(401)
+    //     return
+    // }
+    //
+    // return next()
+    if (!req.headers.authorization) {
         res.sendStatus(401);
         return;
     }
-    const [basic, token] = auth.split(" ");
-    if (basic !== 'Basic') {
-        res.sendStatus(401);
+    const token = req.headers.authorization.split(' ')[1];
+    const userId = yield jwtService_1.jwtService.getUserIdByToken(token);
+    if (!userId) {
+        res.send(401);
         return;
     }
-    const decodedData = Buffer.from(token, "base64").toString();
-    const [decodedLogin, decodedPassword] = decodedData.split(':');
-    if (decodedLogin !== login || decodedPassword !== password) {
-        res.sendStatus(401);
-        return;
-    }
-    return next();
-};
+    req.user = yield userQuery_1.userQuery.findUserById(userId);
+    next();
+});
 exports.authMiddleware = authMiddleware;

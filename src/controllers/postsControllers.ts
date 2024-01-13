@@ -1,6 +1,6 @@
 import {Request, Response} from "express";
 import {
-    BlogInputModelType, ParamsType,
+    BlogInputModelType, CommentInputModelType, ParamsType,
     PostInputModelType, PostsOutputModelType,
     RequestWithBody,
     RequestWithParams, RequestWithParamsAndBody, RequestWithQuery, ResponseWithData
@@ -85,4 +85,8 @@ export const deletePostByIdController = async (req: RequestWithParams<ParamsType
     }
 
     return res.sendStatus(204)
+}
+
+export const createCommentForPostController = async (req: RequestWithParamsAndBody<ParamsType,CommentInputModelType>, res: Response) => {
+
 }

@@ -43,14 +43,14 @@ const mongodb_1 = require("mongodb");
 dotenv.config();
 const url = process.env.MONGO_URL;
 if (!url) {
-    throw new Error('Url doesn`t find');
+    throw new Error('Url does`t find');
 }
 exports.client = new mongodb_1.MongoClient(url);
 function runDB() {
     return __awaiter(this, void 0, void 0, function* () {
         try {
             yield exports.client.connect();
-            console.log('Connected succes to server');
+            console.log('Connected success to server');
         }
         catch (e) {
             console.log(e);

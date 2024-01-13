@@ -1,5 +1,4 @@
 import {
-    LoginType,
     ParamsType,
     RequestWithBody, RequestWithParams, RequestWithQuery,
     ResponseWithData,
@@ -46,19 +45,4 @@ export const deleteUserByIdController = async (req: RequestWithParams<ParamsType
     }
 
     return res.sendStatus(204)
-}
-
-export const loginController = async (req: RequestWithBody<LoginType>, res: Response) => {
-    const {loginOrEmail, password} = req.body
-
-    const result = await usersService.checkCredentials(loginOrEmail, password)
-
-    if (!result) {
-        res.sendStatus(401)
-        return
-    }
-
-    res.sendStatus(204)
-    return
-    // const result = await userQuery.findUserByLoginOrEmail()
 }

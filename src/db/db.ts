@@ -17,7 +17,7 @@ dotenv.config()
 const url = process.env.MONGO_URL
 
 if (!url) {
-    throw new Error('Url doesn`t find')
+    throw new Error('Url does`t find')
 }
 
 export const client = new MongoClient(url)
@@ -27,7 +27,7 @@ export const client = new MongoClient(url)
 export async function runDB ()  {
     try {
         await client.connect()
-        console.log('Connected succes to server')
+        console.log('Connected success to server')
     } catch (e) {
         console.log(e)
         await client.close()

@@ -29,6 +29,10 @@ export const postBlogId  = body('blogId')
         return true
     }).withMessage('Incorrect blogId')
 
+export const commentContent = body('content')
+    .isString()
+    .isLength({min: 20, max: 300}).withMessage('The field must not be more then 300 and less then 20 symbols')
 
 export const postsValidationModelMiddleware = () => [postTitle, postShortDescription, postContent, postBlogId]
 export const createPostToBlogModelMiddleware = () => [postTitle, postShortDescription, postContent]
+export const createCommentToPostModelMiddleware = () => [commentContent]

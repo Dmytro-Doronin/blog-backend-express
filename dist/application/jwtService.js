@@ -8,38 +8,30 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
         step((generator = generator.apply(thisArg, _arguments || [])).next());
     });
 };
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.userMutation = void 0;
-const dbCollections_1 = require("../../db/dbCollections");
-const maper_1 = require("../../utils/maper");
-const userQuery_1 = require("../queryRepositories/userQuery");
-exports.userMutation = {
-    createUser(newUser) {
+exports.jwtService = void 0;
+const jsonwebtoken_1 = __importDefault(require("jsonwebtoken"));
+const variables_1 = require("../variables");
+exports.jwtService = {
+    createJWT(user) {
         return __awaiter(this, void 0, void 0, function* () {
-            try {
-                yield dbCollections_1.dbUsersCollections.insertOne(newUser);
-                const findUser = yield userQuery_1.userQuery.findUserById(newUser.id);
-                if (!findUser) {
-                    return null;
-                }
-                return (0, maper_1.userMapper)(findUser);
-            }
-            catch (e) {
-                throw new Error('User was not created');
-            }
+            const token = jsonwebtoken_1.default.sign({ userId: user.id }, variables_1.setting.JWT_SECRET, { expiresIn: '1h' });
+            return {
+                accessToken: token
+            };
         });
     },
-    deleteUserByIdInDb(id) {
+    getUserIdByToken(token) {
         return __awaiter(this, void 0, void 0, function* () {
             try {
-                const res = yield dbCollections_1.dbUsersCollections.deleteOne({ id: id });
-                if (res.deletedCount === 1) {
-                    return true;
-                }
-                return null;
+                const result = jsonwebtoken_1.default.verify(token, variables_1.setting.JWT_SECRET);
+                return result.userId;
             }
             catch (e) {
-                throw new Error('User was not deleted');
+                return null;
             }
         });
     }
