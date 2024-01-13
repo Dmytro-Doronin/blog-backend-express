@@ -392,7 +392,6 @@ describe('/blogs', () => {
     })
 
 
-
     afterAll(done => {
         done()
     })

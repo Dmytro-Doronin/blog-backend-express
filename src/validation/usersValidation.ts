@@ -17,6 +17,7 @@ export const userEmail = body('email')
     .isString()
     .trim()
     .isLength({min: 1})
+    .isEmail()
     // .matches('^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$')
     .withMessage('Wrong email')
 
