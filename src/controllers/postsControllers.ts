@@ -94,6 +94,12 @@ export const createCommentForPostController = async (req: RequestWithParamsAndBo
     const {id: userId, login: userLogin} = req.user
     const {id: postId} = req.params
 
-    const result = await commentsService.createComment(postId, content, userId, userLogin)
+    const comment = await commentsService.createComment(postId, content, req.user!.id, req.user!.login)
+
+    if (comment === null) {
+        return res.sendStatus(404)
+    }
+
+    return res.status(201).send(comment)
 
 }

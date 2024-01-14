@@ -75,6 +75,10 @@ const createCommentForPostController = (req, res) => __awaiter(void 0, void 0, v
     const { content } = req.body;
     const { id: userId, login: userLogin } = req.user;
     const { id: postId } = req.params;
-    const result = yield commentsService_1.commentsService.createComment(postId, content, userId, userLogin);
+    const comment = yield commentsService_1.commentsService.createComment(postId, content, req.user.id, req.user.login);
+    if (comment === null) {
+        return res.sendStatus(404);
+    }
+    return res.status(201).send(comment);
 });
 exports.createCommentForPostController = createCommentForPostController;

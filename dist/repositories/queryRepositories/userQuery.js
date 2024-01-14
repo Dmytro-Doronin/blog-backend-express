@@ -66,7 +66,8 @@ exports.userQuery = {
     },
     findUserByLoginOrEmail(loginOrEmail) {
         return __awaiter(this, void 0, void 0, function* () {
-            return yield dbCollections_1.dbUsersCollections.findOne({ $or: [{ email: loginOrEmail }, { login: loginOrEmail }] });
+            const user = yield dbCollections_1.dbUsersCollections.findOne({ $or: [{ email: loginOrEmail }, { login: loginOrEmail }] });
+            return user;
         });
     },
     findUserById(id) {

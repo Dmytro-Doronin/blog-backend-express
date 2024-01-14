@@ -17,6 +17,7 @@ const loginController = (req, res) => __awaiter(void 0, void 0, void 0, function
     const user = yield usersService_1.usersService.checkCredentials(loginOrEmail, password);
     if (!user) {
         res.sendStatus(401);
+        console.log('net usera');
         return;
     }
     const token = yield jwtService_1.jwtService.createJWT(user);

@@ -5,11 +5,10 @@ import {jwtService} from "../application/jwtService";
 
 export const loginController = async (req: RequestWithBody<LoginType>, res: Response) => {
     const {loginOrEmail, password} = req.body
-
     const user = await usersService.checkCredentials(loginOrEmail, password)
-
     if (!user) {
         res.sendStatus(401)
+        console.log('net usera')
         return
     }
 
