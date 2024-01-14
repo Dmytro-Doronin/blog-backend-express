@@ -1,6 +1,13 @@
 import {client} from "./db";
-import {BlogViewModelType, PostViewModelType, userDBType, UserViewModel} from "../types/commonBlogTypeAndPosts.types";
+import {
+    BlogViewModelType, commentsDBType,
+    CommentViewModelType,
+    PostViewModelType,
+    userDBType,
+    UserViewModel
+} from "../types/commonBlogTypeAndPosts.types";
 
 export const dbBlogCollections = client.db('Blogs').collection<BlogViewModelType>('blogs')
-export const dbPostCollections = client.db('Blogs').collection<PostViewModelType>('posts')
+export const dbPostCollections = client.db('Posts').collection<PostViewModelType>('posts')
 export const dbUsersCollections = client.db('Users').collection<userDBType>('users')
+export const dbCommentsCollections = client.db('Comments').collection<commentsDBType>('comments')

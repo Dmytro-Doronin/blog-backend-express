@@ -1,7 +1,9 @@
+import userDBType from './src/types/commonBlogTypeAndPosts.types'
+
 export declare global {
     namespace Express {
         export interface Request {
-            user: string | null
+            user: userDBType | null
         }
     }
 }

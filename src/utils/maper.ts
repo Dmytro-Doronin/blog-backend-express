@@ -1,5 +1,11 @@
 import {WithId} from "mongodb";
-import {BlogViewModelType, PostViewModelType, userDBType, UserViewModel} from "../types/commonBlogTypeAndPosts.types";
+import {
+    BlogViewModelType,
+    commentsDBType, CommentViewModelType,
+    PostViewModelType,
+    userDBType,
+    UserViewModel
+} from "../types/commonBlogTypeAndPosts.types";
 
 export const blogMapper = (blog: WithId<BlogViewModelType>): BlogViewModelType  => {
     return {
@@ -30,5 +36,17 @@ export const userMapper = (user: WithId<userDBType>): UserViewModel  => {
         login: user.login,
         email: user.email,
         createdAt: user.createdAt
+    }
+}
+
+export const commentMapper = (comment: WithId<commentsDBType>): CommentViewModelType  => {
+    return {
+        id:	comment.id,
+        content: comment.content,
+        commentatorInfo: {
+            userId: comment.commentatorInfo.userId,
+            userLogin: comment.commentatorInfo.userLogin
+        },
+        createdAt: comment.createdAt
     }
 }

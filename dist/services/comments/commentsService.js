@@ -9,21 +9,28 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
     });
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.deleteAllDataMutation = void 0;
-const dbCollections_1 = require("../../db/dbCollections");
-const dbCollections_2 = require("../../db/dbCollections");
-exports.deleteAllDataMutation = {
-    deleteAllDataFromDb() {
+exports.commentsService = void 0;
+const postQuery_1 = require("../../repositories/queryRepositories/postQuery");
+const commentMutation_1 = require("../../repositories/mutationRepositories/commentMutation");
+const { v4: uuidv4 } = require('uuid');
+exports.commentsService = {
+    createComment(postId, content, userId, userLogin) {
         return __awaiter(this, void 0, void 0, function* () {
-            try {
-                yield dbCollections_1.dbBlogCollections.deleteMany({});
-                yield dbCollections_2.dbPostCollections.deleteMany({});
-                yield dbCollections_1.dbUsersCollections.deleteMany({});
-                yield dbCollections_1.dbCommentsCollections.deleteMany({});
+            const post = yield postQuery_1.postQuery.getPostByIdFromDb(postId);
+            if (!post) {
+                return null;
             }
-            catch (e) {
-                throw new Error('All data was not deleted');
-            }
+            const newComments = {
+                id: uuidv4(),
+                postId,
+                content,
+                commentatorInfo: {
+                    userId,
+                    userLogin
+                },
+                createdAt: (new Date().toISOString())
+            };
+            return commentMutation_1.commentMutation.createCommentForPostInDb(newComments);
         });
     }
 };

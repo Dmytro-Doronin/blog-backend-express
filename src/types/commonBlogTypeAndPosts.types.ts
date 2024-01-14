@@ -34,7 +34,6 @@ export type userDBType = {
     passwordHash: string
     passwordSalt: string
     createdAt: string
-
 }
 
 type CommentatorInfoType = {
@@ -48,6 +47,8 @@ export type CommentViewModelType = {
     commentatorInfo: CommentatorInfoType
     createdAt: string
 }
+
+export type commentsDBType = CommentViewModelType & {postId: string}
 
 export type BlogInputModelType = Omit<BlogViewModelType, 'id' | 'createdAt' | 'isMembership'>
 export type PostInputModelType = Omit<PostViewModelType, 'id' | 'blogName' | 'createdAt'>

@@ -12,6 +12,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.createCommentForPostController = exports.deletePostByIdController = exports.changePostByIdController = exports.getPostByIdController = exports.createNewPostController = exports.getAllPostsController = void 0;
 const postQuery_1 = require("../repositories/queryRepositories/postQuery");
 const postsService_1 = require("../services/posts/postsService");
+const commentsService_1 = require("../services/comments/commentsService");
 const getAllPostsController = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     // const sortData = req.query
     const sortData = {
@@ -71,5 +72,9 @@ const deletePostByIdController = (req, res) => __awaiter(void 0, void 0, void 0,
 });
 exports.deletePostByIdController = deletePostByIdController;
 const createCommentForPostController = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    const { content } = req.body;
+    const { id: userId, login: userLogin } = req.user;
+    const { id: postId } = req.params;
+    const result = yield commentsService_1.commentsService.createComment(postId, content, userId, userLogin);
 });
 exports.createCommentForPostController = createCommentForPostController;

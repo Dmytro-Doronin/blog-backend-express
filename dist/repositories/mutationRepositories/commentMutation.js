@@ -9,26 +9,23 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
     });
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.authMiddleware = void 0;
-const login = 'admin';
-const password = 'qwerty';
-const authMiddleware = (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
-    const auth = req.headers['authorization'];
-    if (!auth) {
-        res.sendStatus(401);
-        return;
+exports.commentMutation = void 0;
+const dbCollections_1 = require("../../db/dbCollections");
+const maper_1 = require("../../utils/maper");
+exports.commentMutation = {
+    createCommentForPostInDb(newComments) {
+        return __awaiter(this, void 0, void 0, function* () {
+            try {
+                yield dbCollections_1.dbCommentsCollections.insertOne(newComments);
+                const comment = yield dbCollections_1.dbCommentsCollections.findOne({ id: newComments.id });
+                if (!comment) {
+                    return null;
+                }
+                return (0, maper_1.commentMapper)(comment);
+            }
+            catch (e) {
+                throw new Error('Comment was not created');
+            }
+        });
     }
-    const [basic, token] = auth.split(" ");
-    if (basic !== 'Basic') {
-        res.sendStatus(401);
-        return;
-    }
-    const decodedData = Buffer.from(token, "base64").toString();
-    const [decodedLogin, decodedPassword] = decodedData.split(':');
-    if (decodedLogin !== login || decodedPassword !== password) {
-        res.sendStatus(401);
-        return;
-    }
-    return next();
-});
-exports.authMiddleware = authMiddleware;
+};

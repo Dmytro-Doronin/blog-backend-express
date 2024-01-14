@@ -3,7 +3,6 @@ import {
     createUserController,
     deleteUserByIdController,
     getAllUsersController,
-    loginController
 } from "../controllers/usersController";
 import {userValidationMiddleware} from "../validation/usersValidation";
 import {authMiddleware} from "../middleware/authMiddleware";

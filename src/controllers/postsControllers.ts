@@ -8,6 +8,7 @@ import {
 import {postQuery} from "../repositories/queryRepositories/postQuery";
 import {postsService} from "../services/posts/postsService";
 import {QueryBlogInputModel} from "../types/posts/queryPosts.types";
+import {commentsService} from "../services/comments/commentsService";
 
 
 export const getAllPostsController = async (req: RequestWithQuery<QueryBlogInputModel>, res: ResponseWithData<PostsOutputModelType>) => {
@@ -87,6 +88,12 @@ export const deletePostByIdController = async (req: RequestWithParams<ParamsType
     return res.sendStatus(204)
 }
 
-export const createCommentForPostController = async (req: RequestWithParamsAndBody<ParamsType,CommentInputModelType>, res: Response) => {
+export const createCommentForPostController = async (req: RequestWithParamsAndBody<ParamsType, CommentInputModelType>, res: Response) => {
+
+    const {content} = req.body
+    const {id: userId, login: userLogin} = req.user
+    const {id: postId} = req.params
+
+    const result = await commentsService.createComment(postId, content, userId, userLogin)
 
 }

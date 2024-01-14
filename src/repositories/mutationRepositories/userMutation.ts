@@ -3,6 +3,7 @@ import {dbBlogCollections, dbUsersCollections} from "../../db/dbCollections";
 import {blogMapper, userMapper} from "../../utils/maper";
 import {userQuery} from "../queryRepositories/userQuery";
 
+
 export const userMutation = {
     async createUser (newUser : userDBType) {
         try {
@@ -12,6 +13,7 @@ export const userMutation = {
             if (!findUser) {
                 return null
             }
+
 
             return userMapper(findUser)
         } catch (e) {
