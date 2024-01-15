@@ -1,17 +1,17 @@
 import {Request, Response} from "express";
 import {
-    BlogInputModelType, CommentInputModelType, ParamsType,
+    BlogInputModelType, CommentInputModelType, CommentsOutputModelType, ParamsType,
     PostInputModelType, PostsOutputModelType,
     RequestWithBody,
-    RequestWithParams, RequestWithParamsAndBody, RequestWithQuery, ResponseWithData
+    RequestWithParams, RequestWithParamsAndBody, RequestWithParamsAndQuery, RequestWithQuery, ResponseWithData
 } from "../types/commonBlogTypeAndPosts.types";
 import {postQuery} from "../repositories/queryRepositories/postQuery";
 import {postsService} from "../services/posts/postsService";
-import {QueryBlogInputModel} from "../types/posts/queryPosts.types";
+import {QueryCommentsInputModel, QueryPostInputModel} from "../types/posts/queryPosts.types";
 import {commentsService} from "../services/comments/commentsService";
 
 
-export const getAllPostsController = async (req: RequestWithQuery<QueryBlogInputModel>, res: ResponseWithData<PostsOutputModelType>) => {
+export const getAllPostsController = async (req: RequestWithQuery<QueryPostInputModel>, res: ResponseWithData<PostsOutputModelType>) => {
 
     // const sortData = req.query
 
@@ -91,7 +91,6 @@ export const deletePostByIdController = async (req: RequestWithParams<ParamsType
 export const createCommentForPostController = async (req: RequestWithParamsAndBody<ParamsType, CommentInputModelType>, res: Response) => {
 
     const {content} = req.body
-    const {id: userId, login: userLogin} = req.user
     const {id: postId} = req.params
 
     const comment = await commentsService.createComment(postId, content, req.user!.id, req.user!.login)
@@ -102,4 +101,27 @@ export const createCommentForPostController = async (req: RequestWithParamsAndBo
 
     return res.status(201).send(comment)
 
+}
+
+export const getAllCommentsForPostController = async (req: RequestWithParamsAndQuery<ParamsType, QueryCommentsInputModel>, res: ResponseWithData<CommentsOutputModelType> ) =>{
+    const {id} = req.params
+
+    const post = await postQuery.getPostByIdFromDb(id)
+
+    if (!post) {
+        res.sendStatus(404)
+        return
+    }
+
+
+    const sortData: QueryCommentsInputModel = {
+        sortBy: req.query.sortBy,
+        sortDirection: req.query.sortDirection,
+        pageNumber: req.query.pageNumber,
+        pageSize: req.query.pageSize
+    }
+
+    const comments = await postQuery.getAllCommentsForPostFromDb(id, sortData)
+
+    return res.status(200).send(comments)
 }

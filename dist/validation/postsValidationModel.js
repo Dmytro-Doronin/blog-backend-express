@@ -36,6 +36,7 @@ exports.postBlogId = (0, express_validator_1.body)('blogId')
 })).withMessage('Incorrect blogId');
 exports.commentContent = (0, express_validator_1.body)('content')
     .isString()
+    .trim()
     .isLength({ min: 20, max: 300 }).withMessage('The field must not be more then 300 and less then 20 symbols');
 const postsValidationModelMiddleware = () => [exports.postTitle, exports.postShortDescription, exports.postContent, exports.postBlogId];
 exports.postsValidationModelMiddleware = postsValidationModelMiddleware;

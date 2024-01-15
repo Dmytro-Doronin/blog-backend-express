@@ -1,5 +1,5 @@
 import {postQuery} from "../../repositories/queryRepositories/postQuery";
-import {commentsDBType} from "../../types/commonBlogTypeAndPosts.types";
+import {CommentInputModelType, commentsDBType} from "../../types/commonBlogTypeAndPosts.types";
 import {commentQuery} from "../../repositories/queryRepositories/commentQuery";
 import {commentMutation} from "../../repositories/mutationRepositories/commentMutation";
 const { v4: uuidv4 } = require('uuid');
@@ -25,5 +25,13 @@ export const commentsService = {
 
         return commentMutation.createCommentForPostInDb(newComments)
 
+    },
+
+    async changeComment (id: string, content: string) {
+        return await commentMutation.changeCommentByIdInDb(id, content)
+    },
+
+    async deleteComment(id: string) {
+        return await commentMutation.deleteCommentById(id)
     }
 }

@@ -1,9 +1,15 @@
 type SortDirection = "asc" | "desc"
 
-export type QueryBlogInputModel = {
+export type QueryPostInputModel = {
     sortBy?: string
     sortDirection?: SortDirection
     pageNumber?: number
     pageSize?: number
 }
 
+export type QueryCommentsInputModel = {
+    sortBy?: string
+    sortDirection?: SortDirection
+    pageNumber?: number
+    pageSize?: number
+}

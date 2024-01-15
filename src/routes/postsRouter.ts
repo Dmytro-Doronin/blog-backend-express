@@ -2,7 +2,7 @@ import {Router} from "express";
 import {authMiddleware} from "../middleware/authMiddleware";
 import {
     changePostByIdController, createCommentForPostController,
-    createNewPostController, deletePostByIdController,
+    createNewPostController, deletePostByIdController, getAllCommentsForPostController,
     getAllPostsController,
     getPostByIdController
 } from "../controllers/postsControllers";
@@ -26,3 +26,4 @@ postsRouter.delete('/:id',authMiddleware, deletePostByIdController)
 
 //comments for post
 postsRouter.post('/:id/comments', authMiddlewareWithBearer, createCommentToPostModelMiddleware(), errorMiddleware, createCommentForPostController)
+postsRouter.get('/:id/comments', getAllCommentsForPostController)

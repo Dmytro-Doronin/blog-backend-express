@@ -9,7 +9,7 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
     });
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.createCommentForPostController = exports.deletePostByIdController = exports.changePostByIdController = exports.getPostByIdController = exports.createNewPostController = exports.getAllPostsController = void 0;
+exports.getAllCommentsForPostController = exports.createCommentForPostController = exports.deletePostByIdController = exports.changePostByIdController = exports.getPostByIdController = exports.createNewPostController = exports.getAllPostsController = void 0;
 const postQuery_1 = require("../repositories/queryRepositories/postQuery");
 const postsService_1 = require("../services/posts/postsService");
 const commentsService_1 = require("../services/comments/commentsService");
@@ -73,7 +73,6 @@ const deletePostByIdController = (req, res) => __awaiter(void 0, void 0, void 0,
 exports.deletePostByIdController = deletePostByIdController;
 const createCommentForPostController = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const { content } = req.body;
-    const { id: userId, login: userLogin } = req.user;
     const { id: postId } = req.params;
     const comment = yield commentsService_1.commentsService.createComment(postId, content, req.user.id, req.user.login);
     if (comment === null) {
@@ -82,3 +81,20 @@ const createCommentForPostController = (req, res) => __awaiter(void 0, void 0, v
     return res.status(201).send(comment);
 });
 exports.createCommentForPostController = createCommentForPostController;
+const getAllCommentsForPostController = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    const { id } = req.params;
+    const post = yield postQuery_1.postQuery.getPostByIdFromDb(id);
+    if (!post) {
+        res.sendStatus(404);
+        return;
+    }
+    const sortData = {
+        sortBy: req.query.sortBy,
+        sortDirection: req.query.sortDirection,
+        pageNumber: req.query.pageNumber,
+        pageSize: req.query.pageSize
+    };
+    const comments = yield postQuery_1.postQuery.getAllCommentsForPostFromDb(id, sortData);
+    return res.status(200).send(comments);
+});
+exports.getAllCommentsForPostController = getAllCommentsForPostController;

@@ -91,6 +91,14 @@ export type UsersOutputModelType = {
     items: UserViewModel[]
 }
 
+export type CommentsOutputModelType = {
+    pagesCount?: number
+    page?: number
+    pageSize?: number
+    totalCount?: number
+    items: CommentViewModelType[]
+}
+
 export type FieldErrorType = {
     message: string,
     field: string

@@ -20,3 +20,4 @@ exports.app.use('/api/blogs', blogsRouter_1.blogsRouter);
 exports.app.use('/api/posts', postsRouter_1.postsRouter);
 exports.app.use('/api/users', usersRouter_1.usersRouter);
 exports.app.use('/api/auth', authRouter_1.authRouter);
+exports.app.use('/api/comments', blogsRouter_1.blogsRouter);

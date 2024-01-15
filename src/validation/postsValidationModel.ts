@@ -31,6 +31,7 @@ export const postBlogId  = body('blogId')
 
 export const commentContent = body('content')
     .isString()
+    .trim()
     .isLength({min: 20, max: 300}).withMessage('The field must not be more then 300 and less then 20 symbols')
 
 export const postsValidationModelMiddleware = () => [postTitle, postShortDescription, postContent, postBlogId]

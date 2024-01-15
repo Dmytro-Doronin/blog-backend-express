@@ -1,0 +1,12 @@
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.blogsRouter = void 0;
+const express_1 = require("express");
+const authMiddlewareWithBearer_1 = require("../middleware/authMiddlewareWithBearer");
+const postsValidationModel_1 = require("../validation/postsValidationModel");
+const blogsMiddleware_1 = require("../middleware/blogsMiddleware");
+const commentsController_1 = require("../controllers/commentsController");
+exports.blogsRouter = (0, express_1.Router)();
+exports.blogsRouter.put('/:id', authMiddlewareWithBearer_1.authMiddlewareWithBearer, (0, postsValidationModel_1.createCommentToPostModelMiddleware)(), blogsMiddleware_1.errorMiddleware, commentsController_1.changeCommentByIdController);
+exports.blogsRouter.get('/:id', commentsController_1.getCommentByIdController);
+exports.blogsRouter.delete('/:id', authMiddlewareWithBearer_1.authMiddlewareWithBearer, commentsController_1.deleteCommentByIdController);

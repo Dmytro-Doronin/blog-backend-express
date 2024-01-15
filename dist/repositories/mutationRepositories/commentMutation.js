@@ -27,5 +27,22 @@ exports.commentMutation = {
                 throw new Error('Comment was not created');
             }
         });
+    },
+    changeCommentByIdInDb(id, newContent) {
+        return __awaiter(this, void 0, void 0, function* () {
+            try {
+                yield dbCollections_1.dbCommentsCollections.updateOne({ id: id }, {
+                    $set: { content: newContent }
+                });
+            }
+            catch (e) {
+                throw new Error('Comment was not changed by id');
+            }
+        });
+    },
+    deleteCommentById(id) {
+        return __awaiter(this, void 0, void 0, function* () {
+            yield dbCollections_1.dbCommentsCollections.deleteOne({ id: id });
+        });
     }
 };

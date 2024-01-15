@@ -32,5 +32,15 @@ exports.commentsService = {
             };
             return commentMutation_1.commentMutation.createCommentForPostInDb(newComments);
         });
+    },
+    changeComment(id, content) {
+        return __awaiter(this, void 0, void 0, function* () {
+            return yield commentMutation_1.commentMutation.changeCommentByIdInDb(id, content);
+        });
+    },
+    deleteComment(id) {
+        return __awaiter(this, void 0, void 0, function* () {
+            return yield commentMutation_1.commentMutation.deleteCommentById(id);
+        });
     }
 };
