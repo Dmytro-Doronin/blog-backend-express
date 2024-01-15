@@ -5,6 +5,7 @@ import {deleteRouter} from "./routes/deleteRouter";
 import {postsRouter} from "./routes/postsRouter";
 import {usersRouter} from "./routes/usersRouter";
 import {authRouter} from "./routes/authRouter";
+import {commentRouter} from "./routes/commentsRouter";
 
 
 export const app = express()
@@ -18,4 +19,4 @@ app.use('/api/blogs', blogsRouter)
 app.use('/api/posts', postsRouter)
 app.use('/api/users', usersRouter)
 app.use('/api/auth', authRouter)
-app.use('/api/comments', blogsRouter)
+app.use('/api/comments', commentRouter)

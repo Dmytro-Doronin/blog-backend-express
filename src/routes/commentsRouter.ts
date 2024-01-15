@@ -9,8 +9,8 @@ import {
 } from "../controllers/commentsController";
 
 
-export const blogsRouter = Router()
+export const commentRouter = Router()
 
-blogsRouter.put('/:id', authMiddlewareWithBearer, createCommentToPostModelMiddleware(), errorMiddleware, changeCommentByIdController)
-blogsRouter.get('/:id',  getCommentByIdController)
-blogsRouter.delete('/:id', authMiddlewareWithBearer, deleteCommentByIdController )
+commentRouter.put('/:id', authMiddlewareWithBearer, createCommentToPostModelMiddleware(), errorMiddleware, changeCommentByIdController)
+commentRouter.get('/:id',  getCommentByIdController)
+commentRouter.delete('/:id', authMiddlewareWithBearer, deleteCommentByIdController )
