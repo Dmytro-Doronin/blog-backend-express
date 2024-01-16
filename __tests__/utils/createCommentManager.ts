@@ -7,12 +7,8 @@ export const createCommentManager = {
 
     async createComment (comment: CommentInputModelType, id: string , jwt: string , statusCode = 201 ) {
 
-        console.log(comment)
-        console.log(id)
-        console.log(jwt)
-        console.log(statusCode)
         const createResponse = await request(app)
-            .post(`/api/post/${id}/comments`)
+            .post(`/api/posts/${id}/comments`)
             .send(comment)
             .set('Authorization', `Bearer ${jwt}`)
             .withCredentials(true)

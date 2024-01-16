@@ -96,10 +96,11 @@ export const createCommentForPostController = async (req: RequestWithParamsAndBo
     const comment = await commentsService.createComment(postId, content, req.user!.id, req.user!.login)
 
     if (comment === null) {
-        return res.sendStatus(404)
+        res.sendStatus(404)
+        return
     }
-
-    return res.status(201).send(comment)
+    res.status(201).send(comment)
+    return
 
 }
 
