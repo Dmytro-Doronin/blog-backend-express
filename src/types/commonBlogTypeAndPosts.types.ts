@@ -29,11 +29,18 @@ export type UserViewModel = {
 
 export type userDBType = {
     id: string
-    login: string
-    email: string
-    passwordHash: string
-    passwordSalt: string
-    createdAt: string
+    accountData: {
+        login: string
+        email: string
+        passwordHash: string
+        passwordSalt: string
+        createdAt: string
+    }
+    emailConfirmation: {
+        confirmationCode: string
+        expirationDate: Date
+        isConfirmed: boolean
+    }
 }
 
 type CommentatorInfoType = {

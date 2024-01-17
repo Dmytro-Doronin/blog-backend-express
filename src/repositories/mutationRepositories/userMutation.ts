@@ -14,7 +14,6 @@ export const userMutation = {
                 return null
             }
 
-
             return userMapper(findUser)
         } catch (e) {
             throw new Error('User was not created')

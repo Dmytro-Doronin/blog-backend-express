@@ -8,7 +8,6 @@ export const loginController = async (req: RequestWithBody<LoginType>, res: Resp
     const user = await usersService.checkCredentials(loginOrEmail, password)
     if (!user) {
         res.sendStatus(401)
-        console.log('net usera')
         return
     }
 

@@ -1,10 +1,11 @@
-import bcrypt from 'bcryptjs';
-import {userDBType, UsersInputModelType, UserViewModel} from "../../types/commonBlogTypeAndPosts.types";
+import {userDBType, UsersInputModelType} from "../../types/commonBlogTypeAndPosts.types";
+import bcrypt from "bcryptjs";
+import {add} from "date-fns";
 import {userMutation} from "../../repositories/mutationRepositories/userMutation";
 import {userQuery} from "../../repositories/queryRepositories/userQuery";
-import {add} from 'date-fns'
 const { v4: uuidv4 } = require('uuid');
-export const usersService = {
+
+export const authService = {
     async createUser ({email, password, login} : UsersInputModelType) {
         const passwordSalt =  await bcrypt.genSalt(10)
         const passwordHash = await this._generateHash(password, passwordSalt)
@@ -25,8 +26,9 @@ export const usersService = {
             }
 
         }
+        const createdUser = await userMutation.createUser(newUser)
 
-        return await userMutation.createUser(newUser)
+        return
     },
 
     async checkCredentials(loginOrEmail: string, password: string) {
@@ -51,4 +53,5 @@ export const usersService = {
     async deleteUserById (id: string)  {
         return await userMutation.deleteUserByIdInDb(id)
     }
+
 }
