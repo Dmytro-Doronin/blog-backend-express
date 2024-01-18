@@ -9,19 +9,17 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
     });
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.loginController = void 0;
-const usersService_1 = require("../services/users/usersService");
-const jwtService_1 = require("../application/jwtService");
-const loginController = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    const { loginOrEmail, password } = req.body;
-    const user = yield usersService_1.usersService.checkCredentials(loginOrEmail, password);
-    if (!user) {
-        res.sendStatus(401);
-        return;
+exports.mailServices = void 0;
+const emailAdapter_1 = require("../../adapters/emailAdapter");
+exports.mailServices = {
+    sendConfirmationMail(subject, email, code) {
+        return __awaiter(this, void 0, void 0, function* () {
+            const htmlMessage = ` <h1>Thank for your registration dear ${subject}</h1>
+                        <p>To finish registration please follow the link below:
+                                <a href='https://somesite.com/confirm-email?${code}'>complete registration</a>
+                                ${code}
+                        </p>`;
+            yield emailAdapter_1.emailAdapter.send(subject, email, htmlMessage);
+        });
     }
-    const token = yield jwtService_1.jwtService.createJWT(user);
-    res.status(200).send(token);
-    return;
-    // const result = await userQuery.findUserByLoginOrEmail()
-});
-exports.loginController = loginController;
+};

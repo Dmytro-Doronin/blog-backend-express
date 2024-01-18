@@ -12,14 +12,16 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.usersService = void 0;
+exports.authService = void 0;
 const bcryptjs_1 = __importDefault(require("bcryptjs"));
+const date_fns_1 = require("date-fns");
 const userMutation_1 = require("../../repositories/mutationRepositories/userMutation");
 const userQuery_1 = require("../../repositories/queryRepositories/userQuery");
-const date_fns_1 = require("date-fns");
-const maper_1 = require("../../utils/maper");
+const mailManager_1 = require("../../manager/mail/mailManager");
+const authQuery_1 = require("../../repositories/queryRepositories/authQuery");
+const authMutation_1 = require("../../repositories/mutationRepositories/authMutation");
 const { v4: uuidv4 } = require('uuid');
-exports.usersService = {
+exports.authService = {
     createUser({ email, password, login }) {
         return __awaiter(this, void 0, void 0, function* () {
             const passwordSalt = yield bcryptjs_1.default.genSalt(10);
@@ -39,25 +41,43 @@ exports.usersService = {
                     isConfirmed: false
                 }
             };
-            const user = yield userMutation_1.userMutation.createUser(newUser);
-            if (!user) {
+            const createdUser = yield userMutation_1.userMutation.createUser(newUser);
+            if (!createdUser) {
                 return null;
             }
-            return (0, maper_1.userMapper)(user);
+            yield mailManager_1.mailManager.sendConfirmationMail(createdUser.accountData.login, createdUser.accountData.email, createdUser.emailConfirmation.confirmationCode);
+            return createdUser;
         });
     },
-    checkCredentials(loginOrEmail, password) {
+    checkAuthCredentials(loginOrEmail, password) {
         return __awaiter(this, void 0, void 0, function* () {
             const user = yield userQuery_1.userQuery.findUserByLoginOrEmail(loginOrEmail);
             if (!user)
                 return false;
             const passwordHash = yield this._generateHash(password, user.accountData.passwordSalt);
             if (user.accountData.passwordHash === passwordHash) {
-                return (0, maper_1.userMapper)(user);
+                return user;
             }
             else {
                 return false;
             }
+        });
+    },
+    confirmEmail(code) {
+        return __awaiter(this, void 0, void 0, function* () {
+            const user = yield authQuery_1.authQuery.getUserByConfirmationCode(code);
+            if (!user) {
+                return null;
+            }
+            if (user.emailConfirmation.confirmationCode === code && user.emailConfirmation.expirationDate > new Date()) {
+                return yield authMutation_1.authMutation.updateConfirmation(user.id);
+            }
+            return false;
+        });
+    },
+    resendEmail(email) {
+        return __awaiter(this, void 0, void 0, function* () {
+            const user = ;
         });
     },
     _generateHash(password, salt) {

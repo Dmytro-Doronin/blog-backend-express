@@ -3,6 +3,9 @@ import bcrypt from "bcryptjs";
 import {add} from "date-fns";
 import {userMutation} from "../../repositories/mutationRepositories/userMutation";
 import {userQuery} from "../../repositories/queryRepositories/userQuery";
+import {mailManager} from "../../manager/mail/mailManager";
+import {authQuery} from "../../repositories/queryRepositories/authQuery";
+import {authMutation} from "../../repositories/mutationRepositories/authMutation";
 const { v4: uuidv4 } = require('uuid');
 
 export const authService = {
@@ -24,14 +27,18 @@ export const authService = {
                 expirationDate: add(new Date, {minutes: 3}),
                 isConfirmed: false
             }
-
         }
         const createdUser = await userMutation.createUser(newUser)
 
-        return
+        if (!createdUser) {
+            return null
+        }
+
+        await mailManager.sendConfirmationMail(createdUser.accountData.login, createdUser.accountData.email, createdUser.emailConfirmation.confirmationCode)
+        return createdUser
     },
 
-    async checkCredentials(loginOrEmail: string, password: string) {
+    async checkAuthCredentials(loginOrEmail: string, password: string) {
         const user = await userQuery.findUserByLoginOrEmail(loginOrEmail)
 
         if (!user) return false
@@ -45,6 +52,26 @@ export const authService = {
         }
     },
 
+    async confirmEmail(code: string) {
+        const user = await authQuery.getUserByConfirmationCode(code)
+
+        if (!user) {
+            return null
+        }
+
+        if(user.emailConfirmation.confirmationCode === code && user.emailConfirmation.expirationDate > new Date()) {
+            return await authMutation.updateConfirmation(user.id)
+        }
+
+        return false
+
+    },
+
+    async resendEmail (email: string) {
+
+        const user = 
+
+    },
 
     async _generateHash(password: string, salt: string) {
         return await bcrypt.hash(password, salt)

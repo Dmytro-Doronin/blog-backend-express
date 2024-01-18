@@ -9,37 +9,21 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
     });
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.userMutation = void 0;
+exports.authQuery = void 0;
 const dbCollections_1 = require("../../db/dbCollections");
-const userQuery_1 = require("../queryRepositories/userQuery");
-exports.userMutation = {
-    createUser(newUser) {
+exports.authQuery = {
+    getUserByConfirmationCode(code) {
         return __awaiter(this, void 0, void 0, function* () {
             try {
-                yield dbCollections_1.dbUsersCollections.insertOne(newUser);
-                const findUser = yield userQuery_1.userQuery.findUserById(newUser.id);
-                if (!findUser) {
+                const user = yield dbCollections_1.dbUsersCollections.findOne({ "emailConfirmation.confirmationCode": code });
+                if (!user) {
                     return null;
                 }
-                return findUser;
+                return user;
             }
             catch (e) {
-                throw new Error('User was not created');
+                throw new Error('User was not found');
             }
         });
     },
-    deleteUserByIdInDb(id) {
-        return __awaiter(this, void 0, void 0, function* () {
-            try {
-                const res = yield dbCollections_1.dbUsersCollections.deleteOne({ id: id });
-                if (res.deletedCount === 1) {
-                    return true;
-                }
-                return null;
-            }
-            catch (e) {
-                throw new Error('User was not deleted');
-            }
-        });
-    }
 };

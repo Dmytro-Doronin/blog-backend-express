@@ -65,6 +65,13 @@ export type UsersInputModelType = {
     password: string
     email: string
 }
+export type RegistrationConfirmationInputType = {
+    code: string
+}
+
+export type RegistrationEmailResending = {
+    email: string
+}
 
 export type CommentInputModelType = {
     content: string

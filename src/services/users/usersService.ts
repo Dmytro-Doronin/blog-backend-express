@@ -3,6 +3,7 @@ import {userDBType, UsersInputModelType, UserViewModel} from "../../types/common
 import {userMutation} from "../../repositories/mutationRepositories/userMutation";
 import {userQuery} from "../../repositories/queryRepositories/userQuery";
 import {add} from 'date-fns'
+import {userMapper} from "../../utils/maper";
 const { v4: uuidv4 } = require('uuid');
 export const usersService = {
     async createUser ({email, password, login} : UsersInputModelType) {
@@ -25,19 +26,22 @@ export const usersService = {
             }
 
         }
+        const user = await userMutation.createUser(newUser)
 
-        return await userMutation.createUser(newUser)
+        if (!user) {
+            return null
+        }
+        return userMapper(user)
     },
 
     async checkCredentials(loginOrEmail: string, password: string) {
         const user = await userQuery.findUserByLoginOrEmail(loginOrEmail)
 
         if (!user) return false
-
         const passwordHash = await this._generateHash(password, user.accountData.passwordSalt)
 
         if (user.accountData.passwordHash === passwordHash) {
-            return user
+            return userMapper(user)
         } else {
             return false
         }

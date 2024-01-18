@@ -7,8 +7,8 @@ export const emailAdapter = {
             service: "gmail",
             port: 465,
             auth: {
-                user: process.env.HOST_EMAIL,
-                pass: process.env.HOST_EMAIL_PASSWORD,
+                user: 'dmytrod926@gmail.com',
+                pass: 'tdorarrfpjvjmygg',
             },
         })
 
@@ -18,6 +18,8 @@ export const emailAdapter = {
             subject: subject, // Subject line
             html: message, // html body
         });
+
+        return info
 
     }
 }
