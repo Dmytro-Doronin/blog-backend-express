@@ -31,7 +31,7 @@ exports.jwtService = {
                 return result.userId;
             }
             catch (e) {
-                throw new Error('User was not get by id from token');
+                return false;
             }
         });
     }
