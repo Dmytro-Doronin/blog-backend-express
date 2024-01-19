@@ -44,15 +44,16 @@ export const authEmail = body('email')
 
 export const authCode = body('code')
     .isString()
-    // .custom(async (value) => {
-    //     const user = await authQuery.getUserByConfirmationCode(value)
-    //
-    //     if (user) {
-    //         throw new Error('Code already confirmed')
-    //     }
-    //
-    //     return true
-    // }).withMessage('Code already confirmed')
+    .isLength({min: 1})
+    .custom(async (value) => {
+        const user = await authQuery.getUserByConfirmationCode(value)
+
+        if (user?.emailConfirmation.isConfirmed) {
+            throw new Error('Code already confirmed')
+        }
+
+        return true
+    }).withMessage('Code already confirmed')
 
 export const authEmailResending = body('email')
     .isString()

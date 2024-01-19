@@ -12,6 +12,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.authEmailResendingValidationMiddleware = exports.authRegistrationConfirmationValidationMiddleware = exports.authRegistrationValidationMiddleware = exports.authEmailResending = exports.authCode = exports.authEmail = exports.authPassword = exports.authLogin = void 0;
 const express_validator_1 = require("express-validator");
 const userQuery_1 = require("../repositories/queryRepositories/userQuery");
+const authQuery_1 = require("../repositories/queryRepositories/authQuery");
 exports.authLogin = (0, express_validator_1.body)('login')
     .isString()
     .trim()
@@ -45,16 +46,15 @@ exports.authEmail = (0, express_validator_1.body)('email')
     // .matches('^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$')
     .withMessage('Wrong email');
 exports.authCode = (0, express_validator_1.body)('code')
-    .isString();
-// .custom(async (value) => {
-//     const user = await authQuery.getUserByConfirmationCode(value)
-//
-//     if (user) {
-//         throw new Error('Code already confirmed')
-//     }
-//
-//     return true
-// }).withMessage('Code already confirmed')
+    .isString()
+    .isLength({ min: 1 })
+    .custom((value) => __awaiter(void 0, void 0, void 0, function* () {
+    const user = yield authQuery_1.authQuery.getUserByConfirmationCode(value);
+    if (user === null || user === void 0 ? void 0 : user.emailConfirmation.isConfirmed) {
+        throw new Error('Code already confirmed');
+    }
+    return true;
+})).withMessage('Code already confirmed');
 exports.authEmailResending = (0, express_validator_1.body)('email')
     .isString()
     .trim()
