@@ -9,7 +9,7 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
     });
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.authRegistrationConfirmationValidationMiddleware = exports.authRegistrationValidationMiddleware = exports.authCode = exports.authEmail = exports.authPassword = exports.authLogin = void 0;
+exports.authEmailResendingValidationMiddleware = exports.authRegistrationConfirmationValidationMiddleware = exports.authRegistrationValidationMiddleware = exports.authEmailResending = exports.authCode = exports.authEmail = exports.authPassword = exports.authLogin = void 0;
 const express_validator_1 = require("express-validator");
 const userQuery_1 = require("../repositories/queryRepositories/userQuery");
 exports.authLogin = (0, express_validator_1.body)('login')
@@ -36,8 +36,8 @@ exports.authEmail = (0, express_validator_1.body)('email')
     .isLength({ min: 1 })
     .isEmail()
     .custom((value) => __awaiter(void 0, void 0, void 0, function* () {
-    const userLogin = yield userQuery_1.userQuery.findUserByLoginOrEmail(value);
-    if (userLogin) {
+    const userEmail = yield userQuery_1.userQuery.findUserByLoginOrEmail(value);
+    if (userEmail) {
         throw new Error('Email already exist');
     }
     return true;
@@ -46,7 +46,23 @@ exports.authEmail = (0, express_validator_1.body)('email')
     .withMessage('Wrong email');
 exports.authCode = (0, express_validator_1.body)('code')
     .isString();
+exports.authEmailResending = (0, express_validator_1.body)('email')
+    .isString()
+    .trim()
+    .isLength({ min: 1 })
+    .isEmail()
+    .custom((value) => __awaiter(void 0, void 0, void 0, function* () {
+    const userEmail = yield userQuery_1.userQuery.findUserByLoginOrEmail(value);
+    if (userEmail === null || userEmail === void 0 ? void 0 : userEmail.emailConfirmation.isConfirmed) {
+        throw new Error('Email already confirmed');
+    }
+    return true;
+})).withMessage('Email already confirmed')
+    // .matches('^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$')
+    .withMessage('Wrong email');
 const authRegistrationValidationMiddleware = () => [exports.authLogin, exports.authPassword, exports.authEmail];
 exports.authRegistrationValidationMiddleware = authRegistrationValidationMiddleware;
 const authRegistrationConfirmationValidationMiddleware = () => [exports.authCode];
 exports.authRegistrationConfirmationValidationMiddleware = authRegistrationConfirmationValidationMiddleware;
+const authEmailResendingValidationMiddleware = () => [exports.authEmailResending];
+exports.authEmailResendingValidationMiddleware = authEmailResendingValidationMiddleware;

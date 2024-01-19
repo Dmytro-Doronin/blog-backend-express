@@ -30,9 +30,9 @@ export const authEmail = body('email')
     .isLength({min: 1})
     .isEmail()
     .custom(async (value) => {
-        const userLogin = await userQuery.findUserByLoginOrEmail(value)
+        const userEmail = await userQuery.findUserByLoginOrEmail(value)
 
-        if (userLogin) {
+        if (userEmail) {
             throw new Error('Email already exist')
         }
 
@@ -44,5 +44,23 @@ export const authEmail = body('email')
 export const authCode = body('code')
     .isString()
 
+export const authEmailResending = body('email')
+    .isString()
+    .trim()
+    .isLength({min: 1})
+    .isEmail()
+    .custom(async (value) => {
+        const userEmail = await userQuery.findUserByLoginOrEmail(value)
+
+        if (userEmail?.emailConfirmation.isConfirmed) {
+            throw new Error('Email already confirmed')
+        }
+
+        return true
+    }).withMessage('Email already confirmed')
+    // .matches('^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$')
+    .withMessage('Wrong email')
+
 export const authRegistrationValidationMiddleware = () => [authLogin, authPassword,authEmail]
 export const authRegistrationConfirmationValidationMiddleware = () => [authCode]
+export const authEmailResendingValidationMiddleware = () => [authEmailResending]
