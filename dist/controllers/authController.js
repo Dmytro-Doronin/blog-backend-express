@@ -28,9 +28,9 @@ const authController = (req, res) => __awaiter(void 0, void 0, void 0, function*
 exports.authController = authController;
 const registrationController = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const { login, email, password } = req.body;
-    console.log('ready');
-    const checkUser = yield authService_1.authService.checkAuthCredentials(email, password);
-    if (checkUser) {
+    const checkUserEmail = yield authService_1.authService.checkAuthCredentials(email, password);
+    const checkUserLogin = yield authService_1.authService.checkAuthCredentials(login, password);
+    if (checkUserEmail || checkUserLogin) {
         res.sendStatus(400);
         return;
     }

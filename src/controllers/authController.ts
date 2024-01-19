@@ -28,11 +28,11 @@ export const authController = async (req: RequestWithBody<LoginType>, res: Respo
 export const registrationController = async (req: RequestWithBody<UsersInputModelType>, res: Response) => {
 
     const {login, email, password} = req.body
-    console.log('ready')
 
-    const checkUser = await authService.checkAuthCredentials(email, password)
+    const checkUserEmail = await authService.checkAuthCredentials(email, password)
+    const checkUserLogin = await authService.checkAuthCredentials(login, password)
 
-    if (checkUser) {
+    if (checkUserEmail || checkUserLogin) {
         res.sendStatus(400)
         return
     }
