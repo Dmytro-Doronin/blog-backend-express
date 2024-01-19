@@ -12,7 +12,9 @@ import {userQuery} from "../repositories/queryRepositories/userQuery";
 
 export const authController = async (req: RequestWithBody<LoginType>, res: Response) => {
     const {loginOrEmail, password} = req.body
+    debugger
     const user = await usersService.checkCredentials(loginOrEmail, password)
+    debugger
     if (!user) {
         res.sendStatus(401)
         return
@@ -31,6 +33,7 @@ export const registrationController = async (req: RequestWithBody<UsersInputMode
 
     const checkUserEmail = await authService.checkAuthCredentials(email, password)
     const checkUserLogin = await authService.checkAuthCredentials(login, password)
+
 
     if (checkUserEmail || checkUserLogin) {
         res.sendStatus(400)

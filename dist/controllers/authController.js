@@ -15,7 +15,9 @@ const jwtService_1 = require("../application/jwtService");
 const authService_1 = require("../services/auth/authService");
 const authController = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const { loginOrEmail, password } = req.body;
+    debugger;
     const user = yield usersService_1.usersService.checkCredentials(loginOrEmail, password);
+    debugger;
     if (!user) {
         res.sendStatus(401);
         return;
