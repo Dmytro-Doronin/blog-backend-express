@@ -31,14 +31,14 @@ export const registrationController = async (req: RequestWithBody<UsersInputMode
 
     const {login, email, password} = req.body
 
-    const checkUserEmail = await authService.checkAuthCredentials(email, password)
-    const checkUserLogin = await authService.checkAuthCredentials(login, password)
-
-
-    if (checkUserEmail || checkUserLogin) {
-        res.sendStatus(400)
-        return
-    }
+    // const checkUserEmail = await authService.checkAuthCredentials(email, password)
+    // const checkUserLogin = await authService.checkAuthCredentials(login, password)
+    //
+    //
+    // if (checkUserEmail || checkUserLogin) {
+    //     res.sendStatus(400)
+    //     return
+    // }
 
     await authService.createUser({login, email, password})
 

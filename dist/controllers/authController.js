@@ -30,12 +30,14 @@ const authController = (req, res) => __awaiter(void 0, void 0, void 0, function*
 exports.authController = authController;
 const registrationController = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const { login, email, password } = req.body;
-    const checkUserEmail = yield authService_1.authService.checkAuthCredentials(email, password);
-    const checkUserLogin = yield authService_1.authService.checkAuthCredentials(login, password);
-    if (checkUserEmail || checkUserLogin) {
-        res.sendStatus(400);
-        return;
-    }
+    // const checkUserEmail = await authService.checkAuthCredentials(email, password)
+    // const checkUserLogin = await authService.checkAuthCredentials(login, password)
+    //
+    //
+    // if (checkUserEmail || checkUserLogin) {
+    //     res.sendStatus(400)
+    //     return
+    // }
     yield authService_1.authService.createUser({ login, email, password });
     res.sendStatus(204);
     return;
