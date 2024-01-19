@@ -17,7 +17,7 @@ export const jwtService = {
             const result: any = jwt.verify(token, setting.JWT_SECRET)
             return result.userId
         } catch (e) {
-            return null
+            throw new Error('User was not get by id from token')
         }
     }
 }

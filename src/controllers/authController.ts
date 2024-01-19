@@ -4,7 +4,7 @@ import {
     RequestWithBody,
     UsersInputModelType
 } from "../types/commonBlogTypeAndPosts.types";
-import {Response} from "express";
+import {Request,Response} from "express";
 import {usersService} from "../services/users/usersService";
 import {jwtService} from "../application/jwtService";
 import {authService} from "../services/auth/authService";
@@ -71,4 +71,10 @@ export const emailResendingController = async (req: RequestWithBody<Registration
 
     res.sendStatus(204)
     return
+}
+
+export const meController = async (req: Request, res: Response)=> {
+    const {id} = req.user
+
+    res.status(200).send({})
 }

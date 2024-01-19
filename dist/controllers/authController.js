@@ -9,7 +9,7 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
     });
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.emailResendingController = exports.registrationConfirmationController = exports.registrationController = exports.authController = void 0;
+exports.meController = exports.emailResendingController = exports.registrationConfirmationController = exports.registrationController = exports.authController = void 0;
 const usersService_1 = require("../services/users/usersService");
 const jwtService_1 = require("../application/jwtService");
 const authService_1 = require("../services/auth/authService");
@@ -63,3 +63,8 @@ const emailResendingController = (req, res) => __awaiter(void 0, void 0, void 0,
     return;
 });
 exports.emailResendingController = emailResendingController;
+const meController = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    const { id } = req.user;
+    res.status(200).send({});
+});
+exports.meController = meController;
