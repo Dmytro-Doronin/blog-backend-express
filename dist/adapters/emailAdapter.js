@@ -44,7 +44,7 @@ exports.emailAdapter = {
         return __awaiter(this, void 0, void 0, function* () {
             const transporter = nodemailer_1.default.createTransport({
                 service: "gmail",
-                port: 464,
+                port: 465,
                 auth: {
                     user: 'dmytrod926@gmail.com',
                     pass: 'tdorarrfpjvjmygg',

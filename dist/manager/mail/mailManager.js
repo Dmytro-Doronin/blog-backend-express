@@ -14,12 +14,11 @@ const emailAdapter_1 = require("../../adapters/emailAdapter");
 exports.mailManager = {
     sendConfirmationMail(subject, email, code) {
         return __awaiter(this, void 0, void 0, function* () {
-            const htmlMessage = ` <h1>Thank for your registration dear ${subject}</h1>
+            const htmlMessage = ` <h1>Thanks for your registration dear ${subject}</h1>
                         <p>To finish registration please follow the link below:
                                 <a href='https://somesite.com/confirm-email?${code}'>complete registration</a>
-                                ${code}
                         </p>`;
-            yield emailAdapter_1.emailAdapter.send(subject, email, htmlMessage);
+            return yield emailAdapter_1.emailAdapter.send(subject, email, htmlMessage);
         });
     }
 };

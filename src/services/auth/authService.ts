@@ -35,6 +35,7 @@ export const authService = {
         }
 
         await mailManager.sendConfirmationMail(createdUser.accountData.login, createdUser.accountData.email, createdUser.emailConfirmation.confirmationCode)
+
         return createdUser
     },
 
@@ -69,6 +70,7 @@ export const authService = {
 
     async resendEmail (email: string) {
         const user = await userQuery.findUserByLoginOrEmail(email)
+
 
         if (!user) {
             return false

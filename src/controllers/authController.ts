@@ -26,7 +26,9 @@ export const authController = async (req: RequestWithBody<LoginType>, res: Respo
 }
 
 export const registrationController = async (req: RequestWithBody<UsersInputModelType>, res: Response) => {
+
     const {login, email, password} = req.body
+    console.log('ready')
 
     const checkUser = await authService.checkAuthCredentials(email, password)
 

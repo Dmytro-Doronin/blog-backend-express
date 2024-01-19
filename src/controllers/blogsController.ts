@@ -29,7 +29,6 @@ export const getAllBlogsController = async (req: RequestWithQuery<QueryBlogInput
 
 export const getAllPostInBlogController = async (req: RequestWithParamsAndQuery<ParamsType, QueryBlogToPostsInputModel>, res: Response) => {
     const blogId = req.params.id
-
     // const sortData = req.query
     const sortData = {
         sortBy: req.query.sortBy,
