@@ -71,7 +71,6 @@ export const authService = {
     async resendEmail (email: string) {
         const user = await userQuery.findUserByLoginOrEmail(email)
 
-
         if (!user) {
             return false
         }
@@ -80,7 +79,16 @@ export const authService = {
             return false
         }
 
-        return await mailManager.sendConfirmationMail(user.accountData.login, user.accountData.email, user.emailConfirmation.confirmationCode)
+        const newCode = {
+            code: uuidv4(),
+            date: add(new Date, {minutes: 3})
+        }
+
+        const updateConfirmation = await authMutation.updateConfirmationCode(user.id, newCode.code, newCode.date)
+        if (!updateConfirmation) {
+            return false
+        }
+        return await mailManager.sendConfirmationMail(user.accountData.login, user.accountData.email, newCode.code)
     },
 
     async _generateHash(password: string, salt: string) {

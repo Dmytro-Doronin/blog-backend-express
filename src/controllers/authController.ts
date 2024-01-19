@@ -12,9 +12,7 @@ import {userQuery} from "../repositories/queryRepositories/userQuery";
 
 export const authController = async (req: RequestWithBody<LoginType>, res: Response) => {
     const {loginOrEmail, password} = req.body
-    debugger
     const user = await usersService.checkCredentials(loginOrEmail, password)
-    debugger
     if (!user) {
         res.sendStatus(401)
         return

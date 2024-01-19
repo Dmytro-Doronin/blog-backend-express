@@ -1,6 +1,7 @@
 import {body} from "express-validator";
 import {blogQuery} from "../repositories/queryRepositories/blogQuery";
 import {userQuery} from "../repositories/queryRepositories/userQuery";
+import {authQuery} from "../repositories/queryRepositories/authQuery";
 
 export const authLogin = body('login')
     .isString()
@@ -43,6 +44,15 @@ export const authEmail = body('email')
 
 export const authCode = body('code')
     .isString()
+    .custom(async (value) => {
+        const user = await authQuery.getUserByConfirmationCode(value)
+
+        if (user) {
+            throw new Error('Code already confirmed')
+        }
+
+        return true
+    }).withMessage('Code already confirmed')
 
 export const authEmailResending = body('email')
     .isString()
@@ -52,7 +62,11 @@ export const authEmailResending = body('email')
     .custom(async (value) => {
         const userEmail = await userQuery.findUserByLoginOrEmail(value)
 
-        if (userEmail?.emailConfirmation.isConfirmed) {
+        if (!userEmail) {
+            throw new Error('User dos not exist')
+        }
+        
+        if (userEmail.emailConfirmation.isConfirmed) {
             throw new Error('Email already confirmed')
         }
 

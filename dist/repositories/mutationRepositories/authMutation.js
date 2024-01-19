@@ -17,5 +17,19 @@ exports.authMutation = {
             const result = yield dbCollections_1.dbUsersCollections.updateOne({ id }, { $set: { "emailConfirmation.isConfirmed": true } });
             return result.modifiedCount === 1;
         });
+    },
+    updateConfirmationCode(id, code, date) {
+        return __awaiter(this, void 0, void 0, function* () {
+            try {
+                const result = yield dbCollections_1.dbUsersCollections.updateOne({ id }, { $set: {
+                        "emailConfirmation.confirmationCode": code,
+                        "emailConfirmation.expirationDate": date
+                    } });
+                return result.modifiedCount === 1;
+            }
+            catch (e) {
+                throw new Error('Confirmation was not changed');
+            }
+        });
     }
 };

@@ -84,7 +84,15 @@ exports.authService = {
             if (user.emailConfirmation.isConfirmed) {
                 return false;
             }
-            return yield mailManager_1.mailManager.sendConfirmationMail(user.accountData.login, user.accountData.email, user.emailConfirmation.confirmationCode);
+            const newCode = {
+                code: uuidv4(),
+                date: (0, date_fns_1.add)(new Date, { minutes: 3 })
+            };
+            const updateConfirmation = yield authMutation_1.authMutation.updateConfirmationCode(user.id, newCode.code, newCode.date);
+            if (!updateConfirmation) {
+                return false;
+            }
+            return yield mailManager_1.mailManager.sendConfirmationMail(user.accountData.login, user.accountData.email, newCode.code);
         });
     },
     _generateHash(password, salt) {
