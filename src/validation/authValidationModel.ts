@@ -48,6 +48,10 @@ export const authCode = body('code')
     .custom(async (value) => {
         const user = await authQuery.getUserByConfirmationCode(value)
 
+        if(!user) {
+            throw new Error('Wrong code')
+        }
+
         if (user?.emailConfirmation.isConfirmed) {
             throw new Error('Code already confirmed')
         }

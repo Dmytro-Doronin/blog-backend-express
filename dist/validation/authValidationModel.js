@@ -50,6 +50,9 @@ exports.authCode = (0, express_validator_1.body)('code')
     .notEmpty()
     .custom((value) => __awaiter(void 0, void 0, void 0, function* () {
     const user = yield authQuery_1.authQuery.getUserByConfirmationCode(value);
+    if (!user) {
+        throw new Error('Wrong code');
+    }
     if (user === null || user === void 0 ? void 0 : user.emailConfirmation.isConfirmed) {
         throw new Error('Code already confirmed');
     }
