@@ -19,6 +19,10 @@ const authMiddlewareWithBearer = (req, res, next) => __awaiter(void 0, void 0, v
         res.sendStatus(401);
         return;
     }
+    if (req.headers.authorization.split(' ')[0] !== 'Bearer') {
+        res.sendStatus(401);
+        return;
+    }
     const token = req.headers.authorization.split(' ')[1];
     const userId = yield jwtService_1.jwtService.getUserIdByToken(token);
     if (!userId) {
