@@ -44,7 +44,7 @@ export const authEmail = body('email')
 
 export const authCode = body('code')
     .isString()
-    .isLength({min: 1})
+    .notEmpty()
     .custom(async (value) => {
         const user = await authQuery.getUserByConfirmationCode(value)
 

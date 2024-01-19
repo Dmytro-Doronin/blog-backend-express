@@ -47,7 +47,7 @@ exports.authEmail = (0, express_validator_1.body)('email')
     .withMessage('Wrong email');
 exports.authCode = (0, express_validator_1.body)('code')
     .isString()
-    .isLength({ min: 1 })
+    .notEmpty()
     .custom((value) => __awaiter(void 0, void 0, void 0, function* () {
     const user = yield authQuery_1.authQuery.getUserByConfirmationCode(value);
     if (user === null || user === void 0 ? void 0 : user.emailConfirmation.isConfirmed) {
