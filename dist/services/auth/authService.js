@@ -77,7 +77,14 @@ exports.authService = {
     },
     resendEmail(email) {
         return __awaiter(this, void 0, void 0, function* () {
-            const user = ;
+            const user = yield userQuery_1.userQuery.findUserByLoginOrEmail(email);
+            if (!user) {
+                return false;
+            }
+            if (user.emailConfirmation.isConfirmed) {
+                return false;
+            }
+            return yield mailManager_1.mailManager.sendConfirmationMail(user.accountData.login, user.accountData.email, user.emailConfirmation.confirmationCode);
         });
     },
     _generateHash(password, salt) {

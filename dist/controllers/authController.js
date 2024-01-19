@@ -9,7 +9,7 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
     });
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.registrationEmailResendingController = exports.registrationConfirmationController = exports.registrationController = exports.authController = void 0;
+exports.emailResendingController = exports.registrationConfirmationController = exports.registrationController = exports.authController = void 0;
 const usersService_1 = require("../services/users/usersService");
 const jwtService_1 = require("../application/jwtService");
 const authService_1 = require("../services/auth/authService");
@@ -28,7 +28,7 @@ const authController = (req, res) => __awaiter(void 0, void 0, void 0, function*
 exports.authController = authController;
 const registrationController = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const { login, email, password } = req.body;
-    const checkUser = yield authService_1.authService.checkAuthCredentials(login, password);
+    const checkUser = yield authService_1.authService.checkAuthCredentials(email, password);
     if (checkUser) {
         res.sendStatus(400);
         return;
@@ -46,18 +46,17 @@ const registrationConfirmationController = (req, res) => __awaiter(void 0, void 
         return;
     }
     res.sendStatus(204);
+    return;
 });
 exports.registrationConfirmationController = registrationConfirmationController;
-const registrationEmailResendingController = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+const emailResendingController = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const { email } = req.body;
-    const result = yield authService_1.authService.confirmEmail(email);
-    // const confirm = await authService.confirmEmail(code)
-    //
-    // if (!confirm) {
-    //     res.sendStatus(400)
-    //     return
-    // }
-    //
-    // res.sendStatus(204)
+    const result = yield authService_1.authService.resendEmail(email);
+    if (!result) {
+        res.sendStatus(400);
+        return;
+    }
+    res.sendStatus(204);
+    return;
 });
-exports.registrationEmailResendingController = registrationEmailResendingController;
+exports.emailResendingController = emailResendingController;

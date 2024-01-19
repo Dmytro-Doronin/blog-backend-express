@@ -1,7 +1,7 @@
 
 import {Router} from "express";
 import {
-    authController,
+    authController, emailResendingController,
     registrationConfirmationController,
     registrationController
 } from "../controllers/authController";
@@ -16,4 +16,4 @@ export const authRouter = Router()
 authRouter.post('/login', loginValidationModelMiddleware(), errorMiddleware, authController)
 authRouter.post('/registration', authRegistrationValidationMiddleware, errorMiddleware, registrationController)
 authRouter.post('/registration-confirmation', authRegistrationConfirmationValidationMiddleware(), errorMiddleware,  registrationConfirmationController)
-authRouter.post('/registration-email-resending', authRegistrationConfirmationValidationMiddleware(), errorMiddleware,  )
+authRouter.post('/registration-email-resending', authRegistrationConfirmationValidationMiddleware(), errorMiddleware,  emailResendingController)

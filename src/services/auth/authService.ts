@@ -68,9 +68,17 @@ export const authService = {
     },
 
     async resendEmail (email: string) {
+        const user = await userQuery.findUserByLoginOrEmail(email)
 
-        const user = 
+        if (!user) {
+            return false
+        }
 
+        if (user.emailConfirmation.isConfirmed) {
+            return false
+        }
+
+        return await mailManager.sendConfirmationMail(user.accountData.login, user.accountData.email, user.emailConfirmation.confirmationCode)
     },
 
     async _generateHash(password: string, salt: string) {

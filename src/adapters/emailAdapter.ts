@@ -5,7 +5,7 @@ export const emailAdapter = {
    async send(subject: string ,email: string, message: string) {
         const transporter = nodemailer.createTransport({
             service: "gmail",
-            port: 465,
+            port: 464,
             auth: {
                 user: 'dmytrod926@gmail.com',
                 pass: 'tdorarrfpjvjmygg',

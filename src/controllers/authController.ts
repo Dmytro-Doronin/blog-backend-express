@@ -8,6 +8,7 @@ import {Response} from "express";
 import {usersService} from "../services/users/usersService";
 import {jwtService} from "../application/jwtService";
 import {authService} from "../services/auth/authService";
+import {userQuery} from "../repositories/queryRepositories/userQuery";
 
 export const authController = async (req: RequestWithBody<LoginType>, res: Response) => {
     const {loginOrEmail, password} = req.body
@@ -27,13 +28,12 @@ export const authController = async (req: RequestWithBody<LoginType>, res: Respo
 export const registrationController = async (req: RequestWithBody<UsersInputModelType>, res: Response) => {
     const {login, email, password} = req.body
 
-    const checkUser = await authService.checkAuthCredentials(login, password)
+    const checkUser = await authService.checkAuthCredentials(email, password)
 
     if (checkUser) {
         res.sendStatus(400)
         return
     }
-
 
     await authService.createUser({login, email, password})
 
@@ -53,19 +53,19 @@ export const registrationConfirmationController = async (req: RequestWithBody<Re
     }
 
     res.sendStatus(204)
+    return
 }
 
-export const registrationEmailResendingController = async (req: RequestWithBody<RegistrationEmailResending>, res: Response) => {
+export const emailResendingController = async (req: RequestWithBody<RegistrationEmailResending>, res: Response) => {
     const {email} = req.body
 
-    const result = await authService.confirmEmail(email)
+    const result = await authService.resendEmail(email)
 
-    // const confirm = await authService.confirmEmail(code)
-    //
-    // if (!confirm) {
-    //     res.sendStatus(400)
-    //     return
-    // }
-    //
-    // res.sendStatus(204)
+    if (!result) {
+        res.sendStatus(400)
+        return
+    }
+
+    res.sendStatus(204)
+    return
 }
