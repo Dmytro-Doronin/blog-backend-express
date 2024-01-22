@@ -25,6 +25,8 @@
     "jsonwebtoken": "^9.0.2",
     "mongodb": "^6.3.0",
     "nodemailer": "^6.9.8",
+    "sinon": "^17.0.1",
+    "sion": "^0.0.1",
     "supertest": "^6.3.3",
     "ts-jest": "^29.1.1",
     "uuid": "^9.0.1"
