@@ -6,11 +6,12 @@ import {postsRouter} from "./routes/postsRouter";
 import {usersRouter} from "./routes/usersRouter";
 import {authRouter} from "./routes/authRouter";
 import {commentRouter} from "./routes/commentsRouter";
+import cookieParser from "cookie-parser";
 
 
 export const app = express()
 
-
+app.use(cookieParser())
 app.use(express.json())
 //endpoints
 app.use('/api/testing/all-data', deleteRouter)

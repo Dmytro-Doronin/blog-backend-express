@@ -18,9 +18,12 @@ export const authController = async (req: RequestWithBody<LoginType>, res: Respo
         return
     }
 
-    const token = await jwtService.createJWT(user)
+    const accessToken = await jwtService.createJWTAccessToken(user)
+    const refreshToken = await jwtService.createJWTRefreshToken(user)
 
-    res.status(200).send(token)
+    res.cookie('refreshToken', refreshToken, {httpOnly: true,secure: true})
+
+    res.status(200).send(accessToken)
     return
     // const result = await userQuery.findUserByLoginOrEmail()
 }
@@ -77,4 +80,21 @@ export const meController = async (req: Request, res: Response)=> {
     const {id} = req.user
 
     res.status(200).send({})
+}
+
+export const refreshTokenController = async (req: Request, res: Response) => {
+    const refreshTokenFromRequest = req.cookies.refreshToken
+
+    if (!refreshTokenFromRequest) {
+        res.sendStatus(401)
+        return
+    }
+
+    const decodedToken = await jwtService.verifyToken(refreshTokenFromRequest)
+
+    if (!decodedToken) {
+        res.sendStatus(401)
+        return
+    }
+
 }

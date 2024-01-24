@@ -1,5 +1,6 @@
 import {client} from "./db";
 import {
+    BlackListOfTokenType,
     BlogViewModelType, commentsDBType,
     CommentViewModelType,
     PostViewModelType,
@@ -11,3 +12,4 @@ export const dbBlogCollections = client.db('Blogs').collection<BlogViewModelType
 export const dbPostCollections = client.db('Posts').collection<PostViewModelType>('posts')
 export const dbUsersCollections = client.db('Users').collection<userDBType>('users')
 export const dbCommentsCollections = client.db('Comments').collection<commentsDBType>('comments')
+export const dbBlacklistCollections = client.db('BlackListOfToken').collection<BlackListOfTokenType>('blackListOfToken')
