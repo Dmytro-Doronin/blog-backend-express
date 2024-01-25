@@ -66,16 +66,10 @@ const emailResendingController = (req, res) => __awaiter(void 0, void 0, void 0,
 });
 exports.emailResendingController = emailResendingController;
 const meController = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    const refreshTokenFromRequest = req.cookies.refreshToken;
     const userId = req.user.id;
     const login = req.user.accountData.login;
     const email = req.user.accountData.email;
-    res.status(200).send({ email, login, userId });
-    return;
-});
-exports.meController = meController;
-const refreshTokenController = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    const refreshTokenFromRequest = req.cookies.refreshToken;
-    const user = req.user;
     if (!refreshTokenFromRequest) {
         res.sendStatus(401);
         return;
@@ -90,24 +84,54 @@ const refreshTokenController = (req, res) => __awaiter(void 0, void 0, void 0, f
         res.sendStatus(401);
         return;
     }
+    res.status(200).send({ email, login, userId });
+    return;
+});
+exports.meController = meController;
+const refreshTokenController = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    const refreshTokenFromRequest = req.cookies.refreshToken;
+    const user = req.user;
+    // if (!refreshTokenFromRequest) {
+    //     res.sendStatus(401)
+    //     return
+    // }
+    //
+    // const decodedToken = await jwtService.verifyToken(refreshTokenFromRequest)
+    //
+    // if (!decodedToken) {
+    //     res.sendStatus(401)
+    //     return
+    // }
+    //
+    // const tokenInBlackList = await jwtService.isTokenBlacklisted(refreshTokenFromRequest)
+    //
+    // if (tokenInBlackList) {
+    //     res.sendStatus(401)
+    //     return
+    // }
+    yield jwtService_1.jwtService.putTokenToTheBlackList(refreshTokenFromRequest);
     const accessToken = yield jwtService_1.jwtService.createJWTAccessToken(user);
     const refreshToken = yield jwtService_1.jwtService.createJWTRefreshToken(user);
-    res.cookie('refreshToken', refreshToken, { httpOnly: true, secure: true });
-    res.status(200).send(accessToken);
+    res.status(200)
+        .clearCookie('refreshToken')
+        .cookie('refreshToken', refreshToken, { httpOnly: true, secure: true })
+        .send(accessToken);
     return;
 });
 exports.refreshTokenController = refreshTokenController;
 const logoutController = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const refreshTokenFromRequest = req.cookies.refreshToken;
-    if (!refreshTokenFromRequest) {
-        res.sendStatus(401);
-        return;
-    }
-    const decodedToken = yield jwtService_1.jwtService.verifyToken(refreshTokenFromRequest);
-    if (!decodedToken) {
-        res.sendStatus(401);
-        return;
-    }
+    // if (!refreshTokenFromRequest) {
+    //     res.sendStatus(401)
+    //     return
+    // }
+    //
+    // const decodedToken = await jwtService.verifyToken(refreshTokenFromRequest)
+    //
+    // if (!decodedToken) {
+    //     res.sendStatus(401)
+    //     return
+    // }
     yield jwtService_1.jwtService.putTokenToTheBlackList(refreshTokenFromRequest);
     res.status(204).clearCookie('refreshToken');
     return;
