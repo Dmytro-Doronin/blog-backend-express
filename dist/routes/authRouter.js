@@ -9,7 +9,7 @@ const authValidationModel_1 = require("../validation/authValidationModel");
 const authMiddlewareWithBearer_1 = require("../middleware/authMiddlewareWithBearer");
 const verifyTokenMiddleware_1 = require("../middleware/verifyTokenMiddleware");
 exports.authRouter = (0, express_1.Router)();
-exports.authRouter.get('/me', authMiddlewareWithBearer_1.authMiddlewareWithBearer, authController_1.meController);
+exports.authRouter.post('/me', authMiddlewareWithBearer_1.authMiddlewareWithBearer, authController_1.meController);
 exports.authRouter.post('/login', (0, loginValidationModel_1.loginValidationModelMiddleware)(), blogsMiddleware_1.errorMiddleware, authController_1.authController);
 exports.authRouter.post('/logout', verifyTokenMiddleware_1.verifyTokenMiddleware, authController_1.logoutController);
 exports.authRouter.post('/refresh-token', verifyTokenMiddleware_1.verifyTokenMiddleware, authController_1.refreshTokenController);

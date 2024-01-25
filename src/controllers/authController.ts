@@ -89,19 +89,19 @@ export const meController = async (req: Request, res: Response)=> {
         return
     }
 
-    const decodedToken = await jwtService.verifyToken(refreshTokenFromRequest)
-
-    if (!decodedToken) {
-        res.sendStatus(401)
-        return
-    }
-
-    const tokenInBlackList = await jwtService.isTokenBlacklisted(refreshTokenFromRequest)
-
-    if (tokenInBlackList) {
-        res.sendStatus(401)
-        return
-    }
+    // const decodedToken = await jwtService.verifyToken(refreshTokenFromRequest)
+    //
+    // if (!decodedToken) {
+    //     res.sendStatus(401)
+    //     return
+    // }
+    //
+    // const tokenInBlackList = await jwtService.isTokenBlacklisted(refreshTokenFromRequest)
+    //
+    // if (tokenInBlackList) {
+    //     res.sendStatus(401)
+    //     return
+    // }
 
     res.status(200).send({email, login, userId})
     return
@@ -156,6 +156,6 @@ export const logoutController = async (req: Request, res: Response) => {
 
     await jwtService.putTokenToTheBlackList(refreshTokenFromRequest)
 
-    res.status(204).clearCookie('refreshToken')
+    res.sendStatus(204)
     return
 }

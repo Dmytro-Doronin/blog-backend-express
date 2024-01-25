@@ -76,16 +76,19 @@ const meController = (req, res) => __awaiter(void 0, void 0, void 0, function* (
         res.sendStatus(401);
         return;
     }
-    const decodedToken = yield jwtService_1.jwtService.verifyToken(refreshTokenFromRequest);
-    if (!decodedToken) {
-        res.sendStatus(401);
-        return;
-    }
-    const tokenInBlackList = yield jwtService_1.jwtService.isTokenBlacklisted(refreshTokenFromRequest);
-    if (tokenInBlackList) {
-        res.sendStatus(401);
-        return;
-    }
+    // const decodedToken = await jwtService.verifyToken(refreshTokenFromRequest)
+    //
+    // if (!decodedToken) {
+    //     res.sendStatus(401)
+    //     return
+    // }
+    //
+    // const tokenInBlackList = await jwtService.isTokenBlacklisted(refreshTokenFromRequest)
+    //
+    // if (tokenInBlackList) {
+    //     res.sendStatus(401)
+    //     return
+    // }
     res.status(200).send({ email, login, userId });
     return;
 });
@@ -135,7 +138,7 @@ const logoutController = (req, res) => __awaiter(void 0, void 0, void 0, functio
     //     return
     // }
     yield jwtService_1.jwtService.putTokenToTheBlackList(refreshTokenFromRequest);
-    res.status(204).clearCookie('refreshToken');
+    res.sendStatus(204);
     return;
 });
 exports.logoutController = logoutController;

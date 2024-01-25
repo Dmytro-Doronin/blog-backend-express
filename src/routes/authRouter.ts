@@ -16,7 +16,7 @@ import {authMiddlewareWithBearer} from "../middleware/authMiddlewareWithBearer";
 import {verifyTokenMiddleware} from "../middleware/verifyTokenMiddleware";
 export const authRouter = Router()
 
-authRouter.get('/me', authMiddlewareWithBearer, meController)
+authRouter.post('/me', authMiddlewareWithBearer, meController)
 authRouter.post('/login', loginValidationModelMiddleware(), errorMiddleware, authController)
 authRouter.post('/logout',verifyTokenMiddleware, logoutController)
 authRouter.post('/refresh-token',verifyTokenMiddleware, refreshTokenController)
