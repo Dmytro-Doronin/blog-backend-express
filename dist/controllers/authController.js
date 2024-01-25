@@ -32,14 +32,6 @@ const authController = (req, res) => __awaiter(void 0, void 0, void 0, function*
 exports.authController = authController;
 const registrationController = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const { login, email, password } = req.body;
-    // const checkUserEmail = await authService.checkAuthCredentials(email, password)
-    // const checkUserLogin = await authService.checkAuthCredentials(login, password)
-    //
-    //
-    // if (checkUserEmail || checkUserLogin) {
-    //     res.sendStatus(400)
-    //     return
-    // }
     yield authService_1.authService.createUser({ login, email, password });
     res.sendStatus(204);
     return;
@@ -68,27 +60,9 @@ const emailResendingController = (req, res) => __awaiter(void 0, void 0, void 0,
 });
 exports.emailResendingController = emailResendingController;
 const meController = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    const refreshTokenFromRequest = req.cookies.refreshToken;
     const userId = req.user.id;
     const login = req.user.accountData.login;
     const email = req.user.accountData.email;
-    // if (!refreshTokenFromRequest) {
-    //     res.sendStatus(401)
-    //     return
-    // }
-    // const decodedToken = await jwtService.verifyToken(refreshTokenFromRequest)
-    //
-    // if (!decodedToken) {
-    //     res.sendStatus(401)
-    //     return
-    // }
-    //
-    // const tokenInBlackList = await jwtService.isTokenBlacklisted(refreshTokenFromRequest)
-    //
-    // if (tokenInBlackList) {
-    //     res.sendStatus(401)
-    //     return
-    // }
     res.status(200).send({ email, login, userId });
     return;
 });
@@ -98,24 +72,6 @@ const refreshTokenController = (req, res) => __awaiter(void 0, void 0, void 0, f
     // const user = req.user
     const userId = req.userId;
     const user = yield userQuery_1.userQuery.findUserById(userId);
-    // if (!refreshTokenFromRequest) {
-    //     res.sendStatus(401)
-    //     return
-    // }
-    //
-    // const decodedToken = await jwtService.verifyToken(refreshTokenFromRequest)
-    //
-    // if (!decodedToken) {
-    //     res.sendStatus(401)
-    //     return
-    // }
-    //
-    // const tokenInBlackList = await jwtService.isTokenBlacklisted(refreshTokenFromRequest)
-    //
-    // if (tokenInBlackList) {
-    //     res.sendStatus(401)
-    //     return
-    // }
     yield jwtService_1.jwtService.putTokenToTheBlackList(refreshTokenFromRequest);
     const accessToken = yield jwtService_1.jwtService.createJWTAccessToken((0, maper_1.userMapper)(user));
     const refreshToken = yield jwtService_1.jwtService.createJWTRefreshToken((0, maper_1.userMapper)(user));
@@ -126,17 +82,6 @@ const refreshTokenController = (req, res) => __awaiter(void 0, void 0, void 0, f
 exports.refreshTokenController = refreshTokenController;
 const logoutController = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const refreshTokenFromRequest = req.cookies.refreshToken;
-    // if (!refreshTokenFromRequest) {
-    //     res.sendStatus(401)
-    //     return
-    // }
-    //
-    // const decodedToken = await jwtService.verifyToken(refreshTokenFromRequest)
-    //
-    // if (!decodedToken) {
-    //     res.sendStatus(401)
-    //     return
-    // }
     yield jwtService_1.jwtService.putTokenToTheBlackList(refreshTokenFromRequest);
     res.sendStatus(204);
     return;

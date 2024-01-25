@@ -34,15 +34,6 @@ export const registrationController = async (req: RequestWithBody<UsersInputMode
 
     const {login, email, password} = req.body
 
-    // const checkUserEmail = await authService.checkAuthCredentials(email, password)
-    // const checkUserLogin = await authService.checkAuthCredentials(login, password)
-    //
-    //
-    // if (checkUserEmail || checkUserLogin) {
-    //     res.sendStatus(400)
-    //     return
-    // }
-
     await authService.createUser({login, email, password})
 
     res.sendStatus(204)
@@ -79,29 +70,9 @@ export const emailResendingController = async (req: RequestWithBody<Registration
 }
 
 export const meController = async (req: Request, res: Response)=> {
-    const refreshTokenFromRequest = req.cookies.refreshToken
     const userId = req.user.id
     const login = req.user.accountData.login
     const email = req.user.accountData.email
-    
-    // if (!refreshTokenFromRequest) {
-    //     res.sendStatus(401)
-    //     return
-    // }
-
-    // const decodedToken = await jwtService.verifyToken(refreshTokenFromRequest)
-    //
-    // if (!decodedToken) {
-    //     res.sendStatus(401)
-    //     return
-    // }
-    //
-    // const tokenInBlackList = await jwtService.isTokenBlacklisted(refreshTokenFromRequest)
-    //
-    // if (tokenInBlackList) {
-    //     res.sendStatus(401)
-    //     return
-    // }
 
     res.status(200).send({email, login, userId})
     return
@@ -112,24 +83,7 @@ export const refreshTokenController = async (req: Request, res: Response) => {
     // const user = req.user
     const userId = req.userId
     const user = await userQuery.findUserById(userId)
-    // if (!refreshTokenFromRequest) {
-    //     res.sendStatus(401)
-    //     return
-    // }
-    //
-    // const decodedToken = await jwtService.verifyToken(refreshTokenFromRequest)
-    //
-    // if (!decodedToken) {
-    //     res.sendStatus(401)
-    //     return
-    // }
-    //
-    // const tokenInBlackList = await jwtService.isTokenBlacklisted(refreshTokenFromRequest)
-    //
-    // if (tokenInBlackList) {
-    //     res.sendStatus(401)
-    //     return
-    // }
+
     await jwtService.putTokenToTheBlackList(refreshTokenFromRequest)
     const accessToken = await jwtService.createJWTAccessToken(userMapper(user!))
     const refreshToken = await jwtService.createJWTRefreshToken(userMapper(user!))
@@ -142,17 +96,6 @@ export const refreshTokenController = async (req: Request, res: Response) => {
 export const logoutController = async (req: Request, res: Response) => {
     const refreshTokenFromRequest = req.cookies.refreshToken
 
-    // if (!refreshTokenFromRequest) {
-    //     res.sendStatus(401)
-    //     return
-    // }
-    //
-    // const decodedToken = await jwtService.verifyToken(refreshTokenFromRequest)
-    //
-    // if (!decodedToken) {
-    //     res.sendStatus(401)
-    //     return
-    // }
 
     await jwtService.putTokenToTheBlackList(refreshTokenFromRequest)
 
