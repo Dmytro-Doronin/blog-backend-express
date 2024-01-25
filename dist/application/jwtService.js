@@ -50,7 +50,6 @@ exports.jwtService = {
                 return result;
             }
             catch (e) {
-                yield blackListMutation_1.blackListMutation.putTokenInBlackList(token);
                 return false;
             }
         });

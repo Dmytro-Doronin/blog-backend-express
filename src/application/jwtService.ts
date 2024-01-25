@@ -33,7 +33,6 @@ export const jwtService = {
             const result: any = jwt.verify(token, setting.JWT_SECRET)
             return result
         } catch (e) {
-            await blackListMutation.putTokenInBlackList(token)
             return false
         }
     },
