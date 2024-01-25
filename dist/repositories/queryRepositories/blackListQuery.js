@@ -9,21 +9,20 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
     });
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.deleteAllDataMutation = void 0;
+exports.blackListQuery = void 0;
 const dbCollections_1 = require("../../db/dbCollections");
-const dbCollections_2 = require("../../db/dbCollections");
-exports.deleteAllDataMutation = {
-    deleteAllDataFromDb() {
+exports.blackListQuery = {
+    checkTokenInBlackList(token) {
         return __awaiter(this, void 0, void 0, function* () {
             try {
-                yield dbCollections_1.dbBlogCollections.deleteMany({});
-                yield dbCollections_2.dbPostCollections.deleteMany({});
-                yield dbCollections_1.dbUsersCollections.deleteMany({});
-                yield dbCollections_1.dbCommentsCollections.deleteMany({});
-                yield dbCollections_1.dbBlacklistCollections.deleteMany({});
+                const tokenInBlacklist = yield dbCollections_1.dbBlacklistCollections.findOne({ token: token });
+                if (!tokenInBlacklist) {
+                    return null;
+                }
+                return tokenInBlacklist;
             }
             catch (e) {
-                throw new Error('All data was not deleted');
+                throw new Error('Token was not get');
             }
         });
     }

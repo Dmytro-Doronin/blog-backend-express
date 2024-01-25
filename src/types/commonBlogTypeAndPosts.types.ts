@@ -45,7 +45,6 @@ export type userDBType = {
 
 export type BlackListOfTokenType = {
     token: string
-    date: Date
 }
 
 type CommentatorInfoType = {

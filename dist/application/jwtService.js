@@ -15,13 +15,21 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.jwtService = void 0;
 const jsonwebtoken_1 = __importDefault(require("jsonwebtoken"));
 const variables_1 = require("../variables");
+const blackListMutation_1 = require("../repositories/mutationRepositories/blackListMutation");
+const blackListQuery_1 = require("../repositories/queryRepositories/blackListQuery");
 exports.jwtService = {
-    createJWT(user) {
+    createJWTAccessToken(user) {
         return __awaiter(this, void 0, void 0, function* () {
-            const token = jsonwebtoken_1.default.sign({ userId: user.id }, variables_1.setting.JWT_SECRET, { expiresIn: '1h' });
+            const token = jsonwebtoken_1.default.sign({ userId: user.id }, variables_1.setting.JWT_SECRET, { expiresIn: '10s' });
             return {
                 accessToken: token
             };
+        });
+    },
+    createJWTRefreshToken(user) {
+        return __awaiter(this, void 0, void 0, function* () {
+            const token = jsonwebtoken_1.default.sign({ userId: user.id }, variables_1.setting.JWT_SECRET, { expiresIn: '20s' });
+            return token;
         });
     },
     getUserIdByToken(token) {
@@ -33,6 +41,32 @@ exports.jwtService = {
             catch (e) {
                 return false;
             }
+        });
+    },
+    verifyToken(token) {
+        return __awaiter(this, void 0, void 0, function* () {
+            try {
+                const result = jsonwebtoken_1.default.verify(token, variables_1.setting.JWT_SECRET);
+                return result;
+            }
+            catch (e) {
+                yield blackListMutation_1.blackListMutation.putTokenInBlackList(token);
+                return false;
+            }
+        });
+    },
+    isTokenBlacklisted(token) {
+        return __awaiter(this, void 0, void 0, function* () {
+            const result = yield blackListQuery_1.blackListQuery.checkTokenInBlackList(token);
+            if (!result) {
+                return null;
+            }
+            return true;
+        });
+    },
+    putTokenToTheBlackList(token) {
+        return __awaiter(this, void 0, void 0, function* () {
+            yield blackListMutation_1.blackListMutation.putTokenInBlackList(token);
         });
     }
 };

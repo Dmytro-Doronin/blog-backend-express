@@ -9,7 +9,7 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
     });
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.meController = exports.emailResendingController = exports.registrationConfirmationController = exports.registrationController = exports.authController = void 0;
+exports.logoutController = exports.refreshTokenController = exports.meController = exports.emailResendingController = exports.registrationConfirmationController = exports.registrationController = exports.authController = void 0;
 const usersService_1 = require("../services/users/usersService");
 const jwtService_1 = require("../application/jwtService");
 const authService_1 = require("../services/auth/authService");
@@ -20,8 +20,10 @@ const authController = (req, res) => __awaiter(void 0, void 0, void 0, function*
         res.sendStatus(401);
         return;
     }
-    const token = yield jwtService_1.jwtService.createJWT(user);
-    res.status(200).send(token);
+    const accessToken = yield jwtService_1.jwtService.createJWTAccessToken(user);
+    const refreshToken = yield jwtService_1.jwtService.createJWTRefreshToken(user);
+    res.cookie('refreshToken', refreshToken, { httpOnly: true, secure: true });
+    res.status(200).send(accessToken);
     return;
     // const result = await userQuery.findUserByLoginOrEmail()
 });
@@ -64,7 +66,50 @@ const emailResendingController = (req, res) => __awaiter(void 0, void 0, void 0,
 });
 exports.emailResendingController = emailResendingController;
 const meController = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    const { id } = req.user;
-    res.status(200).send({});
+    const userId = req.user.id;
+    const login = req.user.accountData.login;
+    const email = req.user.accountData.email;
+    res.status(200).send({ email, login, userId });
+    return;
 });
 exports.meController = meController;
+const refreshTokenController = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    const refreshTokenFromRequest = req.cookies.refreshToken;
+    const user = req.user;
+    if (!refreshTokenFromRequest) {
+        res.sendStatus(401);
+        return;
+    }
+    const decodedToken = yield jwtService_1.jwtService.verifyToken(refreshTokenFromRequest);
+    if (!decodedToken) {
+        res.sendStatus(401);
+        return;
+    }
+    const tokenInBlackList = yield jwtService_1.jwtService.isTokenBlacklisted(refreshTokenFromRequest);
+    if (tokenInBlackList) {
+        res.sendStatus(401);
+        return;
+    }
+    const accessToken = yield jwtService_1.jwtService.createJWTAccessToken(user);
+    const refreshToken = yield jwtService_1.jwtService.createJWTRefreshToken(user);
+    res.cookie('refreshToken', refreshToken, { httpOnly: true, secure: true });
+    res.status(200).send(accessToken);
+    return;
+});
+exports.refreshTokenController = refreshTokenController;
+const logoutController = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    const refreshTokenFromRequest = req.cookies.refreshToken;
+    if (!refreshTokenFromRequest) {
+        res.sendStatus(401);
+        return;
+    }
+    const decodedToken = yield jwtService_1.jwtService.verifyToken(refreshTokenFromRequest);
+    if (!decodedToken) {
+        res.sendStatus(401);
+        return;
+    }
+    yield jwtService_1.jwtService.putTokenToTheBlackList(refreshTokenFromRequest);
+    res.status(204).clearCookie('refreshToken');
+    return;
+});
+exports.logoutController = logoutController;

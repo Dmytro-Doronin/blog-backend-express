@@ -10,6 +10,8 @@ const authMiddlewareWithBearer_1 = require("../middleware/authMiddlewareWithBear
 exports.authRouter = (0, express_1.Router)();
 exports.authRouter.post('/me', authMiddlewareWithBearer_1.authMiddlewareWithBearer, authController_1.meController);
 exports.authRouter.post('/login', (0, loginValidationModel_1.loginValidationModelMiddleware)(), blogsMiddleware_1.errorMiddleware, authController_1.authController);
+exports.authRouter.post('/logout', authController_1.logoutController);
+exports.authRouter.post('/refresh-token', authController_1.refreshTokenController);
 exports.authRouter.post('/registration', (0, authValidationModel_1.authRegistrationValidationMiddleware)(), blogsMiddleware_1.errorMiddleware, authController_1.registrationController);
 exports.authRouter.post('/registration-confirmation', (0, authValidationModel_1.authRegistrationConfirmationValidationMiddleware)(), blogsMiddleware_1.errorMiddleware, authController_1.registrationConfirmationController);
 exports.authRouter.post('/registration-email-resending', (0, authValidationModel_1.authEmailResendingValidationMiddleware)(), blogsMiddleware_1.errorMiddleware, authController_1.emailResendingController);

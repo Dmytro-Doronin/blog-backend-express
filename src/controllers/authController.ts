@@ -77,12 +77,47 @@ export const emailResendingController = async (req: RequestWithBody<Registration
 }
 
 export const meController = async (req: Request, res: Response)=> {
-    const {id} = req.user
+    const userId = req.user.id
+    const login = req.user.accountData.login
+    const email = req.user.accountData.email
 
-    res.status(200).send({})
+    res.status(200).send({email, login, userId})
+    return
 }
 
 export const refreshTokenController = async (req: Request, res: Response) => {
+    const refreshTokenFromRequest = req.cookies.refreshToken
+    const user = req.user
+    if (!refreshTokenFromRequest) {
+        res.sendStatus(401)
+        return
+    }
+
+    const decodedToken = await jwtService.verifyToken(refreshTokenFromRequest)
+
+    if (!decodedToken) {
+        res.sendStatus(401)
+        return
+    }
+
+    const tokenInBlackList = await jwtService.isTokenBlacklisted(refreshTokenFromRequest)
+
+    if (tokenInBlackList) {
+        res.sendStatus(401)
+        return
+    }
+
+    const accessToken = await jwtService.createJWTAccessToken(user)
+    const refreshToken = await jwtService.createJWTRefreshToken(user)
+
+    res.cookie('refreshToken', refreshToken, {httpOnly: true,secure: true})
+
+    res.status(200).send(accessToken)
+    return
+
+}
+
+export const logoutController = async (req: Request, res: Response) => {
     const refreshTokenFromRequest = req.cookies.refreshToken
 
     if (!refreshTokenFromRequest) {
@@ -97,4 +132,8 @@ export const refreshTokenController = async (req: Request, res: Response) => {
         return
     }
 
+    await jwtService.putTokenToTheBlackList(refreshTokenFromRequest)
+
+    res.status(204).clearCookie('refreshToken')
+    return
 }
