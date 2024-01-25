@@ -10,24 +10,29 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.verifyTokenMiddleware = void 0;
-const jwtService_1 = require("../application/jwtService");
 const verifyTokenMiddleware = (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
-    const refreshTokenFromCookie = req.cookies;
-    if (!refreshTokenFromCookie) {
-        res.sendStatus(401);
-        return;
-    }
-    const decodedToken = yield jwtService_1.jwtService.verifyToken(refreshTokenFromCookie);
-    if (!decodedToken) {
-        res.sendStatus(401);
-        return;
-    }
-    const tokenInBlackList = yield jwtService_1.jwtService.isTokenBlacklisted(refreshTokenFromCookie);
-    if (tokenInBlackList) {
-        res.sendStatus(401);
-        return;
-    }
-    req.userId = decodedToken.userId;
+    // const refreshTokenFromCookie = req.cookies
+    //
+    // if (!refreshTokenFromCookie) {
+    //     res.sendStatus(401)
+    //     return
+    // }
+    //
+    // const decodedToken = await jwtService.verifyToken(refreshTokenFromCookie)
+    //
+    // if (!decodedToken) {
+    //     res.sendStatus(401)
+    //     return
+    // }
+    //
+    // const tokenInBlackList = await jwtService.isTokenBlacklisted(refreshTokenFromCookie)
+    //
+    // if (tokenInBlackList) {
+    //     res.sendStatus(401)
+    //     return
+    // }
+    //
+    // req.userId = decodedToken.userId
     return next();
 });
 exports.verifyTokenMiddleware = verifyTokenMiddleware;
