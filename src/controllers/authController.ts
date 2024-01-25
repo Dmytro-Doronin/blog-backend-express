@@ -155,7 +155,7 @@ export const logoutController = async (req: Request, res: Response) => {
     // }
 
     await jwtService.putTokenToTheBlackList(refreshTokenFromRequest)
-    
+
     res.status(204).clearCookie('refreshToken')
     return
 }
