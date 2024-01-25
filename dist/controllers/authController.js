@@ -13,6 +13,8 @@ exports.logoutController = exports.refreshTokenController = exports.meController
 const usersService_1 = require("../services/users/usersService");
 const jwtService_1 = require("../application/jwtService");
 const authService_1 = require("../services/auth/authService");
+const userQuery_1 = require("../repositories/queryRepositories/userQuery");
+const maper_1 = require("../utils/maper");
 const authController = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const { loginOrEmail, password } = req.body;
     const user = yield usersService_1.usersService.checkCredentials(loginOrEmail, password);
@@ -90,7 +92,9 @@ const meController = (req, res) => __awaiter(void 0, void 0, void 0, function* (
 exports.meController = meController;
 const refreshTokenController = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const refreshTokenFromRequest = req.cookies.refreshToken;
-    const user = req.user;
+    // const user = req.user
+    const userId = req.userId;
+    const user = yield userQuery_1.userQuery.findUserById(userId);
     // if (!refreshTokenFromRequest) {
     //     res.sendStatus(401)
     //     return
@@ -110,12 +114,10 @@ const refreshTokenController = (req, res) => __awaiter(void 0, void 0, void 0, f
     //     return
     // }
     yield jwtService_1.jwtService.putTokenToTheBlackList(refreshTokenFromRequest);
-    const accessToken = yield jwtService_1.jwtService.createJWTAccessToken(user);
-    const refreshToken = yield jwtService_1.jwtService.createJWTRefreshToken(user);
-    res.status(200)
-        .clearCookie('refreshToken')
-        .cookie('refreshToken', refreshToken, { httpOnly: true, secure: true })
-        .send(accessToken);
+    const accessToken = yield jwtService_1.jwtService.createJWTAccessToken((0, maper_1.userMapper)(user));
+    const refreshToken = yield jwtService_1.jwtService.createJWTRefreshToken((0, maper_1.userMapper)(user));
+    res.cookie('refreshToken', refreshToken, { httpOnly: true, secure: true });
+    res.status(200).send(accessToken);
     return;
 });
 exports.refreshTokenController = refreshTokenController;

@@ -28,8 +28,8 @@ exports.jwtService = {
     },
     createJWTRefreshToken(user) {
         return __awaiter(this, void 0, void 0, function* () {
-            const token = jsonwebtoken_1.default.sign({ userId: user.id }, variables_1.setting.JWT_SECRET, { expiresIn: '20s' });
-            return token;
+            const refreshToken = jsonwebtoken_1.default.sign({ userId: user.id }, variables_1.setting.JWT_SECRET, { expiresIn: '20s' });
+            return refreshToken;
         });
     },
     getUserIdByToken(token) {

@@ -27,6 +27,7 @@ const verifyTokenMiddleware = (req, res, next) => __awaiter(void 0, void 0, void
         res.sendStatus(401);
         return;
     }
+    req.userId = decodedToken.userId;
     return next();
 });
 exports.verifyTokenMiddleware = verifyTokenMiddleware;

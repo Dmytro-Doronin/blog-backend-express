@@ -24,6 +24,7 @@ export const verifyTokenMiddleware = async (req: Request, res: Response, next: N
         return
     }
 
+    req.userId = decodedToken.userId
     return next()
 
 }

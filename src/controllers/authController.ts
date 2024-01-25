@@ -10,6 +10,7 @@ import {jwtService} from "../application/jwtService";
 import {authService} from "../services/auth/authService";
 import {userQuery} from "../repositories/queryRepositories/userQuery";
 import {cookie} from "express-validator";
+import {userMapper} from "../utils/maper";
 
 export const authController = async (req: RequestWithBody<LoginType>, res: Response) => {
     const {loginOrEmail, password} = req.body
@@ -108,7 +109,9 @@ export const meController = async (req: Request, res: Response)=> {
 
 export const refreshTokenController = async (req: Request, res: Response) => {
     const refreshTokenFromRequest = req.cookies.refreshToken
-    const user = req.user
+    // const user = req.user
+    const userId = req.userId
+    const user = await userQuery.findUserById(userId)
     // if (!refreshTokenFromRequest) {
     //     res.sendStatus(401)
     //     return
@@ -128,14 +131,11 @@ export const refreshTokenController = async (req: Request, res: Response) => {
     //     return
     // }
     await jwtService.putTokenToTheBlackList(refreshTokenFromRequest)
-    const accessToken = await jwtService.createJWTAccessToken(user)
-    const refreshToken = await jwtService.createJWTRefreshToken(user)
+    const accessToken = await jwtService.createJWTAccessToken(userMapper(user!))
+    const refreshToken = await jwtService.createJWTRefreshToken(userMapper(user!))
 
-    res.status(200)
-        .clearCookie('refreshToken')
-        .cookie('refreshToken', refreshToken, {httpOnly: true,secure: true})
-        .send(accessToken)
-
+    res.cookie('refreshToken', refreshToken, {httpOnly: true,secure: true})
+    res.status(200).send(accessToken)
     return
 }
 
