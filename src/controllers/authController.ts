@@ -83,11 +83,11 @@ export const meController = async (req: Request, res: Response)=> {
     const userId = req.user.id
     const login = req.user.accountData.login
     const email = req.user.accountData.email
-
-    if (!refreshTokenFromRequest) {
-        res.sendStatus(401)
-        return
-    }
+    
+    // if (!refreshTokenFromRequest) {
+    //     res.sendStatus(401)
+    //     return
+    // }
 
     // const decodedToken = await jwtService.verifyToken(refreshTokenFromRequest)
     //
