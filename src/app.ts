@@ -11,6 +11,8 @@ import cookieParser from "cookie-parser";
 
 export const app = express()
 
+
+app.set('trust proxy', true)
 app.use(cookieParser())
 app.use(express.json())
 //endpoints

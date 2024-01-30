@@ -3,7 +3,7 @@ import jwt from 'jsonwebtoken'
 import {setting} from "../variables";
 import {blackListMutation} from "../repositories/mutationRepositories/blackListMutation";
 import {blackListQuery} from "../repositories/queryRepositories/blackListQuery";
-
+const { v4: uuidv4 } = require('uuid');
 export const jwtService = {
     async createJWTAccessToken (user: UserViewModel) {
        const token = jwt.sign({userId: user.id}, setting.JWT_SECRET, {expiresIn: '10s'})
@@ -13,7 +13,15 @@ export const jwtService = {
         }
     },
     async createJWTRefreshToken (user: UserViewModel) {
-        const refreshToken = jwt.sign({userId: user.id}, setting.JWT_SECRET, {expiresIn: '20s'})
+        const currentDate = new Date()
+
+        const refreshToken = jwt.sign({
+            userId: user.id,
+            lastActiveDate: currentDate,
+            expireDate: new Date(currentDate.getTime() + 20 * 1000),
+            deviceId: uuidv4()
+
+        },setting.JWT_SECRET, {expiresIn: '20s'})
 
         return refreshToken
 

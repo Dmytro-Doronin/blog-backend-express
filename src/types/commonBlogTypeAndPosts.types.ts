@@ -43,6 +43,15 @@ export type userDBType = {
     }
 }
 
+export type DeviceDBType = {
+    lastActiveDate: Date
+    expireDate: Date
+    deviceId: string
+    ip: string
+    title: string
+    userId: string
+}
+
 export type BlackListOfTokenType = {
     token: string
 }

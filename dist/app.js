@@ -14,6 +14,7 @@ const authRouter_1 = require("./routes/authRouter");
 const commentsRouter_1 = require("./routes/commentsRouter");
 const cookie_parser_1 = __importDefault(require("cookie-parser"));
 exports.app = (0, express_1.default)();
+exports.app.set('trust proxy', true);
 exports.app.use((0, cookie_parser_1.default)());
 exports.app.use(express_1.default.json());
 //endpoints

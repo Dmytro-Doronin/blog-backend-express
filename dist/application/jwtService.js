@@ -17,6 +17,7 @@ const jsonwebtoken_1 = __importDefault(require("jsonwebtoken"));
 const variables_1 = require("../variables");
 const blackListMutation_1 = require("../repositories/mutationRepositories/blackListMutation");
 const blackListQuery_1 = require("../repositories/queryRepositories/blackListQuery");
+const { v4: uuidv4 } = require('uuid');
 exports.jwtService = {
     createJWTAccessToken(user) {
         return __awaiter(this, void 0, void 0, function* () {
@@ -28,7 +29,13 @@ exports.jwtService = {
     },
     createJWTRefreshToken(user) {
         return __awaiter(this, void 0, void 0, function* () {
-            const refreshToken = jsonwebtoken_1.default.sign({ userId: user.id }, variables_1.setting.JWT_SECRET, { expiresIn: '20s' });
+            const currentDate = new Date();
+            const refreshToken = jsonwebtoken_1.default.sign({
+                userId: user.id,
+                lastActiveDate: currentDate,
+                expireDate: new Date(currentDate.getTime() + 20 * 1000),
+                deviceId: uuidv4()
+            }, variables_1.setting.JWT_SECRET, { expiresIn: '20s' });
             return refreshToken;
         });
     },

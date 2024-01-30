@@ -11,6 +11,7 @@ import {authService} from "../services/auth/authService";
 import {userQuery} from "../repositories/queryRepositories/userQuery";
 import {cookie} from "express-validator";
 import {userMapper} from "../utils/maper";
+import {securityDevicesService} from "../services/securityDevices/securityDevices";
 
 export const authController = async (req: RequestWithBody<LoginType>, res: Response) => {
     const {loginOrEmail, password} = req.body
@@ -22,6 +23,12 @@ export const authController = async (req: RequestWithBody<LoginType>, res: Respo
 
     const accessToken = await jwtService.createJWTAccessToken(user)
     const refreshToken = await jwtService.createJWTRefreshToken(user)
+
+
+    const ip = req.ip
+    const title = req.headers['user-agent']
+
+    await securityDevicesService.createDevice(refreshToken, ip, title)
 
     res.cookie('refreshToken', refreshToken, {httpOnly: true,secure: true})
 
@@ -38,7 +45,6 @@ export const registrationController = async (req: RequestWithBody<UsersInputMode
 
     res.sendStatus(204)
     return
-
 }
 
 export const registrationConfirmationController = async (req: RequestWithBody<RegistrationConfirmationInputType>, res: Response) => {

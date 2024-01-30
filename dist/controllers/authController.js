@@ -15,6 +15,7 @@ const jwtService_1 = require("../application/jwtService");
 const authService_1 = require("../services/auth/authService");
 const userQuery_1 = require("../repositories/queryRepositories/userQuery");
 const maper_1 = require("../utils/maper");
+const securityDevices_1 = require("../services/securityDevices/securityDevices");
 const authController = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const { loginOrEmail, password } = req.body;
     const user = yield usersService_1.usersService.checkCredentials(loginOrEmail, password);
@@ -24,6 +25,9 @@ const authController = (req, res) => __awaiter(void 0, void 0, void 0, function*
     }
     const accessToken = yield jwtService_1.jwtService.createJWTAccessToken(user);
     const refreshToken = yield jwtService_1.jwtService.createJWTRefreshToken(user);
+    const ip = req.ip;
+    const title = req.headers['user-agent'];
+    yield securityDevices_1.securityDevicesService.createDevice(refreshToken, ip, title);
     res.cookie('refreshToken', refreshToken, { httpOnly: true, secure: true });
     res.status(200).send(accessToken);
     return;
