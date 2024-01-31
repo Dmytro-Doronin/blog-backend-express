@@ -10,7 +10,7 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.postMutation = void 0;
-const maper_1 = require("../../utils/maper");
+const mapper_1 = require("../../utils/mapper");
 const dbCollections_1 = require("../../db/dbCollections");
 //export const dbPostCollections = client.db('Blogs').collection<PostViewModelType>('posts')
 exports.postMutation = {
@@ -22,7 +22,7 @@ exports.postMutation = {
                 if (!result) {
                     return null;
                 }
-                return (0, maper_1.postMapper)(result);
+                return (0, mapper_1.postMapper)(result);
             }
             catch (e) {
                 throw new Error('Post was not add');

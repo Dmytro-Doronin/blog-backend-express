@@ -11,7 +11,7 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.commentMutation = void 0;
 const dbCollections_1 = require("../../db/dbCollections");
-const maper_1 = require("../../utils/maper");
+const mapper_1 = require("../../utils/mapper");
 exports.commentMutation = {
     createCommentForPostInDb(newComments) {
         return __awaiter(this, void 0, void 0, function* () {
@@ -21,7 +21,7 @@ exports.commentMutation = {
                 if (!comment) {
                     return null;
                 }
-                return (0, maper_1.commentMapper)(comment);
+                return (0, mapper_1.commentMapper)(comment);
             }
             catch (e) {
                 throw new Error('Comment was not created');

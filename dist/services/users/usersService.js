@@ -17,7 +17,7 @@ const bcryptjs_1 = __importDefault(require("bcryptjs"));
 const userMutation_1 = require("../../repositories/mutationRepositories/userMutation");
 const userQuery_1 = require("../../repositories/queryRepositories/userQuery");
 const date_fns_1 = require("date-fns");
-const maper_1 = require("../../utils/maper");
+const mapper_1 = require("../../utils/mapper");
 const { v4: uuidv4 } = require('uuid');
 exports.usersService = {
     createUser({ email, password, login }) {
@@ -43,7 +43,7 @@ exports.usersService = {
             if (!user) {
                 return null;
             }
-            return (0, maper_1.userMapper)(user);
+            return (0, mapper_1.userMapper)(user);
         });
     },
     checkCredentials(loginOrEmail, password) {
@@ -53,7 +53,7 @@ exports.usersService = {
                 return false;
             const passwordHash = yield this._generateHash(password, user.accountData.passwordSalt);
             if (user.accountData.passwordHash === passwordHash) {
-                return (0, maper_1.userMapper)(user);
+                return (0, mapper_1.userMapper)(user);
             }
             else {
                 return false;

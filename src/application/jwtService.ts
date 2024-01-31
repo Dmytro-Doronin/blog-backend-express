@@ -12,14 +12,14 @@ export const jwtService = {
             accessToken: token
         }
     },
-    async createJWTRefreshToken (user: UserViewModel) {
+    async createJWTRefreshToken (user: UserViewModel, deviceId: string = uuidv4()) {
         const currentDate = new Date()
 
         const refreshToken = jwt.sign({
             userId: user.id,
             lastActiveDate: currentDate,
             expireDate: new Date(currentDate.getTime() + 20 * 1000),
-            deviceId: uuidv4()
+            deviceId: deviceId
 
         },setting.JWT_SECRET, {expiresIn: '20s'})
 
@@ -57,5 +57,6 @@ export const jwtService = {
 
     async putTokenToTheBlackList (token: string) {
         await blackListMutation.putTokenInBlackList(token)
-    }
+    },
+
 }

@@ -52,6 +52,13 @@ export type DeviceDBType = {
     userId: string
 }
 
+export type DeviceResponse = {
+    ip: string,
+    title: string,
+    lastActiveDate: string,
+    deviceId: string
+}
+
 export type BlackListOfTokenType = {
     token: string
 }

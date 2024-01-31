@@ -1,5 +1,5 @@
 import {dbCommentsCollections} from "../../db/dbCollections";
-import {commentMapper} from "../../utils/maper";
+import {commentMapper} from "../../utils/mapper";
 
 export const commentQuery = {
     async getCommentById (id: string) {

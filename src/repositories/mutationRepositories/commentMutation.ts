@@ -1,7 +1,7 @@
 import { dbCommentsCollections} from "../../db/dbCollections";
 import {CommentInputModelType, commentsDBType} from "../../types/commonBlogTypeAndPosts.types";
 import {commentQuery} from "../queryRepositories/commentQuery";
-import {commentMapper} from "../../utils/maper";
+import {commentMapper} from "../../utils/mapper";
 
 export const commentMutation = {
     async createCommentForPostInDb (newComments: commentsDBType) {

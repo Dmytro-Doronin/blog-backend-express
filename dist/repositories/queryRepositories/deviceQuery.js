@@ -9,21 +9,35 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
     });
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.commentQuery = void 0;
+exports.deviceQuery = void 0;
 const dbCollections_1 = require("../../db/dbCollections");
 const mapper_1 = require("../../utils/mapper");
-exports.commentQuery = {
-    getCommentById(id) {
+exports.deviceQuery = {
+    getAllDevice() {
         return __awaiter(this, void 0, void 0, function* () {
             try {
-                const result = yield dbCollections_1.dbCommentsCollections.findOne({ id: id });
-                if (!result) {
-                    return null;
-                }
-                return (0, mapper_1.commentMapper)(result);
+                const devices = yield dbCollections_1.dbDeviceCollections.find({}).toArray();
+                return devices.map(mapper_1.deviceMapper);
             }
             catch (e) {
-                throw new Error('Comment was not found');
+                throw new Error('Can not get all data');
+            }
+        });
+    },
+    getDeviceByActiveDataAndUserId(lastActiveDate, deviceId) {
+        return __awaiter(this, void 0, void 0, function* () {
+            try {
+                const device = yield dbCollections_1.dbDeviceCollections.findOne({
+                    deviceId: deviceId,
+                    lastActiveDate: lastActiveDate
+                });
+                if (!device) {
+                    return false;
+                }
+                return device;
+            }
+            catch (e) {
+                throw new Error('Can not find device');
             }
         });
     }

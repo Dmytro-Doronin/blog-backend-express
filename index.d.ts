@@ -4,7 +4,11 @@ export declare global {
     namespace Express {
         export interface Request {
             user: userDBType | null
-            userId: string
+            tokenData: {
+                userId: string
+                deviceId: string
+            }
+
         }
     }
 }

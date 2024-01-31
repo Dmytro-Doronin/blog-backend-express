@@ -4,7 +4,7 @@ import {
     CreatePostToBlogType,
     PostViewModelType
 } from "../../types/commonBlogTypeAndPosts.types";
-import {blogMapper, postMapper} from "../../utils/maper";
+import {blogMapper, postMapper} from "../../utils/mapper";
 
 import {client} from "../../db/db";
 import {ChangeBlogByIdTypes} from "../../services/serviceTypes/blogsTypes";

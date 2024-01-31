@@ -1,4 +1,4 @@
-import {blogMapper, postMapper} from "../../utils/maper";
+import {blogMapper, postMapper} from "../../utils/mapper";
 import {BlogViewModelType, ParamsType} from "../../types/commonBlogTypeAndPosts.types";
 import {client} from "../../db/db";
 import {dbBlogCollections, dbPostCollections} from "../../db/dbCollections";

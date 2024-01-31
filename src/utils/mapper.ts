@@ -1,7 +1,7 @@
 import {WithId} from "mongodb";
 import {
     BlogViewModelType,
-    commentsDBType, CommentViewModelType,
+    commentsDBType, CommentViewModelType, DeviceDBType, DeviceResponse,
     PostViewModelType,
     userDBType,
     UserViewModel
@@ -48,5 +48,14 @@ export const commentMapper = (comment: WithId<commentsDBType>): CommentViewModel
             userLogin: comment.commentatorInfo.userLogin
         },
         createdAt: comment.createdAt
+    }
+}
+
+export const deviceMapper = (device: WithId<DeviceDBType>): DeviceResponse => {
+    return {
+        ip: device.ip,
+        title: device.title,
+        lastActiveDate: device.lastActiveDate.toISOString(),
+        deviceId: device.deviceId
     }
 }

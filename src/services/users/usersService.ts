@@ -3,7 +3,7 @@ import {userDBType, UsersInputModelType, UserViewModel} from "../../types/common
 import {userMutation} from "../../repositories/mutationRepositories/userMutation";
 import {userQuery} from "../../repositories/queryRepositories/userQuery";
 import {add} from 'date-fns'
-import {userMapper} from "../../utils/maper";
+import {userMapper} from "../../utils/mapper";
 const { v4: uuidv4 } = require('uuid');
 export const usersService = {
     async createUser ({email, password, login} : UsersInputModelType) {

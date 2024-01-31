@@ -1,6 +1,6 @@
 import {BlogViewModelType, userDBType} from "../../types/commonBlogTypeAndPosts.types";
 import {dbBlogCollections, dbUsersCollections} from "../../db/dbCollections";
-import {blogMapper, userMapper} from "../../utils/maper";
+import {blogMapper, userMapper} from "../../utils/mapper";
 import {userQuery} from "../queryRepositories/userQuery";
 
 

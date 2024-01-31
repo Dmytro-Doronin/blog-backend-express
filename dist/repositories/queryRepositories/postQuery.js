@@ -10,7 +10,7 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.postQuery = void 0;
-const maper_1 = require("../../utils/maper");
+const mapper_1 = require("../../utils/mapper");
 const dbCollections_1 = require("../../db/dbCollections");
 const sortUtils_1 = require("../../utils/sortUtils");
 exports.postQuery = {
@@ -35,7 +35,7 @@ exports.postQuery = {
                     page: +pageNumber,
                     pageSize: +pageSize,
                     totalCount,
-                    items: post.map(maper_1.postMapper)
+                    items: post.map(mapper_1.postMapper)
                 };
             }
             catch (e) {
@@ -50,7 +50,7 @@ exports.postQuery = {
                 if (!result) {
                     return null;
                 }
-                return (0, maper_1.postMapper)(result);
+                return (0, mapper_1.postMapper)(result);
             }
             catch (e) {
                 throw new Error('Blog was not found');
@@ -78,7 +78,7 @@ exports.postQuery = {
                     page: +pageNumber,
                     pageSize: +pageSize,
                     totalCount,
-                    items: comment.map(maper_1.commentMapper)
+                    items: comment.map(mapper_1.commentMapper)
                 };
             }
             catch (e) {

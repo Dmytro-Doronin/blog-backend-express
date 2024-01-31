@@ -27,14 +27,14 @@ exports.jwtService = {
             };
         });
     },
-    createJWTRefreshToken(user) {
+    createJWTRefreshToken(user, deviceId = uuidv4()) {
         return __awaiter(this, void 0, void 0, function* () {
             const currentDate = new Date();
             const refreshToken = jsonwebtoken_1.default.sign({
                 userId: user.id,
                 lastActiveDate: currentDate,
                 expireDate: new Date(currentDate.getTime() + 20 * 1000),
-                deviceId: uuidv4()
+                deviceId: deviceId
             }, variables_1.setting.JWT_SECRET, { expiresIn: '20s' });
             return refreshToken;
         });
@@ -74,5 +74,5 @@ exports.jwtService = {
         return __awaiter(this, void 0, void 0, function* () {
             yield blackListMutation_1.blackListMutation.putTokenInBlackList(token);
         });
-    }
+    },
 };

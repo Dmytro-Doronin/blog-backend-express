@@ -1,5 +1,5 @@
 import {PostInputModelType, PostViewModelType} from "../../types/commonBlogTypeAndPosts.types";
-import {postMapper} from "../../utils/maper";
+import {postMapper} from "../../utils/mapper";
 import {client} from "../../db/db";
 import {CreatePostsServiceType} from "../../services/serviceTypes/postsTypes";
 import {dbPostCollections} from '../../db/dbCollections'

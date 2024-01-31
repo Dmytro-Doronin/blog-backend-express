@@ -1,4 +1,4 @@
-import {commentMapper, postMapper} from "../../utils/maper";
+import {commentMapper, postMapper} from "../../utils/mapper";
 
 import {client} from "../../db/db";
 import {PostViewModelType} from "../../types/commonBlogTypeAndPosts.types";

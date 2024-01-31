@@ -10,7 +10,7 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.blogMutation = void 0;
-const maper_1 = require("../../utils/maper");
+const mapper_1 = require("../../utils/mapper");
 const dbCollections_1 = require("../../db/dbCollections");
 const { v4: uuidv4 } = require('uuid');
 exports.blogMutation = {
@@ -22,7 +22,7 @@ exports.blogMutation = {
                 if (!result) {
                     return null;
                 }
-                return (0, maper_1.blogMapper)(result);
+                return (0, mapper_1.blogMapper)(result);
             }
             catch (e) {
                 throw new Error('Blog was not created');
@@ -37,7 +37,7 @@ exports.blogMutation = {
                 if (!postFromDb) {
                     return null;
                 }
-                return (0, maper_1.postMapper)(postFromDb);
+                return (0, mapper_1.postMapper)(postFromDb);
             }
             catch (e) {
                 throw new Error('Blog was not created');

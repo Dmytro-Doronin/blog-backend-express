@@ -2,7 +2,7 @@ import { dbUsersCollections} from "../../db/dbCollections";
 import {UsersQueryInputModel} from "../../types/users/queryUsers.types";
 import {filterForSort} from "../../utils/sortUtils";
 import {body} from "express-validator";
-import {userMapper} from "../../utils/maper";
+import {userMapper} from "../../utils/mapper";
 
 export const userQuery = {
 

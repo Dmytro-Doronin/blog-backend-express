@@ -12,7 +12,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.userQuery = void 0;
 const dbCollections_1 = require("../../db/dbCollections");
 const sortUtils_1 = require("../../utils/sortUtils");
-const maper_1 = require("../../utils/maper");
+const mapper_1 = require("../../utils/mapper");
 exports.userQuery = {
     getAllUsers(sortData) {
         var _a, _b, _c, _d, _e, _f, _g, _h, _j, _k;
@@ -56,7 +56,7 @@ exports.userQuery = {
                     page: +pageNumber,
                     pageSize: +pageSize,
                     totalCount,
-                    items: users.map(maper_1.userMapper)
+                    items: users.map(mapper_1.userMapper)
                 };
             }
             catch (e) {

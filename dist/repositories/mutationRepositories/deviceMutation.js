@@ -15,10 +15,53 @@ exports.deviceMutation = {
     createDevice(device) {
         return __awaiter(this, void 0, void 0, function* () {
             try {
-                const result = yield dbCollections_1.dbDeviceCollections.insertOne(device);
+                yield dbCollections_1.dbDeviceCollections.insertOne(device);
+                const result = yield dbCollections_1.dbDeviceCollections.findOne({ lastActiveDate: device.lastActiveDate });
+                if (!result) {
+                    return null;
+                }
+                return result;
             }
             catch (e) {
                 throw new Error('Device was not created');
+            }
+        });
+    },
+    changeDeviceDataByDeviceId(deviceId, lastActiveDate, expireDate) {
+        return __awaiter(this, void 0, void 0, function* () {
+            try {
+                const deviceInDb = yield dbCollections_1.dbDeviceCollections.findOne({ deviceId });
+                if (deviceInDb) {
+                    return null;
+                }
+                const result = yield dbCollections_1.dbDeviceCollections.updateOne({ deviceId }, { $set: { lastActiveDate, expireDate } });
+                return result.modifiedCount === 1;
+            }
+            catch (e) {
+                throw new Error('Can not update device');
+            }
+        });
+    },
+    deleteAllDeviceExcludeCurrent(deviceId) {
+        return __awaiter(this, void 0, void 0, function* () {
+            try {
+                yield dbCollections_1.dbDeviceCollections.deleteMany({ deviceId: { $ne: deviceId } });
+                const count = yield dbCollections_1.dbDeviceCollections.countDocuments({});
+                return count === 1;
+            }
+            catch (e) {
+                throw new Error('Can not delete devices');
+            }
+        });
+    },
+    deleteDeviceByDeviceId(deviceId) {
+        return __awaiter(this, void 0, void 0, function* () {
+            try {
+                const result = yield dbCollections_1.dbDeviceCollections.deleteOne({ deviceId });
+                return result.deletedCount === 1;
+            }
+            catch (e) {
+                throw new Error('Can not delete device by deviceId');
             }
         });
     }

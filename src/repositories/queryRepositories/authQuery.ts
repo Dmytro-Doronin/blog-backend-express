@@ -1,6 +1,6 @@
 import {BlogViewModelType} from "../../types/commonBlogTypeAndPosts.types";
 import {dbBlogCollections, dbUsersCollections} from "../../db/dbCollections";
-import {blogMapper} from "../../utils/maper";
+import {blogMapper} from "../../utils/mapper";
 
 export const authQuery = {
     async getUserByConfirmationCode (code: string)  {
