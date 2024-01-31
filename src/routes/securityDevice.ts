@@ -10,4 +10,4 @@ export const deviceRouter = Router()
 
 deviceRouter.get('/devices', verifyTokenMiddleware, getAllDeviceController)
 deviceRouter.delete('/devices', verifyTokenMiddleware, deleteAllDevicesExcludeCurrentController)
-deviceRouter.delete('/devices/deviceId', verifyTokenMiddleware, deleteSpecifiedDevice)
+deviceRouter.delete('/devices/:deviceId', verifyTokenMiddleware, deleteSpecifiedDevice)

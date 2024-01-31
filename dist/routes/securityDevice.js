@@ -7,4 +7,4 @@ const deviceController_1 = require("../controllers/deviceController");
 exports.deviceRouter = (0, express_1.Router)();
 exports.deviceRouter.get('/devices', verifyTokenMiddleware_1.verifyTokenMiddleware, deviceController_1.getAllDeviceController);
 exports.deviceRouter.delete('/devices', verifyTokenMiddleware_1.verifyTokenMiddleware, deviceController_1.deleteAllDevicesExcludeCurrentController);
-exports.deviceRouter.delete('/devices/deviceId', verifyTokenMiddleware_1.verifyTokenMiddleware, deviceController_1.deleteSpecifiedDevice);
+exports.deviceRouter.delete('/devices/:deviceId', verifyTokenMiddleware_1.verifyTokenMiddleware, deviceController_1.deleteSpecifiedDevice);
