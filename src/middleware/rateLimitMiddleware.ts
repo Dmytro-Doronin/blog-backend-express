@@ -31,12 +31,12 @@ export const accessCounterMiddleware = async (req: Request, res: Response, next:
 
         if (count > 5) {
             res.sendStatus(429)
-
         }
 
     } catch (e: any) {
         throw new Error(e)
     }
-
-    next()
+    setTimeout(() => {
+        next()
+    }, 10000)
 }
