@@ -30,10 +30,7 @@ export const deleteAllDevicesExcludeCurrentController = async (req: Request, res
 
 export const deleteSpecifiedDevice = async (req: RequestWithParams<{deviceId: string}> , res: Response) => {
 
-    // const refreshToken = req.headers.cookie?.split('=')[1]
-    // const {currentDeviceId} = await jwtService.verifyToken(refreshToken!)
     const deviceIdToDelete = req.params.deviceId
-    const currentDeviceId = req.deviceId
     const currentUserId = req.userId
     const device = await deviceQuery.getDeviceByDeviceId(deviceIdToDelete)
 

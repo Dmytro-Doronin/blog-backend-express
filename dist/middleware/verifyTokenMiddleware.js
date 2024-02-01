@@ -19,7 +19,6 @@ const verifyTokenMiddleware = (req, res, next) => __awaiter(void 0, void 0, void
         return;
     }
     const decodedToken = yield jwtService_1.jwtService.verifyToken(refreshTokenFromCookie);
-    console.log(decodedToken);
     if (!decodedToken) {
         res.sendStatus(401);
         return;

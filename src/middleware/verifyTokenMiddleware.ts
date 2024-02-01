@@ -12,7 +12,6 @@ export const verifyTokenMiddleware = async (req: Request, res: Response, next: N
     }
 
     const decodedToken = await jwtService.verifyToken(refreshTokenFromCookie)
-    console.log(decodedToken)
     if (!decodedToken) {
         res.sendStatus(401)
         return
