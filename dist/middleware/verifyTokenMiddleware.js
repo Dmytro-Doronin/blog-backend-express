@@ -28,12 +28,11 @@ const verifyTokenMiddleware = (req, res, next) => __awaiter(void 0, void 0, void
     //     res.sendStatus(401)
     //     return
     // }
-    // const tokenInBlackList = await jwtService.isTokenBlacklisted(refreshTokenFromCookie)
-    //
-    // if (tokenInBlackList) {
-    //     res.sendStatus(401)
-    //     return
-    // }
+    const tokenInBlackList = yield jwtService_1.jwtService.isTokenBlacklisted(refreshTokenFromCookie);
+    if (tokenInBlackList) {
+        res.sendStatus(401);
+        return;
+    }
     req.tokenData.userId = decodedToken.userId;
     req.tokenData.deviceId = decodedToken.deviceId;
     return next();

@@ -92,13 +92,13 @@ export const meController = async (req: Request, res: Response)=> {
 }
 
 export const refreshTokenController = async (req: Request, res: Response) => {
-    // const refreshTokenFromRequest = req.cookies.refreshToken
+    const refreshTokenFromRequest = req.cookies.refreshToken
     // const user = req.user
     const userId = req.tokenData.userId
     const deviceId = req.tokenData.deviceId
     const user = await userQuery.findUserById(userId)
 
-    // await jwtService.putTokenToTheBlackList(refreshTokenFromRequest)
+    await jwtService.putTokenToTheBlackList(refreshTokenFromRequest)
     const accessToken = await jwtService.createJWTAccessToken(userMapper(user!))
     const refreshToken = await jwtService.createJWTRefreshToken(userMapper(user!), deviceId)
 
@@ -114,10 +114,12 @@ export const refreshTokenController = async (req: Request, res: Response) => {
 }
 
 export const logoutController = async (req: Request, res: Response) => {
+    const refreshTokenFromRequest = req.cookies.refreshToken
+
     const deviceId = req.tokenData.deviceId
 
     await securityDevicesService.deleteDevice(deviceId)
-    // await jwtService.putTokenToTheBlackList(refreshTokenFromRequest)
+    await jwtService.putTokenToTheBlackList(refreshTokenFromRequest)
 
     res.sendStatus(204)
     return

@@ -79,12 +79,12 @@ const meController = (req, res) => __awaiter(void 0, void 0, void 0, function* (
 });
 exports.meController = meController;
 const refreshTokenController = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    // const refreshTokenFromRequest = req.cookies.refreshToken
+    const refreshTokenFromRequest = req.cookies.refreshToken;
     // const user = req.user
     const userId = req.tokenData.userId;
     const deviceId = req.tokenData.deviceId;
     const user = yield userQuery_1.userQuery.findUserById(userId);
-    // await jwtService.putTokenToTheBlackList(refreshTokenFromRequest)
+    yield jwtService_1.jwtService.putTokenToTheBlackList(refreshTokenFromRequest);
     const accessToken = yield jwtService_1.jwtService.createJWTAccessToken((0, mapper_1.userMapper)(user));
     const refreshToken = yield jwtService_1.jwtService.createJWTRefreshToken((0, mapper_1.userMapper)(user), deviceId);
     const result = yield securityDevices_1.securityDevicesService.changeDevicesData(refreshToken);
@@ -97,9 +97,10 @@ const refreshTokenController = (req, res) => __awaiter(void 0, void 0, void 0, f
 });
 exports.refreshTokenController = refreshTokenController;
 const logoutController = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    const refreshTokenFromRequest = req.cookies.refreshToken;
     const deviceId = req.tokenData.deviceId;
     yield securityDevices_1.securityDevicesService.deleteDevice(deviceId);
-    // await jwtService.putTokenToTheBlackList(refreshTokenFromRequest)
+    yield jwtService_1.jwtService.putTokenToTheBlackList(refreshTokenFromRequest);
     res.sendStatus(204);
     return;
 });
