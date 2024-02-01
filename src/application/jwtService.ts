@@ -6,7 +6,7 @@ import {blackListQuery} from "../repositories/queryRepositories/blackListQuery";
 const { v4: uuidv4 } = require('uuid');
 export const jwtService = {
     async createJWTAccessToken (user: UserViewModel) {
-       const token = jwt.sign({userId: user.id}, setting.JWT_SECRET, {expiresIn: '10s'})
+       const token = jwt.sign({userId: user.id}, setting.JWT_SECRET, {expiresIn: '1h'})
 
         return {
             accessToken: token

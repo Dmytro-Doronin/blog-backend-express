@@ -40,10 +40,10 @@ export const deleteSpecifiedDevice = async (req: RequestWithParams<{deviceId: st
         return
     }
 
-    if (currentDeviceId !== deviceIdToDelete) {
-        res.sendStatus(403)
-        return
-    }
+    // if (currentDeviceId !== deviceIdToDelete) {
+    //     res.sendStatus(403)
+    //     return
+    // }
 
     const result = await securityDevicesService.deleteDevice(deviceIdToDelete)
 

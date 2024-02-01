@@ -21,7 +21,7 @@ export const deviceMutation = {
 
             const deviceInDb = await dbDeviceCollections.findOne({deviceId})
 
-            if (deviceInDb) {
+            if (!deviceInDb) {
                 return null
             }
 

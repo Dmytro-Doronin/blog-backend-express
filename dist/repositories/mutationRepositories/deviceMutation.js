@@ -31,7 +31,7 @@ exports.deviceMutation = {
         return __awaiter(this, void 0, void 0, function* () {
             try {
                 const deviceInDb = yield dbCollections_1.dbDeviceCollections.findOne({ deviceId });
-                if (deviceInDb) {
+                if (!deviceInDb) {
                     return null;
                 }
                 const result = yield dbCollections_1.dbDeviceCollections.updateOne({ deviceId }, { $set: { lastActiveDate, expireDate } });

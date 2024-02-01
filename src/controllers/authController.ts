@@ -103,7 +103,7 @@ export const refreshTokenController = async (req: Request, res: Response) => {
     const refreshToken = await jwtService.createJWTRefreshToken(userMapper(user!), deviceId)
 
     const result = await securityDevicesService.changeDevicesData(refreshToken)
-
+  
     if (result === null) {
         return res.sendStatus(404)
     }

@@ -21,6 +21,7 @@ export const securityDevicesService = {
     },
 
     async changeDevicesData (token: string) {
+
         const {deviceId, lastActiveDate, expireDate} = await jwtService.verifyToken(token)
 
         return await deviceMutation.changeDeviceDataByDeviceId(deviceId, lastActiveDate, expireDate)

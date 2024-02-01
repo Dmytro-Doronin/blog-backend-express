@@ -40,10 +40,10 @@ const deleteSpecifiedDevice = (req, res) => __awaiter(void 0, void 0, void 0, fu
         res.sendStatus(404);
         return;
     }
-    if (currentDeviceId !== deviceIdToDelete) {
-        res.sendStatus(403);
-        return;
-    }
+    // if (currentDeviceId !== deviceIdToDelete) {
+    //     res.sendStatus(403)
+    //     return
+    // }
     const result = yield securityDevices_1.securityDevicesService.deleteDevice(deviceIdToDelete);
     if (!result) {
         res.sendStatus(404);
