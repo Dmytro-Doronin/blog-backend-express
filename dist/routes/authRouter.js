@@ -14,8 +14,6 @@ exports.registrationLimiter = (0, express_rate_limit_1.rateLimit)({
     windowMs: 10 * 1000,
     limit: 5,
     message: 'Too many requests from this IP, please try again later.',
-    standardHeaders: true,
-    legacyHeaders: false, // Disable the `X-RateLimit-*` headers
 });
 exports.authRouter.get('/me', authMiddlewareWithBearer_1.authMiddlewareWithBearer, authController_1.meController);
 exports.authRouter.post('/login', exports.registrationLimiter, (0, loginValidationModel_1.loginValidationModelMiddleware)(), blogsMiddleware_1.errorMiddleware, authController_1.authController);
