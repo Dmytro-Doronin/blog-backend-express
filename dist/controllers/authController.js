@@ -84,7 +84,7 @@ const refreshTokenController = (req, res) => __awaiter(void 0, void 0, void 0, f
     const userId = req.userId;
     const deviceId = req.deviceId;
     const user = yield userQuery_1.userQuery.findUserById(userId);
-    yield jwtService_1.jwtService.putTokenToTheBlackList(refreshTokenFromRequest);
+    // await jwtService.putTokenToTheBlackList(refreshTokenFromRequest)
     const accessToken = yield jwtService_1.jwtService.createJWTAccessToken((0, mapper_1.userMapper)(user));
     const refreshToken = yield jwtService_1.jwtService.createJWTRefreshToken((0, mapper_1.userMapper)(user), deviceId);
     const result = yield securityDevices_1.securityDevicesService.changeDevicesData(refreshToken);
@@ -102,7 +102,7 @@ const logoutController = (req, res) => __awaiter(void 0, void 0, void 0, functio
     const refreshTokenFromRequest = req.cookies.refreshToken;
     const deviceId = req.deviceId;
     yield securityDevices_1.securityDevicesService.deleteDevice(deviceId);
-    yield jwtService_1.jwtService.putTokenToTheBlackList(refreshTokenFromRequest);
+    // await jwtService.putTokenToTheBlackList(refreshTokenFromRequest)
     res.sendStatus(204);
     return;
 });
