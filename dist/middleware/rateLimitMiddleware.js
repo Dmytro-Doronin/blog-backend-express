@@ -30,18 +30,33 @@ const accessCounterMiddleware = (req, res, next) => __awaiter(void 0, void 0, vo
     const currentDate = new Date();
     const tenSecondsAgo = new Date(currentDate.getTime() - 10 * 1000);
     try {
-        const count = yield dbCollections_1.dbRateLimitCollections.countDocuments({
+        // const count = await dbRateLimitCollections.countDocuments({
+        //     IP: req.ip!,
+        //     URL: req.originalUrl,
+        //     date: { $lt: currentDate, $gte: tenSecondsAgo },
+        // })
+        //
+        // if (count > 5) {
+        //     res.sendStatus(429)
+        // }
+        const filter = {
             IP: req.ip,
-            URL: req.originalUrl,
-            date: { $lt: currentDate, $gte: tenSecondsAgo },
-        });
-        if (count > 5) {
+            URL: req.baseUrl || req.originalUrl,
+            date: { $gte: tenSecondsAgo }, // date >= текущей даты - 10 сек
+        };
+        // Подсчет документов, удовлетворяющих фильтру
+        const count = yield dbCollections_1.dbRateLimitCollections.countDocuments(filter);
+        // Проверка на количество запросов за 10 секунд
+        if (count >= 5) {
             res.sendStatus(429);
+            return;
         }
+        // Вставка нового документа в коллекцию
+        // await dbRateLimitCollections.insertOne(filter);
+        next();
     }
     catch (e) {
         throw new Error(e);
     }
-    next();
 });
 exports.accessCounterMiddleware = accessCounterMiddleware;
