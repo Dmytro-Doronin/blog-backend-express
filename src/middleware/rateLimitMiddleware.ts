@@ -49,7 +49,6 @@ export const accessCounterMiddleware = async (req: Request, res: Response, next:
         // Проверка на количество запросов за 10 секунд
         if (count >= 5) {
             res.sendStatus(429);
-            return;
         }
 
         // Вставка нового документа в коллекцию

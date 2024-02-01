@@ -54,7 +54,6 @@ const accessCounterMiddleware = (req, res, next) => __awaiter(void 0, void 0, vo
         // Проверка на количество запросов за 10 секунд
         if (count >= 5) {
             res.sendStatus(429);
-            return;
         }
         // Вставка нового документа в коллекцию
         yield dbCollections_1.dbRateLimitCollections.insertOne(document);
