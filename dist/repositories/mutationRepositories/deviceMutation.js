@@ -57,7 +57,7 @@ exports.deviceMutation = {
     deleteDeviceByDeviceId(deviceId) {
         return __awaiter(this, void 0, void 0, function* () {
             try {
-                const result = yield dbCollections_1.dbDeviceCollections.deleteOne({ deviceId });
+                const result = yield dbCollections_1.dbDeviceCollections.deleteOne({ deviceId: deviceId });
                 return result.deletedCount === 1;
             }
             catch (e) {

@@ -52,7 +52,7 @@ export const deviceMutation = {
 
     async deleteDeviceByDeviceId (deviceId: string) {
         try {
-            const result = await dbDeviceCollections.deleteOne({deviceId})
+            const result = await dbDeviceCollections.deleteOne({deviceId: deviceId})
 
             return result.deletedCount === 1
         } catch (e) {
