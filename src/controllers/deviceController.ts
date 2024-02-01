@@ -7,7 +7,8 @@ export const getAllDeviceController = async (req: Request, res: Response) => {
 
     const devices = await deviceQuery.getAllDevice()
 
-    return res.status(200).send(devices)
+    res.status(200).send(devices)
+    return
 }
 
 export const deleteAllDevicesExcludeCurrentController = async (req: Request, res: Response) => {

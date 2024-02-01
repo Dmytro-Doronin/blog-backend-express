@@ -2,6 +2,7 @@ import {app} from "../../src/app";
 import request = require('supertest')
 import {UsersInputModelType} from "../../src/types/commonBlogTypeAndPosts.types";
 import {createUserManager} from "../utils/createUserManager";
+import {sendEmailAndGetUserManager} from "../utils/sendEmailAndGetUserManager";
 describe('/comment', () => {
 
     beforeEach(async () => {
@@ -15,11 +16,11 @@ describe('/comment', () => {
             password: "123123",
             email: "asdasd@gmail.com"
         }
-        const {createdUser} = await createUserManager.createUser(data, 201)
+        const createdUser = await sendEmailAndGetUserManager()
 
         const loginData = {
-            loginOrEmail: "Dmytro",
-            password: "a wanna go home",
+            loginOrEmail: "Home",
+            password: "123123",
         }
 
         const responseToken = await request(app)
@@ -29,6 +30,7 @@ describe('/comment', () => {
 
         await request(app)
             .get('/api/security/devices')
+            .set('Cookie', `Bearer ${responseToken.body}`)
             .expect(200)
 
     })

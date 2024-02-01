@@ -14,7 +14,8 @@ const deviceQuery_1 = require("../repositories/queryRepositories/deviceQuery");
 const securityDevices_1 = require("../services/securityDevices/securityDevices");
 const getAllDeviceController = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const devices = yield deviceQuery_1.deviceQuery.getAllDevice();
-    return res.status(200).send(devices);
+    res.status(200).send(devices);
+    return;
 });
 exports.getAllDeviceController = getAllDeviceController;
 const deleteAllDevicesExcludeCurrentController = (req, res) => __awaiter(void 0, void 0, void 0, function* () {

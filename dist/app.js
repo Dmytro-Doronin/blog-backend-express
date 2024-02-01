@@ -26,4 +26,4 @@ exports.app.use('/api/posts', postsRouter_1.postsRouter);
 exports.app.use('/api/users', usersRouter_1.usersRouter);
 exports.app.use('/api/auth', authRouter_1.authRouter);
 exports.app.use('/api/comments', commentsRouter_1.commentRouter);
-exports.app.use('/api/security', securityDevice_1.deviceRouter);
+exports.app.use('/api/security/devices', securityDevice_1.deviceRouter);

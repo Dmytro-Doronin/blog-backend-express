@@ -14,7 +14,7 @@ export const sendEmailAndGetUserManager = async () => {
 
     const data: UsersInputModelType = {
         login: "Home",
-        password: "a wanna go home",
+        password: "123123",
         email: "asdasd@gmail.com"
     }
 

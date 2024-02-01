@@ -44,8 +44,8 @@ export type userDBType = {
 }
 
 export type DeviceDBType = {
-    lastActiveDate: Date
-    expireDate: Date
+    lastActiveDate: string
+    expireDate: string
     deviceId: string
     ip: string
     title: string

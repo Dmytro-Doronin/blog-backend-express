@@ -30,10 +30,11 @@ exports.jwtService = {
     createJWTRefreshToken(user, deviceId = uuidv4()) {
         return __awaiter(this, void 0, void 0, function* () {
             const currentDate = new Date();
+            const currentDateStr = currentDate.toISOString();
             const refreshToken = jsonwebtoken_1.default.sign({
                 userId: user.id,
                 lastActiveDate: currentDate,
-                expireDate: new Date(currentDate.getTime() + 20 * 1000),
+                expireDate: new Date(currentDate.getTime() + 20 * 1000).toISOString(),
                 deviceId: deviceId
             }, variables_1.setting.JWT_SECRET, { expiresIn: '20s' });
             return refreshToken;

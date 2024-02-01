@@ -49,7 +49,7 @@ const deviceMapper = (device) => {
     return {
         ip: device.ip,
         title: device.title,
-        lastActiveDate: device.lastActiveDate.toISOString(),
+        lastActiveDate: device.lastActiveDate,
         deviceId: device.deviceId
     };
 };

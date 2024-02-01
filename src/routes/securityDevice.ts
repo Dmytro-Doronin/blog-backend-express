@@ -8,6 +8,6 @@ import {
 
 export const deviceRouter = Router()
 
-deviceRouter.get('/devices',  getAllDeviceController)
-deviceRouter.delete('/devices',  deleteAllDevicesExcludeCurrentController)
-deviceRouter.delete('/devices/:deviceId', deleteSpecifiedDevice)
+deviceRouter.get('/', verifyTokenMiddleware, getAllDeviceController)
+deviceRouter.delete('/', verifyTokenMiddleware, deleteAllDevicesExcludeCurrentController)
+deviceRouter.delete('/:deviceId', verifyTokenMiddleware, deleteSpecifiedDevice)

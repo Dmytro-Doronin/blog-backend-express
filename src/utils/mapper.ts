@@ -55,7 +55,7 @@ export const deviceMapper = (device: WithId<DeviceDBType>): DeviceResponse => {
     return {
         ip: device.ip,
         title: device.title,
-        lastActiveDate: device.lastActiveDate.toISOString(),
+        lastActiveDate: device.lastActiveDate,
         deviceId: device.deviceId
     }
 }
