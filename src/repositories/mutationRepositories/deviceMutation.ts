@@ -16,7 +16,7 @@ export const deviceMutation = {
         }
     },
 
-    async changeDeviceDataByDeviceId (deviceId: string, lastActiveDate: Date, expireDate: Date) {
+    async changeDeviceDataByDeviceId (deviceId: string, lastActiveDate: string, expireDate: string) {
         try {
 
             const deviceInDb = await dbDeviceCollections.findOne({deviceId})
