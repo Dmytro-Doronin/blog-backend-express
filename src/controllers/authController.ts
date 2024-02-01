@@ -94,8 +94,8 @@ export const meController = async (req: Request, res: Response)=> {
 export const refreshTokenController = async (req: Request, res: Response) => {
     const refreshTokenFromRequest = req.cookies.refreshToken
     // const user = req.user
-    const userId = req.tokenData.userId
-    const deviceId = req.tokenData.deviceId
+    const userId = req.userId
+    const deviceId = req.deviceId
     const user = await userQuery.findUserById(userId)
 
     await jwtService.putTokenToTheBlackList(refreshTokenFromRequest)
@@ -116,7 +116,7 @@ export const refreshTokenController = async (req: Request, res: Response) => {
 export const logoutController = async (req: Request, res: Response) => {
     const refreshTokenFromRequest = req.cookies.refreshToken
 
-    const deviceId = req.tokenData.deviceId
+    const deviceId = req.deviceId
 
     await securityDevicesService.deleteDevice(deviceId)
     await jwtService.putTokenToTheBlackList(refreshTokenFromRequest)
