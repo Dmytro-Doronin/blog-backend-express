@@ -32,5 +32,22 @@ export const deviceQuery = {
             throw new Error('Can not find device')
 
         }
+    },
+    async getDeviceByDeviceId (deviceId: string) {
+        try {
+            const device = await dbDeviceCollections.findOne(
+                {deviceId:deviceId}
+            )
+
+            if (!device) {
+                return false
+            }
+
+            return device
+
+        } catch (e) {
+            throw new Error('Can not find device')
+
+        }
     }
 }

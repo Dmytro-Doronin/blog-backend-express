@@ -36,14 +36,15 @@ const deleteSpecifiedDevice = (req, res) => __awaiter(void 0, void 0, void 0, fu
     // const {currentDeviceId} = await jwtService.verifyToken(refreshToken!)
     const deviceIdToDelete = req.params.deviceId;
     const currentDeviceId = req.deviceId;
-    if (!deviceIdToDelete) {
+    const device = yield deviceQuery_1.deviceQuery.getDeviceByDeviceId(currentDeviceId);
+    if (!device) {
         res.sendStatus(404);
         return;
     }
-    // if (currentDeviceId !== deviceIdToDelete) {
-    //     res.sendStatus(403)
-    //     return
-    // }
+    if (currentDeviceId !== deviceIdToDelete) {
+        res.sendStatus(403);
+        return;
+    }
     const result = yield securityDevices_1.securityDevicesService.deleteDevice(deviceIdToDelete);
     if (!result) {
         res.sendStatus(404);

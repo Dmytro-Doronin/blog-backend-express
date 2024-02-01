@@ -40,5 +40,19 @@ exports.deviceQuery = {
                 throw new Error('Can not find device');
             }
         });
+    },
+    getDeviceByDeviceId(deviceId) {
+        return __awaiter(this, void 0, void 0, function* () {
+            try {
+                const device = yield dbCollections_1.dbDeviceCollections.findOne({ deviceId: deviceId });
+                if (!device) {
+                    return false;
+                }
+                return device;
+            }
+            catch (e) {
+                throw new Error('Can not find device');
+            }
+        });
     }
 };
