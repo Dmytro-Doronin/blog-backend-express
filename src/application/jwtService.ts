@@ -6,13 +6,14 @@ import {blackListQuery} from "../repositories/queryRepositories/blackListQuery";
 const { v4: uuidv4 } = require('uuid');
 export const jwtService = {
     async createJWTAccessToken (user: UserViewModel) {
-       const token = jwt.sign({userId: user.id}, setting.JWT_SECRET, {expiresIn: '10s'})
+       const token = jwt.sign({userId: user.id}, setting.JWT_SECRET, {expiresIn: '1h'})
 
         return {
             accessToken: token
         }
     },
     async createJWTRefreshToken (user: UserViewModel, deviceId: string = uuidv4()) {
+        debugger
         const currentDate = new Date()
         const currentDateStr = currentDate.toISOString()
         const refreshToken = jwt.sign({
@@ -21,8 +22,9 @@ export const jwtService = {
             expireDate: new Date(currentDate.getTime() + 20 * 1000).toISOString(),
             deviceId: deviceId
 
-        },setting.JWT_SECRET, {expiresIn: '20s'})
+        },setting.JWT_SECRET, {expiresIn: '1h'})
 
+        debugger
         return refreshToken
 
     },

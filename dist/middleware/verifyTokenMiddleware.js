@@ -11,6 +11,7 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.verifyTokenMiddleware = void 0;
 const jwtService_1 = require("../application/jwtService");
+const deviceQuery_1 = require("../repositories/queryRepositories/deviceQuery");
 const verifyTokenMiddleware = (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
     const refreshTokenFromCookie = req.cookies.refreshToken;
     if (!refreshTokenFromCookie) {
@@ -23,12 +24,11 @@ const verifyTokenMiddleware = (req, res, next) => __awaiter(void 0, void 0, void
         res.sendStatus(401);
         return;
     }
-    // const result = await deviceQuery.getDeviceByActiveDataAndUserId(decodedToken.lastActiveDate, decodedToken.deviceId)
-    //
-    // if (result === false) {
-    //     res.sendStatus(401)
-    //     return
-    // }
+    const result = yield deviceQuery_1.deviceQuery.getDeviceByActiveDataAndUserId(decodedToken.lastActiveDate, decodedToken.deviceId);
+    if (result === false) {
+        res.sendStatus(401);
+        return;
+    }
     const tokenInBlackList = yield jwtService_1.jwtService.isTokenBlacklisted(refreshTokenFromCookie);
     if (tokenInBlackList) {
         res.sendStatus(401);

@@ -96,6 +96,7 @@ export const refreshTokenController = async (req: Request, res: Response) => {
     // const user = req.user
     const userId = req.userId
     const deviceId = req.deviceId
+    debugger
     const user = await userQuery.findUserById(userId)
 
     await jwtService.putTokenToTheBlackList(refreshTokenFromRequest)
@@ -111,6 +112,7 @@ export const refreshTokenController = async (req: Request, res: Response) => {
 
     res.cookie('refreshToken', refreshToken, {httpOnly: true,secure: true})
     res.status(200).send(accessToken)
+    debugger
     return
 }
 

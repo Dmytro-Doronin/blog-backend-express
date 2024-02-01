@@ -83,6 +83,7 @@ const refreshTokenController = (req, res) => __awaiter(void 0, void 0, void 0, f
     // const user = req.user
     const userId = req.userId;
     const deviceId = req.deviceId;
+    debugger;
     const user = yield userQuery_1.userQuery.findUserById(userId);
     yield jwtService_1.jwtService.putTokenToTheBlackList(refreshTokenFromRequest);
     const accessToken = yield jwtService_1.jwtService.createJWTAccessToken((0, mapper_1.userMapper)(user));
@@ -94,6 +95,7 @@ const refreshTokenController = (req, res) => __awaiter(void 0, void 0, void 0, f
     }
     res.cookie('refreshToken', refreshToken, { httpOnly: true, secure: true });
     res.status(200).send(accessToken);
+    debugger;
     return;
 });
 exports.refreshTokenController = refreshTokenController;

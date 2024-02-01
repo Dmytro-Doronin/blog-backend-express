@@ -17,12 +17,12 @@ export const verifyTokenMiddleware = async (req: Request, res: Response, next: N
         res.sendStatus(401)
         return
     }
-    // const result = await deviceQuery.getDeviceByActiveDataAndUserId(decodedToken.lastActiveDate, decodedToken.deviceId)
-    //
-    // if (result === false) {
-    //     res.sendStatus(401)
-    //     return
-    // }
+    const result = await deviceQuery.getDeviceByActiveDataAndUserId(decodedToken.lastActiveDate, decodedToken.deviceId)
+
+    if (result === false) {
+        res.sendStatus(401)
+        return
+    }
     const tokenInBlackList = await jwtService.isTokenBlacklisted(refreshTokenFromCookie)
 
     if (tokenInBlackList) {
