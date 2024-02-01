@@ -72,22 +72,12 @@ export const emailResendingController = async (req: RequestWithBody<Registration
     const {email} = req.body
 
 
-    if (req.headers['retry-after']) {
-        const retryAfter = parseInt(req.headers['retry-after'] as string, 10) * 1000;
-        res.set('Retry-After', req.headers['retry-after']);
-        setTimeout(() => {
-            res.sendStatus(429);
-        }, retryAfter);
-        return;
-    }
-
     const result = await authService.resendEmail(email)
 
     if (!result) {
         res.sendStatus(400)
         return
     }
-
 
     res.sendStatus(204);
     return
