@@ -32,12 +32,36 @@ export const accessCounterMiddleware = async (req: Request, res: Response, next:
         // if (count > 5) {
         //     res.sendStatus(429)
         // }
+        // const document = {
+        //     IP: req.ip!,
+        //     URL: req.baseUrl,
+        //     date: new Date(),
+        // };
+        // await dbRateLimitCollections.insertOne(document);
+        // const filter = {
+        //     IP: req.ip, // Предполагается, что IP сохраняется в req.ip
+        //     URL: req.baseUrl, // Используйте базовый URL или оригинальный URL запроса
+        //     date: { $gte: tenSecondsAgo }, // date >= текущей даты - 10 сек
+        // };
+        //
+        // // Подсчет документов, удовлетворяющих фильтру
+        // const count = await dbRateLimitCollections.countDocuments(filter);
+        //
+        // // Проверка на количество запросов за 10 секунд
+        // if (count >= 5) {
+        //     await dbRateLimitCollections.deleteMany({IP: req.ip})
+        //     res.sendStatus(429);
+        // }
+
+
         const document = {
             IP: req.ip!,
             URL: req.baseUrl,
             date: new Date(),
         };
+
         await dbRateLimitCollections.insertOne(document);
+
         const filter = {
             IP: req.ip, // Предполагается, что IP сохраняется в req.ip
             URL: req.baseUrl, // Используйте базовый URL или оригинальный URL запроса
@@ -49,8 +73,11 @@ export const accessCounterMiddleware = async (req: Request, res: Response, next:
 
         // Проверка на количество запросов за 10 секунд
         if (count >= 5) {
-            await dbRateLimitCollections.deleteMany({IP: req.ip})
+            await dbRateLimitCollections.deleteMany({ IP: req.ip });
             res.sendStatus(429);
+        } else {
+            // Вставка нового документа в коллекцию
+            next();
         }
 
         // Вставка нового документа в коллекцию
