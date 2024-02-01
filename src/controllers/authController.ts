@@ -97,7 +97,7 @@ export const refreshTokenController = async (req: Request, res: Response) => {
     // const user = req.user
     const userId = req.userId
     const deviceId = req.deviceId
-    debugger
+
     const user = await userQuery.findUserById(userId)
 
     await jwtService.putTokenToTheBlackList(refreshTokenFromRequest)

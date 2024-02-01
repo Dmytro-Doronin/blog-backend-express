@@ -15,6 +15,8 @@ const commentsRouter_1 = require("./routes/commentsRouter");
 const cookie_parser_1 = __importDefault(require("cookie-parser"));
 const securityDevice_1 = require("./routes/securityDevice");
 exports.app = (0, express_1.default)();
+const cors_1 = __importDefault(require("cors"));
+exports.app.use((0, cors_1.default)());
 // app.use(registrationLimiter)
 exports.app.set('trust proxy', true);
 exports.app.use((0, cookie_parser_1.default)());

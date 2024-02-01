@@ -14,3 +14,4 @@ export const dbUsersCollections = client.db('Users').collection<userDBType>('use
 export const dbCommentsCollections = client.db('Comments').collection<commentsDBType>('comments')
 export const dbBlacklistCollections = client.db('BlackListOfToken').collection<BlackListOfTokenType>('blackListOfToken')
 export const dbDeviceCollections = client.db('Device').collection<DeviceDBType>('device')
+export const dbRateLimitCollections = client.db('Rate').collection<{IP:string, URL: string, date: Date}>('rate')

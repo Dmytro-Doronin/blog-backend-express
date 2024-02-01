@@ -9,8 +9,9 @@ import {commentRouter} from "./routes/commentsRouter";
 import cookieParser from "cookie-parser";
 import {deviceRouter} from "./routes/securityDevice";
 export const app = express()
+import cors from 'cors'
 
-
+app.use(cors())
 // app.use(registrationLimiter)
 app.set('trust proxy', true)
 app.use(cookieParser())
