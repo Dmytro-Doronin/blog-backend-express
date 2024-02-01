@@ -13,10 +13,19 @@ import {cookie} from "express-validator";
 import {userMapper} from "../utils/mapper";
 import {securityDevicesService} from "../services/securityDevices/securityDevices";
 
+
 export const authController = async (req: RequestWithBody<LoginType>, res: Response) => {
     const {loginOrEmail, password} = req.body
     const ip = req.ip
-    const title = req.headers['user-agent']
+    const title = req.headers['User-Agent']
+    let title2
+
+    if (typeof title !== "string" || typeof title !== undefined) {
+        title2 = title?.[0]
+    } else {
+        title2 = title
+    }
+
     const user = await usersService.checkCredentials(loginOrEmail, password)
     if (!user) {
         res.sendStatus(401)
@@ -26,7 +35,7 @@ export const authController = async (req: RequestWithBody<LoginType>, res: Respo
     const accessToken = await jwtService.createJWTAccessToken(user)
     const refreshToken = await jwtService.createJWTRefreshToken(user)
 
-    await securityDevicesService.createDevice(refreshToken, ip, title)
+    await securityDevicesService.createDevice(refreshToken, ip, title2)
 
     res.cookie('refreshToken', refreshToken, {httpOnly: true,secure: true})
 

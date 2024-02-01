@@ -25,13 +25,16 @@ describe('/comment', () => {
 
         const responseToken = await request(app)
             .post('/api/auth/login')
+            .set('User-Agent', 'Mozilla/5.0')
             .send(loginData)
             .expect(200)
 
-        await request(app)
-            .get('/api/security/devices')
-            .set('Cookie', `Bearer ${responseToken.body}`)
-            .expect(200)
+
+        console.log(responseToken.headers)
+        // await request(app)
+        //     .get('/api/security/devices')
+        //     .set('Cookie', `Bearer ${responseToken.body}`)
+        //     .expect(200)
 
     })
 

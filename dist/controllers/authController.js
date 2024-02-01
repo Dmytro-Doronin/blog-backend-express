@@ -19,7 +19,14 @@ const securityDevices_1 = require("../services/securityDevices/securityDevices")
 const authController = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const { loginOrEmail, password } = req.body;
     const ip = req.ip;
-    const title = req.headers['user-agent'];
+    const title = req.headers['User-Agent'];
+    let title2;
+    if (typeof title !== "string" || typeof title !== undefined) {
+        title2 = title === null || title === void 0 ? void 0 : title[0];
+    }
+    else {
+        title2 = title;
+    }
     const user = yield usersService_1.usersService.checkCredentials(loginOrEmail, password);
     if (!user) {
         res.sendStatus(401);
@@ -27,7 +34,7 @@ const authController = (req, res) => __awaiter(void 0, void 0, void 0, function*
     }
     const accessToken = yield jwtService_1.jwtService.createJWTAccessToken(user);
     const refreshToken = yield jwtService_1.jwtService.createJWTRefreshToken(user);
-    yield securityDevices_1.securityDevicesService.createDevice(refreshToken, ip, title);
+    yield securityDevices_1.securityDevicesService.createDevice(refreshToken, ip, title2);
     res.cookie('refreshToken', refreshToken, { httpOnly: true, secure: true });
     res.status(200).send(accessToken);
     return;
