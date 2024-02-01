@@ -61,8 +61,9 @@ const registrationConfirmationController = (req, res) => __awaiter(void 0, void 
 exports.registrationConfirmationController = registrationConfirmationController;
 const emailResendingController = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const { email } = req.body;
-    if (req.headers['retry-after']) {
-        // Возвращаем статус 429 с задержкой для клиента
+    const retryAfterHeader = req.headers['retry-after'];
+    if (retryAfterHeader) {
+        res.set('Retry-After', retryAfterHeader); // Переносим заголовок Retry-After
         res.sendStatus(429);
         return;
     }

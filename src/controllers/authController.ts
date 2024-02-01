@@ -71,9 +71,12 @@ export const registrationConfirmationController = async (req: RequestWithBody<Re
 export const emailResendingController = async (req: RequestWithBody<RegistrationEmailResending>, res: Response) => {
     const {email} = req.body
 
-    if (req.headers['retry-after']) {
-        // Возвращаем статус 429 с задержкой для клиента
-        res.sendStatus(429)
+
+    const retryAfterHeader = req.headers['retry-after'];
+
+    if (retryAfterHeader) {
+        res.set('Retry-After', retryAfterHeader); // Переносим заголовок Retry-After
+        res.sendStatus(429);
         return;
     }
 
