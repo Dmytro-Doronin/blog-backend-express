@@ -37,6 +37,7 @@ export const accessCounterMiddleware = async (req: Request, res: Response, next:
             URL: req.baseUrl,
             date: new Date(),
         };
+        await dbRateLimitCollections.insertOne(document);
         const filter = {
             IP: req.ip, // Предполагается, что IP сохраняется в req.ip
             URL: req.baseUrl, // Используйте базовый URL или оригинальный URL запроса
@@ -48,11 +49,11 @@ export const accessCounterMiddleware = async (req: Request, res: Response, next:
 
         // Проверка на количество запросов за 10 секунд
         if (count >= 5) {
+            await dbRateLimitCollections.deleteMany({IP: req.ip})
             res.sendStatus(429);
         }
 
         // Вставка нового документа в коллекцию
-        await dbRateLimitCollections.insertOne(document);
         next()
     } catch (e: any) {
         throw new Error(e)

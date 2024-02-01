@@ -44,6 +44,7 @@ const accessCounterMiddleware = (req, res, next) => __awaiter(void 0, void 0, vo
             URL: req.baseUrl,
             date: new Date(),
         };
+        yield dbCollections_1.dbRateLimitCollections.insertOne(document);
         const filter = {
             IP: req.ip,
             URL: req.baseUrl,
@@ -53,10 +54,10 @@ const accessCounterMiddleware = (req, res, next) => __awaiter(void 0, void 0, vo
         const count = yield dbCollections_1.dbRateLimitCollections.countDocuments(filter);
         // Проверка на количество запросов за 10 секунд
         if (count >= 5) {
+            yield dbCollections_1.dbRateLimitCollections.deleteMany({ IP: req.ip });
             res.sendStatus(429);
         }
         // Вставка нового документа в коллекцию
-        yield dbCollections_1.dbRateLimitCollections.insertOne(document);
         next();
     }
     catch (e) {
