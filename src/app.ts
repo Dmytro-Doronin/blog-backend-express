@@ -8,17 +8,10 @@ import {authRouter} from "./routes/authRouter";
 import {commentRouter} from "./routes/commentsRouter";
 import cookieParser from "cookie-parser";
 import {deviceRouter} from "./routes/securityDevice";
-import { rateLimit } from 'express-rate-limit'
 export const app = express()
 
 
-const registrationLimiter = rateLimit({
-    windowMs: 10 * 1000, // 10 секунд
-    limit: 5, // Максимальное количество запросов
-    message: 'Too many requests from this IP, please try again later.',
-});
-
-app.use(registrationLimiter)
+// app.use(registrationLimiter)
 app.set('trust proxy', true)
 app.use(cookieParser())
 app.use(express.json())

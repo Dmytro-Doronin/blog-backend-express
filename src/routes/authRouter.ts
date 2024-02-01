@@ -14,12 +14,13 @@ import {
 } from "../validation/authValidationModel";
 import {authMiddlewareWithBearer} from "../middleware/authMiddlewareWithBearer";
 import {verifyTokenMiddleware} from "../middleware/verifyTokenMiddleware";
+import {rateLimitMiddleware} from "../middleware/rateLimitMiddleware";
 export const authRouter = Router()
 
 authRouter.get('/me', authMiddlewareWithBearer, meController)
-authRouter.post('/login', loginValidationModelMiddleware(), errorMiddleware, authController)
+authRouter.post('/login', loginValidationModelMiddleware(),rateLimitMiddleware, errorMiddleware, authController)
 authRouter.post('/logout',verifyTokenMiddleware, logoutController)
 authRouter.post('/refresh-token',verifyTokenMiddleware, refreshTokenController)
-authRouter.post('/registration', authRegistrationValidationMiddleware(), errorMiddleware, registrationController)
-authRouter.post('/registration-confirmation', authRegistrationConfirmationValidationMiddleware(), errorMiddleware,  registrationConfirmationController)
-authRouter.post('/registration-email-resending', authEmailResendingValidationMiddleware(), errorMiddleware,  emailResendingController)
+authRouter.post('/registration', authRegistrationValidationMiddleware(), rateLimitMiddleware, errorMiddleware, registrationController)
+authRouter.post('/registration-confirmation', authRegistrationConfirmationValidationMiddleware(), rateLimitMiddleware, errorMiddleware,  registrationConfirmationController)
+authRouter.post('/registration-email-resending', authEmailResendingValidationMiddleware(), rateLimitMiddleware, errorMiddleware,  emailResendingController)

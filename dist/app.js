@@ -14,14 +14,8 @@ const authRouter_1 = require("./routes/authRouter");
 const commentsRouter_1 = require("./routes/commentsRouter");
 const cookie_parser_1 = __importDefault(require("cookie-parser"));
 const securityDevice_1 = require("./routes/securityDevice");
-const express_rate_limit_1 = require("express-rate-limit");
 exports.app = (0, express_1.default)();
-const registrationLimiter = (0, express_rate_limit_1.rateLimit)({
-    windowMs: 10 * 1000,
-    limit: 5,
-    message: 'Too many requests from this IP, please try again later.',
-});
-exports.app.use(registrationLimiter);
+// app.use(registrationLimiter)
 exports.app.set('trust proxy', true);
 exports.app.use((0, cookie_parser_1.default)());
 exports.app.use(express_1.default.json());
