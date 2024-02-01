@@ -42,8 +42,6 @@ const accessCounterMiddleware = (req, res, next) => __awaiter(void 0, void 0, vo
     catch (e) {
         throw new Error(e);
     }
-    setTimeout(() => {
-        next();
-    }, 10000);
+    next();
 });
 exports.accessCounterMiddleware = accessCounterMiddleware;

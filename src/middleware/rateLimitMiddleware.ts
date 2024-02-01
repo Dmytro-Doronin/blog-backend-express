@@ -36,7 +36,6 @@ export const accessCounterMiddleware = async (req: Request, res: Response, next:
     } catch (e: any) {
         throw new Error(e)
     }
-    setTimeout(() => {
-        next()
-    }, 10000)
+    next()
+
 }
