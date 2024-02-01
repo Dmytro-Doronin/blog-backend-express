@@ -13,9 +13,9 @@ export const getAllDeviceController = async (req: Request, res: Response) => {
 }
 
 export const deleteAllDevicesExcludeCurrentController = async (req: Request, res: Response) => {
-    const refreshToken = req.headers.cookie?.split('=')[1]
-    const {deviceId} = await jwtService.verifyToken(refreshToken!)
-    // const deviceId = req.tokenData.deviceId
+    // const refreshToken = req.headers.cookie?.split('=')[1]
+    // const {deviceId} = await jwtService.verifyToken(refreshToken!)
+    const deviceId = req.tokenData.deviceId
 
     const result = await securityDevicesService.deleteAllDeviceExcludeCurrent(deviceId)
 
@@ -30,10 +30,10 @@ export const deleteAllDevicesExcludeCurrentController = async (req: Request, res
 
 export const deleteSpecifiedDevice = async (req: RequestWithParams<{deviceId: string}> , res: Response) => {
 
-    const refreshToken = req.headers.cookie?.split('=')[1]
-    const {currentDeviceId} = await jwtService.verifyToken(refreshToken!)
+    // const refreshToken = req.headers.cookie?.split('=')[1]
+    // const {currentDeviceId} = await jwtService.verifyToken(refreshToken!)
     const deviceIdToDelete = req.params.deviceId
-    // const currentDeviceId = req.tokenData.deviceId
+    const currentDeviceId = req.tokenData.deviceId
     if (!deviceIdToDelete) {
         res.sendStatus(404)
         return

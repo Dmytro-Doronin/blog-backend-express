@@ -36,7 +36,6 @@ const verifyTokenMiddleware = (req, res, next) => __awaiter(void 0, void 0, void
     }
     req.userId = decodedToken.userId;
     req.deviceId = decodedToken.deviceId;
-    debugger;
     return next();
 });
 exports.verifyTokenMiddleware = verifyTokenMiddleware;
