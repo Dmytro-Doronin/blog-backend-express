@@ -29,9 +29,8 @@ export const accessCounterMiddleware = async (req: Request, res: Response, next:
             date: { $gte: new Date(new Date().getTime() - 10 * 1000) }, // Текущая дата - 10 сек
         })
 
-        if (count >= 5) {
+        if (count > 5) {
             res.sendStatus(429)
-
         }
 
     } catch (e: any) {
