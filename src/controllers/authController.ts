@@ -72,10 +72,8 @@ export const emailResendingController = async (req: RequestWithBody<Registration
     const {email} = req.body
 
 
-    const retryAfterHeader = req.headers['retry-after'];
-
-    if (retryAfterHeader) {
-        res.set('Retry-After', retryAfterHeader); // Переносим заголовок Retry-After
+    if (req.headers['retry-after']) {
+        res.set('Retry-After', req.headers['retry-after']);
         res.sendStatus(429);
         return;
     }
@@ -87,7 +85,9 @@ export const emailResendingController = async (req: RequestWithBody<Registration
         return
     }
 
-    res.sendStatus(204)
+    setTimeout(() => {
+        res.sendStatus(204);
+    }, 10000);
     return
 }
 

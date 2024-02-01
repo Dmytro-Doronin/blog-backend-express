@@ -61,9 +61,8 @@ const registrationConfirmationController = (req, res) => __awaiter(void 0, void 
 exports.registrationConfirmationController = registrationConfirmationController;
 const emailResendingController = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const { email } = req.body;
-    const retryAfterHeader = req.headers['retry-after'];
-    if (retryAfterHeader) {
-        res.set('Retry-After', retryAfterHeader); // Переносим заголовок Retry-After
+    if (req.headers['retry-after']) {
+        res.set('Retry-After', req.headers['retry-after']);
         res.sendStatus(429);
         return;
     }
@@ -72,7 +71,9 @@ const emailResendingController = (req, res) => __awaiter(void 0, void 0, void 0,
         res.sendStatus(400);
         return;
     }
-    res.sendStatus(204);
+    setTimeout(() => {
+        res.sendStatus(204);
+    }, 10000);
     return;
 });
 exports.emailResendingController = emailResendingController;
