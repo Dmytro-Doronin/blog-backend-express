@@ -104,8 +104,9 @@ export const refreshTokenController = async (req: Request, res: Response) => {
 
     const result = await securityDevicesService.changeDevicesData(refreshToken)
 
-    if (result === null) {
-        return res.sendStatus(404)
+    if (!result) {
+        res.sendStatus(404)
+        return
     }
 
     res.cookie('refreshToken', refreshToken, {httpOnly: true,secure: true})

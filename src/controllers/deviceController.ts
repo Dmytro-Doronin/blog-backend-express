@@ -34,7 +34,7 @@ export const deleteSpecifiedDevice = async (req: RequestWithParams<{deviceId: st
     // const {currentDeviceId} = await jwtService.verifyToken(refreshToken!)
     const deviceIdToDelete = req.params.deviceId
     const currentDeviceId = req.deviceId
-
+    const currentUserId = req.userId
     const device = await deviceQuery.getDeviceByDeviceId(deviceIdToDelete)
 
     if (!device) {
@@ -42,7 +42,7 @@ export const deleteSpecifiedDevice = async (req: RequestWithParams<{deviceId: st
         return
     }
 
-    if (currentDeviceId !== deviceIdToDelete) {
+    if (currentUserId !== device.userId) {
         res.sendStatus(403)
         return
     }

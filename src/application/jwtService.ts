@@ -17,7 +17,7 @@ export const jwtService = {
         const currentDateStr = currentDate.toISOString()
         const refreshToken = jwt.sign({
             userId: user.id,
-            lastActiveDate: currentDate,
+            lastActiveDate: currentDateStr,
             expireDate: new Date(currentDate.getTime() + 20 * 1000).toISOString(),
             deviceId: deviceId
 

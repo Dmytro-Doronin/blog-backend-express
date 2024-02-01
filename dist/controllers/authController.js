@@ -88,8 +88,9 @@ const refreshTokenController = (req, res) => __awaiter(void 0, void 0, void 0, f
     const accessToken = yield jwtService_1.jwtService.createJWTAccessToken((0, mapper_1.userMapper)(user));
     const refreshToken = yield jwtService_1.jwtService.createJWTRefreshToken((0, mapper_1.userMapper)(user), deviceId);
     const result = yield securityDevices_1.securityDevicesService.changeDevicesData(refreshToken);
-    if (result === null) {
-        return res.sendStatus(404);
+    if (!result) {
+        res.sendStatus(404);
+        return;
     }
     res.cookie('refreshToken', refreshToken, { httpOnly: true, secure: true });
     res.status(200).send(accessToken);

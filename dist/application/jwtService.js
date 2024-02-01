@@ -33,7 +33,7 @@ exports.jwtService = {
             const currentDateStr = currentDate.toISOString();
             const refreshToken = jsonwebtoken_1.default.sign({
                 userId: user.id,
-                lastActiveDate: currentDate,
+                lastActiveDate: currentDateStr,
                 expireDate: new Date(currentDate.getTime() + 20 * 1000).toISOString(),
                 deviceId: deviceId
             }, variables_1.setting.JWT_SECRET, { expiresIn: '1h' });
