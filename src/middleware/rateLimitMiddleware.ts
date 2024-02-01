@@ -24,12 +24,12 @@ export const accessCounterMiddleware = async (req: Request, res: Response, next:
 
     try {
         const count = await dbRateLimitCollections.countDocuments({
-            IP: req.ip,
-            URL: req.originalUrl,
-            date: { $gte: tenSecondsAgo },
+            IP: req.ip, // Предполагается, что IP сохраняется в req.ip
+            URL: req.baseUrl , // Используйте базовый URL или оригинальный URL запроса
+            date: { $gte: new Date(new Date().getTime() - 10 * 1000) }, // Текущая дата - 10 сек
         })
 
-        if (count > 5) {
+        if (count >= 5) {
             res.sendStatus(429)
 
         }
