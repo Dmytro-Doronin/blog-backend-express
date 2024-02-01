@@ -29,10 +29,12 @@ describe('/comment', () => {
             .send(loginData)
             .expect(200)
 
+        const refreshToken = responseToken.headers['Cookie']
 
         await request(app)
-            .get('/api/security/devices')
-            .expect(200)
+            .delete('/api/security/devices/asdasdasdasd2')
+            .set('Cookie', `refreshToken=${refreshToken}`)
+            .expect(404)
 
     })
 
