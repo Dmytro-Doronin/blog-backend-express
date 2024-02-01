@@ -35,7 +35,7 @@ export const deleteSpecifiedDevice = async (req: RequestWithParams<{deviceId: st
     const deviceIdToDelete = req.params.deviceId
     const currentDeviceId = req.deviceId
 
-    const device = await deviceQuery.getDeviceByDeviceId(currentDeviceId)
+    const device = await deviceQuery.getDeviceByDeviceId(deviceIdToDelete)
 
     if (!device) {
         res.sendStatus(404)
