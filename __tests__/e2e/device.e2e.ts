@@ -32,7 +32,6 @@ describe('/comment', () => {
 
         await request(app)
             .get('/api/security/devices')
-            .set('Cookie', `Bearer ${responseToken.body}`)
             .expect(200)
 
     })

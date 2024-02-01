@@ -17,7 +17,7 @@ export const verifyTokenMiddleware = async (req: Request, res: Response, next: N
         res.sendStatus(401)
         return
     }
-
+    console.log(decodedToken.lastActiveDate)
     const result = await deviceQuery.getDeviceByActiveDataAndUserId(decodedToken.lastActiveDate, decodedToken.deviceId)
 
     if (result === false) {

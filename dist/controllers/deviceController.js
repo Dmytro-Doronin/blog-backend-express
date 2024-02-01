@@ -12,6 +12,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.deleteSpecifiedDevice = exports.deleteAllDevicesExcludeCurrentController = exports.getAllDeviceController = void 0;
 const deviceQuery_1 = require("../repositories/queryRepositories/deviceQuery");
 const securityDevices_1 = require("../services/securityDevices/securityDevices");
+const jwtService_1 = require("../application/jwtService");
 const getAllDeviceController = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const devices = yield deviceQuery_1.deviceQuery.getAllDevice();
     res.status(200).send(devices);
@@ -19,7 +20,10 @@ const getAllDeviceController = (req, res) => __awaiter(void 0, void 0, void 0, f
 });
 exports.getAllDeviceController = getAllDeviceController;
 const deleteAllDevicesExcludeCurrentController = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    const deviceId = req.tokenData.deviceId;
+    var _a;
+    const refreshToken = (_a = req.headers.cookie) === null || _a === void 0 ? void 0 : _a.split('=')[1];
+    const { deviceId } = yield jwtService_1.jwtService.verifyToken(refreshToken);
+    // const deviceId = req.tokenData.deviceId
     const result = yield securityDevices_1.securityDevicesService.deleteAllDeviceExcludeCurrent(deviceId);
     if (!result) {
         res.sendStatus(404);
@@ -30,8 +34,15 @@ const deleteAllDevicesExcludeCurrentController = (req, res) => __awaiter(void 0,
 });
 exports.deleteAllDevicesExcludeCurrentController = deleteAllDevicesExcludeCurrentController;
 const deleteSpecifiedDevice = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    const currentDeviceId = req.tokenData.deviceId;
+    var _b;
+    const refreshToken = (_b = req.headers.cookie) === null || _b === void 0 ? void 0 : _b.split('=')[1];
+    const { currentDeviceId } = yield jwtService_1.jwtService.verifyToken(refreshToken);
     const deviceIdToDelete = req.params.deviceId;
+    // const currentDeviceId = req.tokenData.deviceId
+    if (!deviceIdToDelete) {
+        res.sendStatus(404);
+        return;
+    }
     if (currentDeviceId !== deviceIdToDelete) {
         res.sendStatus(403);
         return;
