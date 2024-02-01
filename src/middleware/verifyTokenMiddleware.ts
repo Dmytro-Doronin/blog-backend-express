@@ -12,7 +12,7 @@ export const verifyTokenMiddleware = async (req: Request, res: Response, next: N
     }
 
     const decodedToken = await jwtService.verifyToken(refreshTokenFromCookie)
-
+    console.log(decodedToken)
     if (!decodedToken) {
         res.sendStatus(401)
         return
@@ -30,8 +30,9 @@ export const verifyTokenMiddleware = async (req: Request, res: Response, next: N
         return
     }
 
-    req.tokenData.userId = decodedToken.userId
-    req.tokenData.deviceId = decodedToken.deviceId
+    req.userId = decodedToken.userId
+    req.deviceId = decodedToken.deviceId
+    debugger
     return next()
 
 }

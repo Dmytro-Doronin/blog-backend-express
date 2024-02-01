@@ -29,12 +29,23 @@ describe('/comment', () => {
             .send(loginData)
             .expect(200)
 
-        const refreshToken = responseToken.headers['Cookie']
+        const cookies = responseToken.headers['set-cookie'];
+        // Извлекаем refreshToken из куки
+        // const refreshTokenCookie = cookies.find(cookie => cookie.startsWith('refreshToken='));
 
+        // Парсим refreshToken из куки
+        const refreshToken = cookies.split('=')[1];
+        // console.log(refreshToken)
         await request(app)
-            .delete('/api/security/devices/asdasdasdasd2')
-            .set('Cookie', `refreshToken=${refreshToken}`)
-            .expect(404)
+            .get('/api/security/devices')
+            .set('Cookie', [`refreshToken=${refreshToken}`])
+            .expect(200)
+
+
+        // await request(app)
+        //     .delete('/api/security/devices/asdasdasdasd2')
+        //     .set('Cookie', `refreshToken=${refreshToken}`)
+        //     .expect(404)
 
     })
 

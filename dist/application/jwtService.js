@@ -36,7 +36,7 @@ exports.jwtService = {
                 lastActiveDate: currentDate,
                 expireDate: new Date(currentDate.getTime() + 20 * 1000).toISOString(),
                 deviceId: deviceId
-            }, variables_1.setting.JWT_SECRET, { expiresIn: '20s' });
+            }, variables_1.setting.JWT_SECRET, { expiresIn: '1h' });
             return refreshToken;
         });
     },

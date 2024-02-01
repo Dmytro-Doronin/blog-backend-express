@@ -21,7 +21,7 @@ export const jwtService = {
             expireDate: new Date(currentDate.getTime() + 20 * 1000).toISOString(),
             deviceId: deviceId
 
-        },setting.JWT_SECRET, {expiresIn: '20s'})
+        },setting.JWT_SECRET, {expiresIn: '1h'})
 
         return refreshToken
 

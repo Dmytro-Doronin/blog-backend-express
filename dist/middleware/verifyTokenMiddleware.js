@@ -18,6 +18,7 @@ const verifyTokenMiddleware = (req, res, next) => __awaiter(void 0, void 0, void
         return;
     }
     const decodedToken = yield jwtService_1.jwtService.verifyToken(refreshTokenFromCookie);
+    console.log(decodedToken);
     if (!decodedToken) {
         res.sendStatus(401);
         return;
@@ -33,8 +34,9 @@ const verifyTokenMiddleware = (req, res, next) => __awaiter(void 0, void 0, void
         res.sendStatus(401);
         return;
     }
-    req.tokenData.userId = decodedToken.userId;
-    req.tokenData.deviceId = decodedToken.deviceId;
+    req.userId = decodedToken.userId;
+    req.deviceId = decodedToken.deviceId;
+    debugger;
     return next();
 });
 exports.verifyTokenMiddleware = verifyTokenMiddleware;
