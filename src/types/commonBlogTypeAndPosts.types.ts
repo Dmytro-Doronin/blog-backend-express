@@ -55,7 +55,7 @@ export type DeviceDBType = {
 export type DeviceResponse = {
     ip: string,
     title: string,
-    lastActiveDate: string,
+    lastActiveDate: Date,
     deviceId: string
 }
 
