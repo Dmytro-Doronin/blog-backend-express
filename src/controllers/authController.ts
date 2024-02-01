@@ -73,8 +73,11 @@ export const emailResendingController = async (req: RequestWithBody<Registration
 
 
     if (req.headers['retry-after']) {
+        const retryAfter = parseInt(req.headers['retry-after'] as string, 10) * 1000;
         res.set('Retry-After', req.headers['retry-after']);
-        res.sendStatus(429);
+        setTimeout(() => {
+            res.sendStatus(429);
+        }, retryAfter);
         return;
     }
 
@@ -85,9 +88,8 @@ export const emailResendingController = async (req: RequestWithBody<Registration
         return
     }
 
-    setTimeout(() => {
-        res.sendStatus(204);
-    }, 10000);
+
+    res.sendStatus(204);
     return
 }
 

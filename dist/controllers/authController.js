@@ -62,8 +62,11 @@ exports.registrationConfirmationController = registrationConfirmationController;
 const emailResendingController = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const { email } = req.body;
     if (req.headers['retry-after']) {
+        const retryAfter = parseInt(req.headers['retry-after'], 10) * 1000;
         res.set('Retry-After', req.headers['retry-after']);
-        res.sendStatus(429);
+        setTimeout(() => {
+            res.sendStatus(429);
+        }, retryAfter);
         return;
     }
     const result = yield authService_1.authService.resendEmail(email);
@@ -71,9 +74,7 @@ const emailResendingController = (req, res) => __awaiter(void 0, void 0, void 0,
         res.sendStatus(400);
         return;
     }
-    setTimeout(() => {
-        res.sendStatus(204);
-    }, 10000);
+    res.sendStatus(204);
     return;
 });
 exports.emailResendingController = emailResendingController;
