@@ -26,9 +26,9 @@ export const registrationLimiter = rateLimit({
 });
 
 authRouter.get('/me', authMiddlewareWithBearer, meController)
-authRouter.post('/login', rateLimitMiddleware,accessCounterMiddleware , loginValidationModelMiddleware(), errorMiddleware, authController)
+authRouter.post('/login',accessCounterMiddleware , loginValidationModelMiddleware(), errorMiddleware, authController)
 authRouter.post('/logout',verifyTokenMiddleware, logoutController)
 authRouter.post('/refresh-token', verifyTokenMiddleware, refreshTokenController)
-authRouter.post('/registration', rateLimitMiddleware,accessCounterMiddleware , authRegistrationValidationMiddleware(),  errorMiddleware, registrationController)
-authRouter.post('/registration-confirmation', rateLimitMiddleware,accessCounterMiddleware , authRegistrationConfirmationValidationMiddleware(),  errorMiddleware,  registrationConfirmationController)
-authRouter.post('/registration-email-resending', rateLimitMiddleware,accessCounterMiddleware , authEmailResendingValidationMiddleware(),  errorMiddleware,  emailResendingController)
+authRouter.post('/registration',accessCounterMiddleware , authRegistrationValidationMiddleware(),  errorMiddleware, registrationController)
+authRouter.post('/registration-confirmation',accessCounterMiddleware , authRegistrationConfirmationValidationMiddleware(),  errorMiddleware,  registrationConfirmationController)
+authRouter.post('/registration-email-resending',accessCounterMiddleware , authEmailResendingValidationMiddleware(),  errorMiddleware,  emailResendingController)

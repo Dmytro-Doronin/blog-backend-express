@@ -39,9 +39,14 @@ const accessCounterMiddleware = (req, res, next) => __awaiter(void 0, void 0, vo
         // if (count > 5) {
         //     res.sendStatus(429)
         // }
+        const document = {
+            IP: req.ip,
+            URL: req.baseUrl,
+            date: new Date(),
+        };
         const filter = {
             IP: req.ip,
-            URL: req.baseUrl || req.originalUrl,
+            URL: req.baseUrl,
             date: { $gte: tenSecondsAgo }, // date >= текущей даты - 10 сек
         };
         // Подсчет документов, удовлетворяющих фильтру
@@ -52,7 +57,7 @@ const accessCounterMiddleware = (req, res, next) => __awaiter(void 0, void 0, vo
             return;
         }
         // Вставка нового документа в коллекцию
-        // await dbRateLimitCollections.insertOne(filter);
+        yield dbCollections_1.dbRateLimitCollections.insertOne(document);
         next();
     }
     catch (e) {
