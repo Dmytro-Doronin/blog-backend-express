@@ -19,8 +19,8 @@ import {rateLimit} from "express-rate-limit";
 export const authRouter = Router()
 
 export const registrationLimiter = rateLimit({
-    windowMs: 10 * 1000, // 10 секунд
-    limit: 5, // Максимальное количество запросов
+    windowMs: 10 * 1000,
+    limit: 5,
     message: 'Too many requests from this IP, please try again later.',
 });
 

@@ -61,6 +61,11 @@ const registrationConfirmationController = (req, res) => __awaiter(void 0, void 
 exports.registrationConfirmationController = registrationConfirmationController;
 const emailResendingController = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const { email } = req.body;
+    if (req.headers['retry-after']) {
+        // Возвращаем статус 429 с задержкой для клиента
+        res.sendStatus(429);
+        return;
+    }
     const result = yield authService_1.authService.resendEmail(email);
     if (!result) {
         res.sendStatus(400);
