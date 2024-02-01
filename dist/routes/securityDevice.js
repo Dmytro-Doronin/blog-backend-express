@@ -2,9 +2,8 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.deviceRouter = void 0;
 const express_1 = require("express");
-const verifyTokenMiddleware_1 = require("../middleware/verifyTokenMiddleware");
 const deviceController_1 = require("../controllers/deviceController");
 exports.deviceRouter = (0, express_1.Router)();
-exports.deviceRouter.get('/', verifyTokenMiddleware_1.verifyTokenMiddleware, deviceController_1.getAllDeviceController);
-exports.deviceRouter.delete('/', verifyTokenMiddleware_1.verifyTokenMiddleware, deviceController_1.deleteAllDevicesExcludeCurrentController);
-exports.deviceRouter.delete('/:deviceId', verifyTokenMiddleware_1.verifyTokenMiddleware, deviceController_1.deleteSpecifiedDevice);
+exports.deviceRouter.get('/', deviceController_1.getAllDeviceController);
+exports.deviceRouter.delete('/', deviceController_1.deleteAllDevicesExcludeCurrentController);
+exports.deviceRouter.delete('/:deviceId', deviceController_1.deleteSpecifiedDevice);

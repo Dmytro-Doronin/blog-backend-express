@@ -30,11 +30,10 @@ describe('/comment', () => {
             .expect(200)
 
 
-        console.log(responseToken.headers)
-        // await request(app)
-        //     .get('/api/security/devices')
-        //     .set('Cookie', `Bearer ${responseToken.body}`)
-        //     .expect(200)
+        await request(app)
+            .get('/api/security/devices')
+            .set('Cookie', `Bearer ${responseToken.body}`)
+            .expect(200)
 
     })
 
