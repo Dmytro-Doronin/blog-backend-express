@@ -69,7 +69,6 @@ export const accessCounterMiddleware = async (req: Request, res: Response, next:
 
         if (count > 5) {
             res.sendStatus(429)
-
         }
 
     } catch (e: any) {
