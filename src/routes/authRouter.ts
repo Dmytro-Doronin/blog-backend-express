@@ -25,9 +25,9 @@ export const authRouter = Router()
 // });
 
 authRouter.get('/me', authMiddlewareWithBearer, meController)
-authRouter.post('/login', loginValidationModelMiddleware(), errorMiddleware, authController)
+authRouter.post('/login',rateLimitMiddleware, accessCounterMiddleware , loginValidationModelMiddleware(), errorMiddleware, authController)
 authRouter.post('/logout',verifyTokenMiddleware, logoutController)
 authRouter.post('/refresh-token', verifyTokenMiddleware, refreshTokenController)
-authRouter.post('/registration',  authRegistrationValidationMiddleware(),  errorMiddleware, registrationController)
-authRouter.post('/registration-confirmation',  authRegistrationConfirmationValidationMiddleware(),  errorMiddleware,  registrationConfirmationController)
-authRouter.post('/registration-email-resending', authEmailResendingValidationMiddleware(),  errorMiddleware,  emailResendingController)
+authRouter.post('/registration', rateLimitMiddleware,accessCounterMiddleware , authRegistrationValidationMiddleware(),  errorMiddleware, registrationController)
+authRouter.post('/registration-confirmation', rateLimitMiddleware,accessCounterMiddleware , authRegistrationConfirmationValidationMiddleware(),  errorMiddleware,  registrationConfirmationController)
+authRouter.post('/registration-email-resending', rateLimitMiddleware, accessCounterMiddleware , authEmailResendingValidationMiddleware(),  errorMiddleware,  emailResendingController)
