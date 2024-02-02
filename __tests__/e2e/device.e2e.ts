@@ -9,11 +9,7 @@ describe('/comment', () => {
         await request(app).delete('/api/testing/all-data')
     }, 10000)
 
-    it ('Should return devices', async () => {
 
-
-
-    })
 
     it ('Should return devices', async () => {
 
@@ -72,7 +68,7 @@ describe('/comment', () => {
                 }
             })
 
-        const device3 =await request(app)
+        const device3 = await request(app)
             .post('/api/auth/login')
             .set('User-Agent', 'Mozilla/7.0')
             .send(loginData)

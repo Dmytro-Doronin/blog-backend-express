@@ -22,6 +22,7 @@ exports.deleteAllDataMutation = {
                 yield dbCollections_1.dbCommentsCollections.deleteMany({});
                 yield dbCollections_1.dbBlacklistCollections.deleteMany({});
                 yield dbCollections_1.dbDeviceCollections.deleteMany({});
+                yield dbCollections_1.dbRateLimitCollections.deleteMany({});
             }
             catch (e) {
                 throw new Error('All data was not deleted');
