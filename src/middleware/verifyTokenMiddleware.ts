@@ -3,7 +3,6 @@ import {jwtService} from "../application/jwtService";
 import {deviceQuery} from "../repositories/queryRepositories/deviceQuery";
 
 export const verifyTokenMiddleware = async (req: Request, res: Response, next: NextFunction) => {
-
     const refreshTokenFromCookie = req.cookies.refreshToken
 
     if (!refreshTokenFromCookie) {
@@ -18,7 +17,7 @@ export const verifyTokenMiddleware = async (req: Request, res: Response, next: N
     }
     const result = await deviceQuery.getDeviceByActiveDataAndUserId(decodedToken.lastActiveDate, decodedToken.deviceId)
 
-    if (result === false) {
+    if (!result) {
         res.sendStatus(401)
         return
     }

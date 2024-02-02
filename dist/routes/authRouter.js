@@ -1,6 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.registrationLimiter = exports.authRouter = void 0;
+exports.authRouter = void 0;
 const express_1 = require("express");
 const authController_1 = require("../controllers/authController");
 const blogsMiddleware_1 = require("../middleware/blogsMiddleware");
@@ -8,14 +8,13 @@ const loginValidationModel_1 = require("../validation/loginValidationModel");
 const authValidationModel_1 = require("../validation/authValidationModel");
 const authMiddlewareWithBearer_1 = require("../middleware/authMiddlewareWithBearer");
 const verifyTokenMiddleware_1 = require("../middleware/verifyTokenMiddleware");
-const express_rate_limit_1 = require("express-rate-limit");
 const rateLimitMiddleware_1 = require("../middleware/rateLimitMiddleware");
 exports.authRouter = (0, express_1.Router)();
-exports.registrationLimiter = (0, express_rate_limit_1.rateLimit)({
-    windowMs: 10 * 1000,
-    limit: 5,
-    message: 'Too many requests from this IP, please try again later.',
-});
+// export const registrationLimiter = rateLimit({
+//     windowMs: 10 * 1000,
+//     limit: 5,
+//     message: 'Too many requests from this IP, please try again later.',
+// });
 exports.authRouter.get('/me', authMiddlewareWithBearer_1.authMiddlewareWithBearer, authController_1.meController);
 exports.authRouter.post('/login', rateLimitMiddleware_1.accessCounterMiddleware, (0, loginValidationModel_1.loginValidationModelMiddleware)(), blogsMiddleware_1.errorMiddleware, authController_1.authController);
 exports.authRouter.post('/logout', verifyTokenMiddleware_1.verifyTokenMiddleware, authController_1.logoutController);

@@ -21,7 +21,7 @@ const { v4: uuidv4 } = require('uuid');
 exports.jwtService = {
     createJWTAccessToken(user) {
         return __awaiter(this, void 0, void 0, function* () {
-            const token = jsonwebtoken_1.default.sign({ userId: user.id }, variables_1.setting.JWT_SECRET, { expiresIn: '10s' });
+            const token = jsonwebtoken_1.default.sign({ userId: user.id }, variables_1.setting.JWT_SECRET, { expiresIn: '10' });
             return {
                 accessToken: token
             };
@@ -37,7 +37,7 @@ exports.jwtService = {
                 lastActiveDate: currentDate,
                 expireDate: new Date(currentDate.getTime() + 20 * 1000),
                 deviceId: deviceId
-            }, variables_1.setting.JWT_SECRET, { expiresIn: '20s' });
+            }, variables_1.setting.JWT_SECRET, { expiresIn: '20' });
             debugger;
             return refreshToken;
         });

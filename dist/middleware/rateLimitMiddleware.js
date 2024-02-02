@@ -9,33 +9,19 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
     });
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.accessCounterMiddleware = exports.rateLimitMiddleware = void 0;
+exports.accessCounterMiddleware = void 0;
 const dbCollections_1 = require("../db/dbCollections");
-const rateLimitMiddleware = (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
-    const logEntry = {
-        IP: req.ip,
-        URL: req.originalUrl,
-        date: new Date(),
-    };
-    try {
-        yield dbCollections_1.dbRateLimitCollections.insertOne(logEntry);
-    }
-    catch (e) {
-        throw new Error(e);
-    }
-    next();
-});
-exports.rateLimitMiddleware = rateLimitMiddleware;
 const accessCounterMiddleware = (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
     const currentDate = new Date();
     const tenSecondsAgo = new Date(currentDate.getTime() - 10 * 1000);
+    console.log(req.baseUrl);
+    console.log(req.ip);
     try {
         const document = {
             IP: req.ip,
             URL: req.baseUrl,
-            date: new Date(),
+            date: currentDate,
         };
-        yield dbCollections_1.dbRateLimitCollections.insertOne(document);
         const filter = {
             IP: req.ip,
             URL: req.baseUrl,
@@ -45,6 +31,7 @@ const accessCounterMiddleware = (req, res, next) => __awaiter(void 0, void 0, vo
         if (count >= 5) {
             res.sendStatus(429);
         }
+        yield dbCollections_1.dbRateLimitCollections.insertOne(document);
         next();
     }
     catch (e) {

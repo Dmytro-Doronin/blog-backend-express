@@ -6,11 +6,7 @@ export declare global {
             user: userDBType | null
             userId: string
             deviceId: string
-            tokenData: {
-                userId: string
-                deviceId: string
-            }
-
+            lastActiveDate: Date
         }
     }
 }

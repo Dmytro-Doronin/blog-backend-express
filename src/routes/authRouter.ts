@@ -14,16 +14,15 @@ import {
 } from "../validation/authValidationModel";
 import {authMiddlewareWithBearer} from "../middleware/authMiddlewareWithBearer";
 import {verifyTokenMiddleware} from "../middleware/verifyTokenMiddleware";
-import {rateLimit} from "express-rate-limit";
-import {accessCounterMiddleware, rateLimitMiddleware} from "../middleware/rateLimitMiddleware";
+import {accessCounterMiddleware} from "../middleware/rateLimitMiddleware";
 
 export const authRouter = Router()
 
-export const registrationLimiter = rateLimit({
-    windowMs: 10 * 1000,
-    limit: 5,
-    message: 'Too many requests from this IP, please try again later.',
-});
+// export const registrationLimiter = rateLimit({
+//     windowMs: 10 * 1000,
+//     limit: 5,
+//     message: 'Too many requests from this IP, please try again later.',
+// });
 
 authRouter.get('/me', authMiddlewareWithBearer, meController)
 authRouter.post('/login',accessCounterMiddleware , loginValidationModelMiddleware(), errorMiddleware, authController)

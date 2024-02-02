@@ -93,7 +93,6 @@ export const meController = async (req: Request, res: Response)=> {
 }
 
 export const refreshTokenController = async (req: Request, res: Response) => {
-    const refreshTokenFromRequest = req.cookies.refreshToken
     // const user = req.user
     const userId = req.userId
     const deviceId = req.deviceId

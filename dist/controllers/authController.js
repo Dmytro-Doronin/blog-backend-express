@@ -79,7 +79,6 @@ const meController = (req, res) => __awaiter(void 0, void 0, void 0, function* (
 });
 exports.meController = meController;
 const refreshTokenController = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    const refreshTokenFromRequest = req.cookies.refreshToken;
     // const user = req.user
     const userId = req.userId;
     const deviceId = req.deviceId;
