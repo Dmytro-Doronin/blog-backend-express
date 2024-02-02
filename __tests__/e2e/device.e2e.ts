@@ -13,12 +13,7 @@ describe('/comment', () => {
 
     it ('Should return devices', async () => {
 
-        const data: UsersInputModelType = {
-            login: "Home",
-            password: "123123",
-            email: "asdasd@gmail.com"
-        }
-         await sendEmailAndGetUserManager()
+        await sendEmailAndGetUserManager()
 
         const loginData = {
             loginOrEmail: "Home",
