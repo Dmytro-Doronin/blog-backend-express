@@ -14,20 +14,25 @@ const jwtService_1 = require("../application/jwtService");
 const deviceQuery_1 = require("../repositories/queryRepositories/deviceQuery");
 const verifyTokenMiddleware = (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
     const refreshTokenFromCookie = req.cookies.refreshToken;
+    debugger;
     if (!refreshTokenFromCookie) {
         res.sendStatus(401);
         return;
     }
+    debugger;
     const decodedToken = yield jwtService_1.jwtService.verifyToken(refreshTokenFromCookie);
+    debugger;
     if (!decodedToken) {
         res.sendStatus(401);
         return;
     }
+    debugger;
     const result = yield deviceQuery_1.deviceQuery.getDeviceByActiveDataAndUserId(decodedToken.lastActiveDate, decodedToken.deviceId);
     if (result === false) {
         res.sendStatus(401);
         return;
     }
+    debugger;
     // const tokenInBlackList = await jwtService.isTokenBlacklisted(refreshTokenFromCookie)
     //
     // if (tokenInBlackList) {
@@ -36,6 +41,7 @@ const verifyTokenMiddleware = (req, res, next) => __awaiter(void 0, void 0, void
     // }
     req.userId = decodedToken.userId;
     req.deviceId = decodedToken.deviceId;
+    debugger;
     return next();
 });
 exports.verifyTokenMiddleware = verifyTokenMiddleware;
