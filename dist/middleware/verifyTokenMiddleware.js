@@ -24,7 +24,7 @@ const verifyTokenMiddleware = (req, res, next) => __awaiter(void 0, void 0, void
         return;
     }
     const result = yield deviceQuery_1.deviceQuery.getDeviceByActiveDataAndUserId(decodedToken.lastActiveDate, decodedToken.deviceId);
-    if (!result) {
+    if (result === false) {
         res.sendStatus(401);
         return;
     }
