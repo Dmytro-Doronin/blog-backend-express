@@ -36,14 +36,13 @@ describe('/blogs', () => {
 
         await new Promise(resolve => setTimeout(resolve, 10000));
 
-        // Отправляем запрос после ожидания, который должен вернуть 401
+        // Отправляем запрос после ожидания, который должен вернуть 400
         const response2 = await request(app)
             .post('/api/auth/registration')
             .set('User-Agent', 'Mozilla/5.0')
             .send(registrationData)
 
-        // Проверяем, что статус второго ответа - 401
-        expect(response2.status).toBe(204);
+        expect(response2.status).toBe(400);
     }, 15000)
 
 
@@ -54,13 +53,14 @@ describe('/blogs', () => {
             loginOrEmail: "HomeB",
             password: "123123",
         }
-        for (let i = 0; i <= 5; i++) {
+        for (let i = 0; i < 5; i++) {
 
             let refreshToken1
             const device1 = await request(app)
                 .post('/api/auth/login')
                 .set('User-Agent', 'Mozilla/5.0')
                 .send(loginData)
+                .expect(401)
         }
 
         const response = await request(app)
