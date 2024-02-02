@@ -53,7 +53,6 @@ export const accessCounterMiddleware = async (req: Request, res: Response, next:
             date: currentDate,
         };
 
-        console.log('Document:', document);
 
         const filter = {
             IP: clientIP,
@@ -61,11 +60,9 @@ export const accessCounterMiddleware = async (req: Request, res: Response, next:
             date: { $gte: tenSecondsAgo },
         };
 
-        console.log('Filter:', filter);
 
         const count = await dbRateLimitCollections.countDocuments(filter);
 
-        console.log('Count:', count);
 
         if (count >= 5) {
             res.sendStatus(429);

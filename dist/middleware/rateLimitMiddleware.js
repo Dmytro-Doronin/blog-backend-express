@@ -57,15 +57,12 @@ const accessCounterMiddleware = (req, res, next) => __awaiter(void 0, void 0, vo
             URL: req.baseUrl,
             date: currentDate,
         };
-        console.log('Document:', document);
         const filter = {
             IP: clientIP,
             URL: req.baseUrl,
             date: { $gte: tenSecondsAgo },
         };
-        console.log('Filter:', filter);
         const count = yield dbCollections_1.dbRateLimitCollections.countDocuments(filter);
-        console.log('Count:', count);
         if (count >= 5) {
             res.sendStatus(429);
         }
