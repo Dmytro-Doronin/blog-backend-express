@@ -5,8 +5,8 @@ import {RequestWithParams} from "../types/commonBlogTypeAndPosts.types";
 import {jwtService} from "../application/jwtService";
 
 export const getAllDeviceController = async (req: Request, res: Response) => {
-
-    const devices = await deviceQuery.getAllDevice()
+    const currentUserId = req.userId
+    const devices = await deviceQuery.getAllDevice(currentUserId)
 
     res.status(200).send(devices)
     return

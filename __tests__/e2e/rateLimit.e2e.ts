@@ -80,6 +80,15 @@ describe('/blogs', () => {
             .set('User-Agent', 'Mozilla/5.0')
             .send(loginData)
 
+        for (let i = 0; i < 5; i++) {
+
+            let refreshToken1
+            const device1 = await request(app)
+                .post('/api/auth/registration')
+                .set('User-Agent', 'Mozilla/5.0')
+                .send(loginData)
+                .expect(401)
+        }
         // Проверяем, что статус второго ответа - 401
         expect(response2.status).toBe(401);
     }, 15000)

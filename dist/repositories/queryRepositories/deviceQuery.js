@@ -13,10 +13,10 @@ exports.deviceQuery = void 0;
 const dbCollections_1 = require("../../db/dbCollections");
 const mapper_1 = require("../../utils/mapper");
 exports.deviceQuery = {
-    getAllDevice() {
+    getAllDevice(currentUserId) {
         return __awaiter(this, void 0, void 0, function* () {
             try {
-                const devices = yield dbCollections_1.dbDeviceCollections.find({}).toArray();
+                const devices = yield dbCollections_1.dbDeviceCollections.find({ userId: currentUserId }).toArray();
                 return devices.map(mapper_1.deviceMapper);
             }
             catch (e) {

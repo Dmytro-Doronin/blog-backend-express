@@ -13,7 +13,8 @@ exports.deleteSpecifiedDevice = exports.deleteAllDevicesExcludeCurrentController
 const deviceQuery_1 = require("../repositories/queryRepositories/deviceQuery");
 const securityDevices_1 = require("../services/securityDevices/securityDevices");
 const getAllDeviceController = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    const devices = yield deviceQuery_1.deviceQuery.getAllDevice();
+    const currentUserId = req.userId;
+    const devices = yield deviceQuery_1.deviceQuery.getAllDevice(currentUserId);
     res.status(200).send(devices);
     return;
 });

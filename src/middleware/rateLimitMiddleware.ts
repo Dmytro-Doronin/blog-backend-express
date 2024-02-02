@@ -49,14 +49,14 @@ export const accessCounterMiddleware = async (req: Request, res: Response, next:
 
         const document = {
             IP: clientIP,
-            URL: req.baseUrl,
+            URL: req.originalUrl,
             date: currentDate,
         };
 
 
         const filter = {
             IP: clientIP,
-            URL: req.baseUrl,
+            URL: req.originalUrl,
             date: { $gte: tenSecondsAgo },
         };
 
@@ -64,7 +64,7 @@ export const accessCounterMiddleware = async (req: Request, res: Response, next:
         const count = await dbRateLimitCollections.countDocuments(filter);
 
 
-        if (count > 5) {
+        if (count >= 5) {
             res.sendStatus(429);
         } else {
             await dbRateLimitCollections.insertOne(document);

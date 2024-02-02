@@ -54,16 +54,16 @@ const accessCounterMiddleware = (req, res, next) => __awaiter(void 0, void 0, vo
         const clientIP = req.ip;
         const document = {
             IP: clientIP,
-            URL: req.baseUrl,
+            URL: req.originalUrl,
             date: currentDate,
         };
         const filter = {
             IP: clientIP,
-            URL: req.baseUrl,
+            URL: req.originalUrl,
             date: { $gte: tenSecondsAgo },
         };
         const count = yield dbCollections_1.dbRateLimitCollections.countDocuments(filter);
-        if (count > 5) {
+        if (count >= 5) {
             res.sendStatus(429);
         }
         else {

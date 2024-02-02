@@ -13,7 +13,7 @@ export const jwtService = {
         }
     },
     async createJWTRefreshToken (user: UserViewModel, deviceId: string = uuidv4()) {
-        debugger
+
         const currentDate = new Date()
         // const currentDateStr = currentDate.toISOString()
         const refreshToken = jwt.sign({
@@ -24,7 +24,7 @@ export const jwtService = {
 
         },setting.JWT_SECRET, {expiresIn: '1h'})
 
-        debugger
+
         return refreshToken
 
     },

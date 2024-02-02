@@ -2,9 +2,9 @@ import {dbDeviceCollections} from "../../db/dbCollections";
 import {deviceMapper} from "../../utils/mapper";
 
 export const deviceQuery = {
-    async getAllDevice () {
+    async getAllDevice (currentUserId: string) {
         try {
-            const devices = await dbDeviceCollections.find({}).toArray()
+            const devices = await dbDeviceCollections.find({userId: currentUserId}).toArray()
 
             return devices.map(deviceMapper)
         } catch (e) {
