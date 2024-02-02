@@ -94,7 +94,6 @@ const refreshTokenController = (req, res) => __awaiter(void 0, void 0, void 0, f
     }
     res.cookie('refreshToken', refreshToken, { httpOnly: true, secure: true });
     res.status(200).send(accessToken);
-    debugger;
     return;
 });
 exports.refreshTokenController = refreshTokenController;

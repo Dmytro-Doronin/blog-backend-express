@@ -23,36 +23,27 @@ export const accessCounterMiddleware = async (req: Request, res: Response, next:
     const tenSecondsAgo = new Date(currentDate.getTime() - 10 * 1000);
 
     try {
-        // const count = await dbRateLimitCollections.countDocuments({
-        //     IP: req.ip!,
-        //     URL: req.originalUrl,
-        //     date: { $lt: currentDate, $gte: tenSecondsAgo },
-        // })
-        //
-        // if (count > 5) {
-        //     res.sendStatus(429)
-        // }
+
         const document = {
             IP: req.ip!,
             URL: req.baseUrl,
             date: new Date(),
         };
+        await dbRateLimitCollections.insertOne(document);
+
         const filter = {
-            IP: req.ip, // Предполагается, что IP сохраняется в req.ip
-            URL: req.baseUrl, // Используйте базовый URL или оригинальный URL запроса
-            date: { $gte: tenSecondsAgo }, // date >= текущей даты - 10 сек
+            IP: req.ip,
+            URL: req.baseUrl,
+            date: { $gte: tenSecondsAgo },
         };
 
-        // Подсчет документов, удовлетворяющих фильтру
         const count = await dbRateLimitCollections.countDocuments(filter);
 
-        // Проверка на количество запросов за 10 секунд
         if (count >= 5) {
             res.sendStatus(429);
         }
 
-        // Вставка нового документа в коллекцию
-        await dbRateLimitCollections.insertOne(document);
+
         next()
     } catch (e: any) {
         throw new Error(e)
