@@ -64,12 +64,13 @@ export const accessCounterMiddleware = async (req: Request, res: Response, next:
         const count = await dbRateLimitCollections.countDocuments(filter);
 
 
-        if (count >= 5) {
+        if (count > 5) {
             res.sendStatus(429);
         } else {
             await dbRateLimitCollections.insertOne(document);
             next();
         }
+
     } catch (error) {
         console.error('Error in accessCounterMiddleware:', error);
         res.sendStatus(500);

@@ -63,7 +63,7 @@ const accessCounterMiddleware = (req, res, next) => __awaiter(void 0, void 0, vo
             date: { $gte: tenSecondsAgo },
         };
         const count = yield dbCollections_1.dbRateLimitCollections.countDocuments(filter);
-        if (count >= 5) {
+        if (count > 5) {
             res.sendStatus(429);
         }
         else {
