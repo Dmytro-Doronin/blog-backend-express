@@ -1,15 +1,15 @@
-import { dbCommentsCollections} from "../../db/dbCollections";
 import {CommentInputModelType, commentsDBType} from "../../types/commonBlogTypeAndPosts.types";
 import {commentQuery} from "../queryRepositories/commentQuery";
 import {commentMapper} from "../../utils/mapper";
+import {CommentModel} from "../../db/schemes";
 
 export const commentMutation = {
     async createCommentForPostInDb (newComments: commentsDBType) {
 
         try {
-            await dbCommentsCollections.insertOne(newComments)
+            await CommentModel.create(newComments)
 
-            const comment = await dbCommentsCollections.findOne({id: newComments.id})
+            const comment = await CommentModel.findOne({id: newComments.id}).lean()
 
             if (!comment) {
                 return null
@@ -24,7 +24,7 @@ export const commentMutation = {
 
     async changeCommentByIdInDb (id: string, newContent: string) {
         try {
-            await dbCommentsCollections.updateOne(
+            await CommentModel.updateOne(
                 {id: id},
                 {
                     $set: {content: newContent}
@@ -38,6 +38,6 @@ export const commentMutation = {
     },
 
     async deleteCommentById (id: string) {
-        await dbCommentsCollections.deleteOne({id: id})
+        await CommentModel.deleteOne({id: id})
     }
 }

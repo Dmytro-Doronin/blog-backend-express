@@ -10,13 +10,13 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.deviceQuery = void 0;
-const dbCollections_1 = require("../../db/dbCollections");
 const mapper_1 = require("../../utils/mapper");
+const schemes_1 = require("../../db/schemes");
 exports.deviceQuery = {
     getAllDevice(currentUserId) {
         return __awaiter(this, void 0, void 0, function* () {
             try {
-                const devices = yield dbCollections_1.dbDeviceCollections.find({ userId: currentUserId }).toArray();
+                const devices = yield schemes_1.DeviceModel.find({ userId: currentUserId }).lean();
                 return devices.map(mapper_1.deviceMapper);
             }
             catch (e) {
@@ -27,10 +27,10 @@ exports.deviceQuery = {
     getDeviceByActiveDataAndUserId(lastActiveDate, deviceId) {
         return __awaiter(this, void 0, void 0, function* () {
             try {
-                const device = yield dbCollections_1.dbDeviceCollections.findOne({
+                const device = yield schemes_1.DeviceModel.findOne({
                     deviceId: deviceId,
                     lastActiveDate: lastActiveDate
-                });
+                }).lean();
                 if (!device) {
                     return false;
                 }
@@ -44,7 +44,7 @@ exports.deviceQuery = {
     getDeviceByDeviceId(deviceId) {
         return __awaiter(this, void 0, void 0, function* () {
             try {
-                const device = yield dbCollections_1.dbDeviceCollections.findOne({ deviceId: deviceId });
+                const device = yield schemes_1.DeviceModel.findOne({ deviceId: deviceId }).lean();
                 if (!device) {
                     return false;
                 }

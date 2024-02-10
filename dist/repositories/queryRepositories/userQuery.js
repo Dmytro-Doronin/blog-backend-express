@@ -10,9 +10,9 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.userQuery = void 0;
-const dbCollections_1 = require("../../db/dbCollections");
 const sortUtils_1 = require("../../utils/sortUtils");
 const mapper_1 = require("../../utils/mapper");
+const schemes_1 = require("../../db/schemes");
 exports.userQuery = {
     getAllUsers(sortData) {
         var _a, _b, _c, _d, _e, _f, _g, _h, _j, _k;
@@ -43,13 +43,13 @@ exports.userQuery = {
                 (_k = filter['$or']) === null || _k === void 0 ? void 0 : _k.push({});
             }
             try {
-                const users = yield dbCollections_1.dbUsersCollections
+                const users = yield schemes_1.UserModel
                     .find(filter)
                     .sort((0, sortUtils_1.filterForSort)(sortBy, sortDirection))
                     .skip((+pageNumber - 1) * +pageSize)
                     .limit(+pageSize)
-                    .toArray();
-                const totalCount = yield dbCollections_1.dbUsersCollections.countDocuments(filter);
+                    .lean();
+                const totalCount = yield schemes_1.UserModel.countDocuments(filter);
                 const pagesCount = Math.ceil(totalCount / +pageSize);
                 return {
                     pagesCount,
@@ -66,13 +66,13 @@ exports.userQuery = {
     },
     findUserByLoginOrEmail(loginOrEmail) {
         return __awaiter(this, void 0, void 0, function* () {
-            const user = yield dbCollections_1.dbUsersCollections.findOne({ $or: [{ 'accountData.email': loginOrEmail }, { 'accountData.login': loginOrEmail }] });
+            const user = yield schemes_1.UserModel.findOne({ $or: [{ 'accountData.email': loginOrEmail }, { 'accountData.login': loginOrEmail }] }).lean();
             return user;
         });
     },
     findUserById(id) {
         return __awaiter(this, void 0, void 0, function* () {
-            return dbCollections_1.dbUsersCollections.findOne({ id: id });
+            return schemes_1.UserModel.findOne({ id: id }).lean();
         });
     }
 };

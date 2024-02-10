@@ -31,25 +31,30 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
         step((generator = generator.apply(thisArg, _arguments || [])).next());
     });
 };
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.runDB = exports.client = exports.db = void 0;
-exports.db = [];
+exports.runDB = exports.client = exports.url = void 0;
 // export const blogDB: BlogDbType = {
 //     blogs: [],
 //     posts: []
 // }
 const dotenv = __importStar(require("dotenv"));
 const mongodb_1 = require("mongodb");
+const mongoose_1 = __importDefault(require("mongoose"));
 dotenv.config();
-const url = process.env.MONGO_URL;
-if (!url) {
+const dbName = 'Blog';
+exports.url = process.env.MONGO_URL || '';
+if (!exports.url) {
     throw new Error('Url does`t find');
 }
-exports.client = new mongodb_1.MongoClient(url);
+exports.client = new mongodb_1.MongoClient(exports.url);
 function runDB() {
     return __awaiter(this, void 0, void 0, function* () {
         try {
             yield exports.client.connect();
+            yield mongoose_1.default.connect(exports.url, { dbName: 'Blog' });
             console.log('Connected success to server');
         }
         catch (e) {

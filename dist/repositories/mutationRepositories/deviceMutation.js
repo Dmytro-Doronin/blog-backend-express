@@ -10,13 +10,13 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.deviceMutation = void 0;
-const dbCollections_1 = require("../../db/dbCollections");
+const schemes_1 = require("../../db/schemes");
 exports.deviceMutation = {
     createDevice(device) {
         return __awaiter(this, void 0, void 0, function* () {
             try {
-                yield dbCollections_1.dbDeviceCollections.insertOne(device);
-                const result = yield dbCollections_1.dbDeviceCollections.findOne({ lastActiveDate: device.lastActiveDate });
+                yield schemes_1.DeviceModel.create(device);
+                const result = yield schemes_1.DeviceModel.findOne({ lastActiveDate: device.lastActiveDate }).lean();
                 if (!result) {
                     return null;
                 }
@@ -30,11 +30,11 @@ exports.deviceMutation = {
     changeDeviceDataByDeviceId(deviceId, lastActiveDate, expireDate) {
         return __awaiter(this, void 0, void 0, function* () {
             try {
-                const deviceInDb = yield dbCollections_1.dbDeviceCollections.findOne({ deviceId });
+                const deviceInDb = yield schemes_1.DeviceModel.findOne({ deviceId }).lean();
                 if (!deviceInDb) {
                     return null;
                 }
-                const result = yield dbCollections_1.dbDeviceCollections.updateOne({ deviceId }, { $set: { lastActiveDate, expireDate } });
+                const result = yield schemes_1.DeviceModel.updateOne({ deviceId }, { $set: { lastActiveDate, expireDate } });
                 return result.modifiedCount === 1;
             }
             catch (e) {
@@ -45,8 +45,8 @@ exports.deviceMutation = {
     deleteAllDeviceExcludeCurrent(deviceId) {
         return __awaiter(this, void 0, void 0, function* () {
             try {
-                yield dbCollections_1.dbDeviceCollections.deleteMany({ deviceId: { $ne: deviceId } });
-                const count = yield dbCollections_1.dbDeviceCollections.countDocuments({});
+                yield schemes_1.DeviceModel.deleteMany({ deviceId: { $ne: deviceId } });
+                const count = yield schemes_1.DeviceModel.countDocuments({});
                 return count === 1;
             }
             catch (e) {
@@ -57,7 +57,7 @@ exports.deviceMutation = {
     deleteDeviceByDeviceId(deviceId) {
         return __awaiter(this, void 0, void 0, function* () {
             try {
-                const result = yield dbCollections_1.dbDeviceCollections.deleteOne({ deviceId: deviceId });
+                const result = yield schemes_1.DeviceModel.deleteOne({ deviceId: deviceId });
                 return result.deletedCount === 1;
             }
             catch (e) {

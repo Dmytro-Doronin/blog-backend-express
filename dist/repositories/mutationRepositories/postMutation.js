@@ -11,14 +11,14 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.postMutation = void 0;
 const mapper_1 = require("../../utils/mapper");
-const dbCollections_1 = require("../../db/dbCollections");
+const schemes_1 = require("../../db/schemes");
 //export const dbPostCollections = client.db('Blogs').collection<PostViewModelType>('posts')
 exports.postMutation = {
     createPostInDb(newPost) {
         return __awaiter(this, void 0, void 0, function* () {
             try {
-                yield dbCollections_1.dbPostCollections.insertOne(newPost);
-                const result = yield dbCollections_1.dbPostCollections.findOne({ id: newPost.id });
+                yield schemes_1.PostModel.create(newPost);
+                const result = yield schemes_1.PostModel.findOne({ id: newPost.id }).lean();
                 if (!result) {
                     return null;
                 }
@@ -32,11 +32,11 @@ exports.postMutation = {
     changePostByIdInDb({ id, title, shortDescription, content, blogId }) {
         return __awaiter(this, void 0, void 0, function* () {
             try {
-                const addedItem = yield dbCollections_1.dbPostCollections.findOne({ id: id });
+                const addedItem = yield schemes_1.PostModel.findOne({ id: id }).lean();
                 if (!addedItem) {
                     return null;
                 }
-                const result = yield dbCollections_1.dbPostCollections.updateOne({ id: id }, {
+                const result = yield schemes_1.PostModel.updateOne({ id: id }, {
                     $set: { title, shortDescription, content, blogId }
                 });
                 return !!result.matchedCount;
@@ -49,7 +49,7 @@ exports.postMutation = {
     deletePostByIdInDb(id) {
         return __awaiter(this, void 0, void 0, function* () {
             try {
-                const res = yield dbCollections_1.dbPostCollections.deleteOne({ id: id });
+                const res = yield schemes_1.PostModel.deleteOne({ id: id });
                 if (res.deletedCount === 1) {
                     return true;
                 }

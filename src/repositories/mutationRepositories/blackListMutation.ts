@@ -1,13 +1,13 @@
-import {dbBlacklistCollections} from "../../db/dbCollections";
+import {BlackListModel} from "../../db/schemes";
 
 
 export const blackListMutation = {
 
     async putTokenInBlackList (token: string) {
         try {
-            await dbBlacklistCollections.insertOne({token: token})
+            await BlackListModel.create({token: token})
 
-            const tokenInBlacklist = await dbBlacklistCollections.findOne({token: token})
+            const tokenInBlacklist = await BlackListModel.findOne({token: token}).lean()
 
             if (!tokenInBlacklist) {
                 return null

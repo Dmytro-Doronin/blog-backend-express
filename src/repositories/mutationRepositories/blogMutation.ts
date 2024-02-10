@@ -8,19 +8,20 @@ import {blogMapper, postMapper} from "../../utils/mapper";
 
 import {client} from "../../db/db";
 import {ChangeBlogByIdTypes} from "../../services/serviceTypes/blogsTypes";
-import {dbBlogCollections, dbPostCollections} from "../../db/dbCollections";
+// import {dbPostCollections} from "../../db/dbCollections";
 import {blogQuery} from "../queryRepositories/blogQuery";
+import {BlogModel, PostModel} from "../../db/schemes";
 const { v4: uuidv4 } = require('uuid');
-
 
 
 
 export const blogMutation = {
     async createBlogInDb (newBlog : BlogViewModelType) {
         try {
-
-            await dbBlogCollections.insertOne(newBlog)
-            const result = await dbBlogCollections.findOne({id: newBlog.id})
+            debugger
+            await BlogModel.create(newBlog)
+            const result = await BlogModel.findOne({id: newBlog.id}).lean()
+            debugger
 
             if (!result) {
                 return null
@@ -36,8 +37,8 @@ export const blogMutation = {
     async createPostToBlogInDb (post: PostViewModelType) {
 
         try {
-            await dbPostCollections.insertOne(post)
-            const postFromDb = await dbPostCollections.findOne({id: post.id})
+            await PostModel.create(post)
+            const postFromDb = await PostModel.findOne({id: post.id}).lean()
 
             if (!postFromDb) {
                 return null
@@ -55,13 +56,13 @@ export const blogMutation = {
 
 
         try {
-            const addedItem = await dbBlogCollections.findOne({id: id})
+            const addedItem = await BlogModel.findOne({id: id}).lean()
 
             if (!addedItem) {
                 return null
             }
 
-            await dbBlogCollections.updateOne(
+            await BlogModel.updateOne(
                 {id: id},
                 {
                     $set: {name, description, websiteUrl}
@@ -77,7 +78,7 @@ export const blogMutation = {
     async deleteBlogByIdInDb (id: string) {
 
         try {
-            const res = await dbBlogCollections.deleteOne({id: id})
+            const res = await BlogModel.deleteOne({id: id})
 
             if (res.deletedCount === 1) {
                 return true

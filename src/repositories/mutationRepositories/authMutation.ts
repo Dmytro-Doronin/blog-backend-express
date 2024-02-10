@@ -1,15 +1,16 @@
-import {dbUsersCollections} from "../../db/dbCollections";
+import {UserModel} from "../../db/schemes";
+
 
 export const authMutation = {
     async updateConfirmation (id: string) {
-        const result = await dbUsersCollections.updateOne({id}, {$set: {"emailConfirmation.isConfirmed": true}})
+        const result = await UserModel.updateOne({id}, {$set: {"emailConfirmation.isConfirmed": true}})
 
         return result.modifiedCount === 1
     },
 
     async updateConfirmationCode (id: string, code: string, date: Date) {
         try {
-            const result = await dbUsersCollections.updateOne(
+            const result = await UserModel.updateOne(
                 {id},
                 {$set: {
                         "emailConfirmation.confirmationCode": code,

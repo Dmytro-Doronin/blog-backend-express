@@ -1,8 +1,9 @@
-import { dbUsersCollections} from "../../db/dbCollections";
+
 import {UsersQueryInputModel} from "../../types/users/queryUsers.types";
 import {filterForSort} from "../../utils/sortUtils";
 import {body} from "express-validator";
 import {userMapper} from "../../utils/mapper";
+import {UserModel} from "../../db/schemes";
 
 export const userQuery = {
 
@@ -37,14 +38,14 @@ export const userQuery = {
 
 
         try {
-            const users = await dbUsersCollections
+            const users = await UserModel
                 .find(filter)
                 .sort(filterForSort(sortBy, sortDirection))
                 .skip((+pageNumber - 1) * +pageSize)
                 .limit(+pageSize)
-                .toArray()
+                .lean()
 
-            const totalCount = await dbUsersCollections.countDocuments(filter)
+            const totalCount = await UserModel.countDocuments(filter)
 
             const pagesCount = Math.ceil(totalCount / +pageSize)
 
@@ -62,11 +63,11 @@ export const userQuery = {
     },
 
     async findUserByLoginOrEmail (loginOrEmail: string) {
-        const user = await dbUsersCollections.findOne({$or: [{'accountData.email':loginOrEmail },{'accountData.login': loginOrEmail}]})
+        const user = await UserModel.findOne({$or: [{'accountData.email':loginOrEmail },{'accountData.login': loginOrEmail}]}).lean()
         return user
     },
 
     async findUserById (id: string) {
-        return dbUsersCollections.findOne({id: id})
+        return UserModel.findOne({id: id}).lean()
     }
 }

@@ -10,20 +10,20 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.userMutation = void 0;
-const dbCollections_1 = require("../../db/dbCollections");
-const userQuery_1 = require("../queryRepositories/userQuery");
+const schemes_1 = require("../../db/schemes");
 exports.userMutation = {
     createUser(newUser) {
         return __awaiter(this, void 0, void 0, function* () {
             try {
-                yield dbCollections_1.dbUsersCollections.insertOne(newUser);
-                const findUser = yield userQuery_1.userQuery.findUserById(newUser.id);
+                yield schemes_1.UserModel.create(newUser);
+                const findUser = yield schemes_1.UserModel.findOne({ id: newUser.id }).lean();
                 if (!findUser) {
                     return null;
                 }
                 return findUser;
             }
             catch (e) {
+                console.log(e);
                 throw new Error('User was not created');
             }
         });
@@ -31,7 +31,7 @@ exports.userMutation = {
     deleteUserByIdInDb(id) {
         return __awaiter(this, void 0, void 0, function* () {
             try {
-                const res = yield dbCollections_1.dbUsersCollections.deleteOne({ id: id });
+                const res = yield schemes_1.UserModel.deleteOne({ id: id });
                 if (res.deletedCount === 1) {
                     return true;
                 }

@@ -10,14 +10,14 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.commentMutation = void 0;
-const dbCollections_1 = require("../../db/dbCollections");
 const mapper_1 = require("../../utils/mapper");
+const schemes_1 = require("../../db/schemes");
 exports.commentMutation = {
     createCommentForPostInDb(newComments) {
         return __awaiter(this, void 0, void 0, function* () {
             try {
-                yield dbCollections_1.dbCommentsCollections.insertOne(newComments);
-                const comment = yield dbCollections_1.dbCommentsCollections.findOne({ id: newComments.id });
+                yield schemes_1.CommentModel.create(newComments);
+                const comment = yield schemes_1.CommentModel.findOne({ id: newComments.id }).lean();
                 if (!comment) {
                     return null;
                 }
@@ -31,7 +31,7 @@ exports.commentMutation = {
     changeCommentByIdInDb(id, newContent) {
         return __awaiter(this, void 0, void 0, function* () {
             try {
-                yield dbCollections_1.dbCommentsCollections.updateOne({ id: id }, {
+                yield schemes_1.CommentModel.updateOne({ id: id }, {
                     $set: { content: newContent }
                 });
             }
@@ -42,7 +42,7 @@ exports.commentMutation = {
     },
     deleteCommentById(id) {
         return __awaiter(this, void 0, void 0, function* () {
-            yield dbCollections_1.dbCommentsCollections.deleteOne({ id: id });
+            yield schemes_1.CommentModel.deleteOne({ id: id });
         });
     }
 };

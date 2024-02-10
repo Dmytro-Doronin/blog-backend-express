@@ -1,14 +1,13 @@
 import {BlogViewModelType, userDBType} from "../../types/commonBlogTypeAndPosts.types";
-import {dbBlogCollections, dbUsersCollections} from "../../db/dbCollections";
 import {blogMapper, userMapper} from "../../utils/mapper";
-import {userQuery} from "../queryRepositories/userQuery";
+import {UserModel} from "../../db/schemes";
 
 
 export const userMutation = {
     async createUser (newUser : userDBType) {
         try {
-            await dbUsersCollections.insertOne(newUser)
-            const findUser = await userQuery.findUserById(newUser.id)
+            await UserModel.create(newUser)
+            const findUser = await UserModel.findOne({id: newUser.id}).lean()
 
             if (!findUser) {
                 return null
@@ -16,6 +15,7 @@ export const userMutation = {
 
             return findUser
         } catch (e) {
+            console.log(e)
             throw new Error('User was not created')
         }
     },
@@ -23,7 +23,7 @@ export const userMutation = {
     async deleteUserByIdInDb (id: string) {
 
         try {
-            const res = await dbUsersCollections.deleteOne({id: id})
+            const res = await UserModel.deleteOne({id: id})
 
             if (res.deletedCount === 1) {
                 return true

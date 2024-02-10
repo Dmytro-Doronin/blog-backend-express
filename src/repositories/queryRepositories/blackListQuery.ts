@@ -1,11 +1,11 @@
-import {dbBlacklistCollections} from "../../db/dbCollections";
+import {BlackListModel} from "../../db/schemes";
 
 
 export const blackListQuery = {
 
     async checkTokenInBlackList (token: string) {
         try {
-            const tokenInBlacklist = await dbBlacklistCollections.findOne({token: token})
+            const tokenInBlacklist = await BlackListModel.findOne({token: token}).lean()
 
             if (!tokenInBlacklist) {
                 return null

@@ -10,13 +10,13 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.blackListMutation = void 0;
-const dbCollections_1 = require("../../db/dbCollections");
+const schemes_1 = require("../../db/schemes");
 exports.blackListMutation = {
     putTokenInBlackList(token) {
         return __awaiter(this, void 0, void 0, function* () {
             try {
-                yield dbCollections_1.dbBlacklistCollections.insertOne({ token: token });
-                const tokenInBlacklist = yield dbCollections_1.dbBlacklistCollections.findOne({ token: token });
+                yield schemes_1.BlackListModel.create({ token: token });
+                const tokenInBlacklist = yield schemes_1.BlackListModel.findOne({ token: token }).lean();
                 if (!tokenInBlacklist) {
                     return null;
                 }

@@ -1,6 +1,6 @@
 import {Request, Response, NextFunction} from 'express'
 import { rateLimit } from 'express-rate-limit'
-import {dbRateLimitCollections} from "../db/dbCollections";
+import {RateModel} from "../db/schemes";
 
 // export const accessCounterMiddleware = async (req: Request, res: Response, next: NextFunction) => {
 //
@@ -61,13 +61,13 @@ export const accessCounterMiddleware = async (req: Request, res: Response, next:
         };
 
 
-        const count = await dbRateLimitCollections.countDocuments(filter);
+        const count = await RateModel.countDocuments(filter);
 
 
         if (count >= 5) {
             res.sendStatus(429);
         } else {
-            await dbRateLimitCollections.insertOne(document);
+            await RateModel.create(document);
             next();
         }
 

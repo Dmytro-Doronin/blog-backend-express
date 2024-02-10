@@ -39,15 +39,15 @@ export const userMapper = (user: WithId<userDBType>): UserViewModel  => {
     }
 }
 
-export const commentMapper = (comment: WithId<commentsDBType>): CommentViewModelType  => {
+export const commentMapper = (value: WithId<commentsDBType>): CommentViewModelType  => {
     return {
-        id:	comment.id,
-        content: comment.content,
+        id:	value.id,
+        content: value.content,
         commentatorInfo: {
-            userId: comment.commentatorInfo.userId,
-            userLogin: comment.commentatorInfo.userLogin
+            userId: value.commentatorInfo.userId,
+            userLogin: value.commentatorInfo.userLogin
         },
-        createdAt: comment.createdAt
+        createdAt: value.createdAt
     }
 }
 

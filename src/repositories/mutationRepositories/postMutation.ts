@@ -2,7 +2,7 @@ import {PostInputModelType, PostViewModelType} from "../../types/commonBlogTypeA
 import {postMapper} from "../../utils/mapper";
 import {client} from "../../db/db";
 import {CreatePostsServiceType} from "../../services/serviceTypes/postsTypes";
-import {dbPostCollections} from '../../db/dbCollections'
+import {PostModel} from "../../db/schemes";
 
 //export const dbPostCollections = client.db('Blogs').collection<PostViewModelType>('posts')
 
@@ -10,8 +10,8 @@ export const postMutation = {
     async createPostInDb (newPost : PostViewModelType) {
         try {
 
-            await dbPostCollections.insertOne(newPost)
-            const result = await dbPostCollections.findOne({id: newPost.id})
+            await PostModel.create(newPost)
+            const result = await PostModel.findOne({id: newPost.id}).lean()
 
             if (!result) {
                 return null
@@ -27,13 +27,13 @@ export const postMutation = {
     async changePostByIdInDb ({id, title, shortDescription, content, blogId}: CreatePostsServiceType) {
 
         try {
-            const addedItem = await dbPostCollections.findOne({id: id})
+            const addedItem = await PostModel.findOne({id: id}).lean()
 
             if (!addedItem) {
                 return null
             }
 
-            const result = await dbPostCollections.updateOne(
+            const result = await PostModel.updateOne(
                 {id: id},
                 {
                     $set: {title, shortDescription, content, blogId }
@@ -50,7 +50,7 @@ export const postMutation = {
     async deletePostByIdInDb (id: string) {
 
         try {
-            const res = await dbPostCollections.deleteOne({id: id})
+            const res = await PostModel.deleteOne({id: id})
 
             if (res.deletedCount === 1) {
                 return true

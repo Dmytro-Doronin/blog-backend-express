@@ -11,8 +11,8 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.blogQuery = void 0;
 const mapper_1 = require("../../utils/mapper");
-const dbCollections_1 = require("../../db/dbCollections");
 const sortUtils_1 = require("../../utils/sortUtils");
+const schemes_1 = require("../../db/schemes");
 exports.blogQuery = {
     getAllBlogInDb(sortData) {
         var _a, _b, _c, _d, _e;
@@ -29,13 +29,13 @@ exports.blogQuery = {
                 };
             }
             try {
-                const blogs = yield dbCollections_1.dbBlogCollections
+                const blogs = yield schemes_1.BlogModel
                     .find(filter)
                     .sort((0, sortUtils_1.filterForSort)(sortBy, sortDirection))
                     .skip((+pageNumber - 1) * +pageSize)
                     .limit(+pageSize)
-                    .toArray();
-                const totalCount = yield dbCollections_1.dbBlogCollections.countDocuments(filter);
+                    .lean();
+                const totalCount = yield schemes_1.BlogModel.countDocuments(filter);
                 const pagesCount = Math.ceil(totalCount / +pageSize);
                 return {
                     pagesCount,
@@ -58,13 +58,13 @@ exports.blogQuery = {
             const pageNumber = (_c = sortData.pageNumber) !== null && _c !== void 0 ? _c : 1;
             const pageSize = (_d = sortData.pageSize) !== null && _d !== void 0 ? _d : 10;
             try {
-                const posts = yield dbCollections_1.dbPostCollections
+                const posts = yield schemes_1.PostModel
                     .find({ blogId: blogId })
                     .sort((0, sortUtils_1.filterForSort)(sortBy, sortDirection))
                     .skip((+pageNumber - 1) * +pageSize)
                     .limit(+pageSize)
-                    .toArray();
-                const totalCount = yield dbCollections_1.dbPostCollections.countDocuments({ blogId: blogId });
+                    .lean();
+                const totalCount = yield schemes_1.PostModel.countDocuments({ blogId: blogId });
                 const pagesCount = Math.ceil(totalCount / +pageSize);
                 return {
                     pagesCount,
@@ -82,7 +82,7 @@ exports.blogQuery = {
     getBlogByIdInDb(id) {
         return __awaiter(this, void 0, void 0, function* () {
             try {
-                const blog = yield dbCollections_1.dbBlogCollections.findOne({ id: id });
+                const blog = yield schemes_1.BlogModel.findOne({ id: id }).lean();
                 if (!blog) {
                     return null;
                 }

@@ -1,11 +1,10 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.dbRateLimitCollections = exports.dbDeviceCollections = exports.dbBlacklistCollections = exports.dbCommentsCollections = exports.dbUsersCollections = exports.dbPostCollections = exports.dbBlogCollections = void 0;
-const db_1 = require("./db");
-exports.dbBlogCollections = db_1.client.db('Blogs').collection('blogs');
-exports.dbPostCollections = db_1.client.db('Posts').collection('posts');
-exports.dbUsersCollections = db_1.client.db('Users').collection('users');
-exports.dbCommentsCollections = db_1.client.db('Comments').collection('comments');
-exports.dbBlacklistCollections = db_1.client.db('BlackListOfToken').collection('blackListOfToken');
-exports.dbDeviceCollections = db_1.client.db('Device').collection('device');
-exports.dbRateLimitCollections = db_1.client.db('Rate').collection('rate');
+// export const dbBlogCollections = client.db('Blog').collection<BlogViewModelType>('blogs')
+// export const dbPostCollections = client.db('Blog').collection<PostViewModelType>('posts')
+// export const dbUsersCollections = client.db('Blog').collection<userDBType>('users')
+// export const dbCommentsCollections = client.db('Blog').collection<commentsDBType>('comments')
+// export const dbBlacklistCollections = client.db('Blog').collection<BlackListOfTokenType>('blackListOfToken')
+// export const dbDeviceCollections = client.db('Blog').collection<DeviceDBType>('device')
+// export const dbRateLimitCollections = client.db('Blog').collection<{IP:any, URL: any, date: Date}>('rate')
+//Posts Users Comments BlackListOfToken Device Rate

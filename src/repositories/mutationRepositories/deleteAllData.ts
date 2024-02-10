@@ -1,25 +1,21 @@
 
-import {
-    dbBlacklistCollections,
-    dbBlogCollections,
-    dbCommentsCollections, dbDeviceCollections, dbRateLimitCollections,
-    dbUsersCollections
-} from "../../db/dbCollections";
-import {dbPostCollections} from "../../db/dbCollections";
+
+
+import {BlackListModel, BlogModel, CommentModel, DeviceModel, PostModel, RateModel, UserModel} from "../../db/schemes";
 
 export const deleteAllDataMutation = {
     async deleteAllDataFromDb () {
         try {
-            await dbBlogCollections.deleteMany({})
-            await dbPostCollections.deleteMany({})
-            await dbUsersCollections.deleteMany({})
-            await dbCommentsCollections.deleteMany({})
-            await dbBlacklistCollections.deleteMany({})
-            await dbDeviceCollections.deleteMany({})
-            await dbRateLimitCollections.deleteMany({})
+            await BlogModel.deleteMany({})
+            await PostModel.deleteMany({})
+            await UserModel.deleteMany({})
+            await CommentModel.deleteMany({})
+            await BlackListModel.deleteMany({})
+            await DeviceModel.deleteMany({})
+            await RateModel.deleteMany({})
         } catch (e) {
+            console.log(e)
             throw new Error('All data was not deleted')
         }
-
     }
 }

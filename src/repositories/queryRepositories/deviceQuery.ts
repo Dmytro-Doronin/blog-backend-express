@@ -1,10 +1,10 @@
-import {dbDeviceCollections} from "../../db/dbCollections";
 import {deviceMapper} from "../../utils/mapper";
+import {DeviceModel} from "../../db/schemes";
 
 export const deviceQuery = {
     async getAllDevice (currentUserId: string) {
         try {
-            const devices = await dbDeviceCollections.find({userId: currentUserId}).toArray()
+            const devices = await DeviceModel.find({userId: currentUserId}).lean()
 
             return devices.map(deviceMapper)
         } catch (e) {
@@ -15,12 +15,12 @@ export const deviceQuery = {
 
     async getDeviceByActiveDataAndUserId (lastActiveDate: Date, deviceId: string) {
         try {
-            const device = await dbDeviceCollections.findOne(
+            const device = await DeviceModel.findOne(
                 {
                     deviceId:deviceId,
                     lastActiveDate: lastActiveDate
                 }
-            )
+            ).lean()
 
             if (!device) {
                 return false
@@ -35,9 +35,9 @@ export const deviceQuery = {
     },
     async getDeviceByDeviceId (deviceId: string) {
         try {
-            const device = await dbDeviceCollections.findOne(
+            const device = await DeviceModel.findOne(
                 {deviceId:deviceId}
-            )
+            ).lean()
 
             if (!device) {
                 return false

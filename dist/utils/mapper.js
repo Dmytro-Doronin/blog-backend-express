@@ -33,15 +33,15 @@ const userMapper = (user) => {
     };
 };
 exports.userMapper = userMapper;
-const commentMapper = (comment) => {
+const commentMapper = (value) => {
     return {
-        id: comment.id,
-        content: comment.content,
+        id: value.id,
+        content: value.content,
         commentatorInfo: {
-            userId: comment.commentatorInfo.userId,
-            userLogin: comment.commentatorInfo.userLogin
+            userId: value.commentatorInfo.userId,
+            userLogin: value.commentatorInfo.userLogin
         },
-        createdAt: comment.createdAt
+        createdAt: value.createdAt
     };
 };
 exports.commentMapper = commentMapper;

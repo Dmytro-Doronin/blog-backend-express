@@ -1,9 +1,10 @@
 import {blogMapper, postMapper} from "../../utils/mapper";
 import {BlogViewModelType, ParamsType} from "../../types/commonBlogTypeAndPosts.types";
 import {client} from "../../db/db";
-import {dbBlogCollections, dbPostCollections} from "../../db/dbCollections";
+// import {dbBlogCollections, dbPostCollections} from "../../db/dbCollections";
 import {QueryBlogInputModel} from "../../types/blogs/queryBlog.types";
 import {filterForSort} from "../../utils/sortUtils";
+import {BlogModel, PostModel} from "../../db/schemes";
 
 export const blogQuery = {
     async getAllBlogInDb(sortData: QueryBlogInputModel) {
@@ -23,14 +24,14 @@ export const blogQuery = {
         }
 
         try {
-            const blogs = await dbBlogCollections
+            const blogs = await BlogModel
                 .find(filter)
                 .sort(filterForSort(sortBy, sortDirection))
                 .skip((+pageNumber - 1) * +pageSize)
                 .limit(+pageSize)
-                .toArray()
+                .lean()
 
-            const totalCount = await dbBlogCollections.countDocuments(filter)
+            const totalCount = await BlogModel.countDocuments(filter)
 
             const pagesCount = Math.ceil(totalCount / +pageSize)
 
@@ -56,14 +57,14 @@ export const blogQuery = {
         const pageSize = sortData.pageSize ?? 10
 
         try {
-            const posts = await dbPostCollections
+            const posts = await PostModel
                 .find({blogId: blogId})
                 .sort(filterForSort(sortBy, sortDirection))
                 .skip((+pageNumber - 1) * +pageSize)
                 .limit(+pageSize)
-                .toArray()
+                .lean()
 
-            const totalCount = await dbPostCollections.countDocuments({blogId: blogId})
+            const totalCount = await PostModel.countDocuments({blogId: blogId})
 
             const pagesCount = Math.ceil(totalCount / +pageSize)
 
@@ -82,7 +83,7 @@ export const blogQuery = {
     async getBlogByIdInDb (id: string): Promise<BlogViewModelType | null>  {
 
         try {
-            const blog = await dbBlogCollections.findOne({id: id})
+            const blog = await BlogModel.findOne({id: id}).lean()
             if (!blog) {
                 return null
             }

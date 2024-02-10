@@ -2,9 +2,9 @@ import {commentMapper, postMapper} from "../../utils/mapper";
 
 import {client} from "../../db/db";
 import {PostViewModelType} from "../../types/commonBlogTypeAndPosts.types";
-import {dbBlogCollections, dbCommentsCollections, dbPostCollections} from "../../db/dbCollections";
 import {QueryCommentsInputModel, QueryPostInputModel} from "../../types/posts/queryPosts.types";
 import {filterForSort} from "../../utils/sortUtils";
+import {CommentModel, PostModel} from "../../db/schemes";
 
 
 export const postQuery = {
@@ -16,14 +16,14 @@ export const postQuery = {
         const pageSize = sortData.pageSize ?? 10
 
         try {
-            const post = await dbPostCollections
+            const post = await PostModel
                 .find({})
                 .sort(filterForSort(sortBy, sortDirection))
                 .skip((+pageNumber - 1) * +pageSize)
                 .limit(+pageSize)
-                .toArray()
+                .lean()
 
-            const totalCount = await dbPostCollections.countDocuments({})
+            const totalCount = await PostModel.countDocuments({})
 
             const pagesCount = Math.ceil(totalCount / +pageSize)
             return {
@@ -40,7 +40,7 @@ export const postQuery = {
 
     async getPostByIdFromDb (id: string) {
         try {
-            const result = await dbPostCollections.findOne({id: id})
+            const result = await PostModel.findOne({id: id})
 
             if (!result) {
                 return null
@@ -62,14 +62,14 @@ export const postQuery = {
 
         try {
 
-            const comment = await dbCommentsCollections
+            const comment = await CommentModel
                 .find({postId: id})
                 .sort(filterForSort(sortBy, sortDirection))
                 .skip((+pageNumber - 1) * +pageSize)
                 .limit(+pageSize)
-                .toArray()
+                .lean()
 
-            const totalCount = await dbCommentsCollections.countDocuments({postId: id})
+            const totalCount = await CommentModel.countDocuments({postId: id})
 
             const pagesCount = Math.ceil(totalCount / +pageSize)
 

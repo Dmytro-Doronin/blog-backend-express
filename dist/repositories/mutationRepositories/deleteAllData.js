@@ -10,21 +10,21 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.deleteAllDataMutation = void 0;
-const dbCollections_1 = require("../../db/dbCollections");
-const dbCollections_2 = require("../../db/dbCollections");
+const schemes_1 = require("../../db/schemes");
 exports.deleteAllDataMutation = {
     deleteAllDataFromDb() {
         return __awaiter(this, void 0, void 0, function* () {
             try {
-                yield dbCollections_1.dbBlogCollections.deleteMany({});
-                yield dbCollections_2.dbPostCollections.deleteMany({});
-                yield dbCollections_1.dbUsersCollections.deleteMany({});
-                yield dbCollections_1.dbCommentsCollections.deleteMany({});
-                yield dbCollections_1.dbBlacklistCollections.deleteMany({});
-                yield dbCollections_1.dbDeviceCollections.deleteMany({});
-                yield dbCollections_1.dbRateLimitCollections.deleteMany({});
+                yield schemes_1.BlogModel.deleteMany({});
+                yield schemes_1.PostModel.deleteMany({});
+                yield schemes_1.UserModel.deleteMany({});
+                yield schemes_1.CommentModel.deleteMany({});
+                yield schemes_1.BlackListModel.deleteMany({});
+                yield schemes_1.DeviceModel.deleteMany({});
+                yield schemes_1.RateModel.deleteMany({});
             }
             catch (e) {
+                console.log(e);
                 throw new Error('All data was not deleted');
             }
         });

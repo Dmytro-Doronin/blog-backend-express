@@ -10,13 +10,13 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.commentQuery = void 0;
-const dbCollections_1 = require("../../db/dbCollections");
 const mapper_1 = require("../../utils/mapper");
+const schemes_1 = require("../../db/schemes");
 exports.commentQuery = {
     getCommentById(id) {
         return __awaiter(this, void 0, void 0, function* () {
             try {
-                const result = yield dbCollections_1.dbCommentsCollections.findOne({ id: id });
+                const result = yield schemes_1.CommentModel.findOne({ id: id }).lean();
                 if (!result) {
                     return null;
                 }

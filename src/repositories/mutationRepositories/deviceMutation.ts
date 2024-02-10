@@ -1,11 +1,11 @@
 import {DeviceDBType} from "../../types/commonBlogTypeAndPosts.types";
-import {dbDeviceCollections} from "../../db/dbCollections";
+import {DeviceModel} from "../../db/schemes";
 
 export const deviceMutation = {
     async createDevice (device: DeviceDBType) {
         try {
-            await dbDeviceCollections.insertOne(device)
-            const result = await dbDeviceCollections.findOne({lastActiveDate: device.lastActiveDate})
+            await DeviceModel.create(device)
+            const result = await DeviceModel.findOne({lastActiveDate: device.lastActiveDate}).lean()
             if (!result) {
                 return null
             }
@@ -19,13 +19,13 @@ export const deviceMutation = {
     async changeDeviceDataByDeviceId (deviceId: string, lastActiveDate: Date, expireDate: Date) {
         try {
 
-            const deviceInDb = await dbDeviceCollections.findOne({deviceId})
+            const deviceInDb = await DeviceModel.findOne({deviceId}).lean()
 
             if (!deviceInDb) {
                 return null
             }
 
-            const result = await dbDeviceCollections.updateOne(
+            const result = await DeviceModel.updateOne(
                 {deviceId},
                 {$set: {lastActiveDate, expireDate}}
             )
@@ -39,9 +39,9 @@ export const deviceMutation = {
     async deleteAllDeviceExcludeCurrent (deviceId: string) {
         try {
 
-            await dbDeviceCollections.deleteMany({deviceId: {$ne: deviceId}})
+            await DeviceModel.deleteMany({deviceId: {$ne: deviceId}})
 
-            const count = await dbDeviceCollections.countDocuments({})
+            const count = await DeviceModel.countDocuments({})
 
             return count === 1;
 
@@ -52,7 +52,7 @@ export const deviceMutation = {
 
     async deleteDeviceByDeviceId (deviceId: string) {
         try {
-            const result = await dbDeviceCollections.deleteOne({deviceId: deviceId})
+            const result = await DeviceModel.deleteOne({deviceId: deviceId})
 
             return result.deletedCount === 1
         } catch (e) {

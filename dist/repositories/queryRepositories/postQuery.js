@@ -11,8 +11,8 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.postQuery = void 0;
 const mapper_1 = require("../../utils/mapper");
-const dbCollections_1 = require("../../db/dbCollections");
 const sortUtils_1 = require("../../utils/sortUtils");
+const schemes_1 = require("../../db/schemes");
 exports.postQuery = {
     getAllPostsFromDb(sortData) {
         var _a, _b, _c, _d;
@@ -22,13 +22,13 @@ exports.postQuery = {
             const pageNumber = (_c = sortData.pageNumber) !== null && _c !== void 0 ? _c : 1;
             const pageSize = (_d = sortData.pageSize) !== null && _d !== void 0 ? _d : 10;
             try {
-                const post = yield dbCollections_1.dbPostCollections
+                const post = yield schemes_1.PostModel
                     .find({})
                     .sort((0, sortUtils_1.filterForSort)(sortBy, sortDirection))
                     .skip((+pageNumber - 1) * +pageSize)
                     .limit(+pageSize)
-                    .toArray();
-                const totalCount = yield dbCollections_1.dbPostCollections.countDocuments({});
+                    .lean();
+                const totalCount = yield schemes_1.PostModel.countDocuments({});
                 const pagesCount = Math.ceil(totalCount / +pageSize);
                 return {
                     pagesCount,
@@ -46,7 +46,7 @@ exports.postQuery = {
     getPostByIdFromDb(id) {
         return __awaiter(this, void 0, void 0, function* () {
             try {
-                const result = yield dbCollections_1.dbPostCollections.findOne({ id: id });
+                const result = yield schemes_1.PostModel.findOne({ id: id });
                 if (!result) {
                     return null;
                 }
@@ -65,13 +65,13 @@ exports.postQuery = {
             const pageNumber = (_c = sortData.pageNumber) !== null && _c !== void 0 ? _c : 1;
             const pageSize = (_d = sortData.pageSize) !== null && _d !== void 0 ? _d : 10;
             try {
-                const comment = yield dbCollections_1.dbCommentsCollections
+                const comment = yield schemes_1.CommentModel
                     .find({ postId: id })
                     .sort((0, sortUtils_1.filterForSort)(sortBy, sortDirection))
                     .skip((+pageNumber - 1) * +pageSize)
                     .limit(+pageSize)
-                    .toArray();
-                const totalCount = yield dbCollections_1.dbCommentsCollections.countDocuments({ postId: id });
+                    .lean();
+                const totalCount = yield schemes_1.CommentModel.countDocuments({ postId: id });
                 const pagesCount = Math.ceil(totalCount / +pageSize);
                 return {
                     pagesCount,

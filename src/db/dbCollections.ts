@@ -8,10 +8,12 @@ import {
     UserViewModel
 } from "../types/commonBlogTypeAndPosts.types";
 
-export const dbBlogCollections = client.db('Blogs').collection<BlogViewModelType>('blogs')
-export const dbPostCollections = client.db('Posts').collection<PostViewModelType>('posts')
-export const dbUsersCollections = client.db('Users').collection<userDBType>('users')
-export const dbCommentsCollections = client.db('Comments').collection<commentsDBType>('comments')
-export const dbBlacklistCollections = client.db('BlackListOfToken').collection<BlackListOfTokenType>('blackListOfToken')
-export const dbDeviceCollections = client.db('Device').collection<DeviceDBType>('device')
-export const dbRateLimitCollections = client.db('Rate').collection<{IP:any, URL: any, date: Date}>('rate')
+// export const dbBlogCollections = client.db('Blog').collection<BlogViewModelType>('blogs')
+// export const dbPostCollections = client.db('Blog').collection<PostViewModelType>('posts')
+// export const dbUsersCollections = client.db('Blog').collection<userDBType>('users')
+// export const dbCommentsCollections = client.db('Blog').collection<commentsDBType>('comments')
+// export const dbBlacklistCollections = client.db('Blog').collection<BlackListOfTokenType>('blackListOfToken')
+// export const dbDeviceCollections = client.db('Blog').collection<DeviceDBType>('device')
+// export const dbRateLimitCollections = client.db('Blog').collection<{IP:any, URL: any, date: Date}>('rate')
+
+//Posts Users Comments BlackListOfToken Device Rate

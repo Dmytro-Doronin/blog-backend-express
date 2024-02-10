@@ -10,18 +10,18 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.authMutation = void 0;
-const dbCollections_1 = require("../../db/dbCollections");
+const schemes_1 = require("../../db/schemes");
 exports.authMutation = {
     updateConfirmation(id) {
         return __awaiter(this, void 0, void 0, function* () {
-            const result = yield dbCollections_1.dbUsersCollections.updateOne({ id }, { $set: { "emailConfirmation.isConfirmed": true } });
+            const result = yield schemes_1.UserModel.updateOne({ id }, { $set: { "emailConfirmation.isConfirmed": true } });
             return result.modifiedCount === 1;
         });
     },
     updateConfirmationCode(id, code, date) {
         return __awaiter(this, void 0, void 0, function* () {
             try {
-                const result = yield dbCollections_1.dbUsersCollections.updateOne({ id }, { $set: {
+                const result = yield schemes_1.UserModel.updateOne({ id }, { $set: {
                         "emailConfirmation.confirmationCode": code,
                         "emailConfirmation.expirationDate": date
                     } });

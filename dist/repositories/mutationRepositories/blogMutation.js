@@ -11,14 +11,16 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.blogMutation = void 0;
 const mapper_1 = require("../../utils/mapper");
-const dbCollections_1 = require("../../db/dbCollections");
+const schemes_1 = require("../../db/schemes");
 const { v4: uuidv4 } = require('uuid');
 exports.blogMutation = {
     createBlogInDb(newBlog) {
         return __awaiter(this, void 0, void 0, function* () {
             try {
-                yield dbCollections_1.dbBlogCollections.insertOne(newBlog);
-                const result = yield dbCollections_1.dbBlogCollections.findOne({ id: newBlog.id });
+                debugger;
+                yield schemes_1.BlogModel.create(newBlog);
+                const result = yield schemes_1.BlogModel.findOne({ id: newBlog.id }).lean();
+                debugger;
                 if (!result) {
                     return null;
                 }
@@ -32,8 +34,8 @@ exports.blogMutation = {
     createPostToBlogInDb(post) {
         return __awaiter(this, void 0, void 0, function* () {
             try {
-                yield dbCollections_1.dbPostCollections.insertOne(post);
-                const postFromDb = yield dbCollections_1.dbPostCollections.findOne({ id: post.id });
+                yield schemes_1.PostModel.create(post);
+                const postFromDb = yield schemes_1.PostModel.findOne({ id: post.id }).lean();
                 if (!postFromDb) {
                     return null;
                 }
@@ -47,11 +49,11 @@ exports.blogMutation = {
     changeBlogByIdInDb({ id, name, description, websiteUrl }) {
         return __awaiter(this, void 0, void 0, function* () {
             try {
-                const addedItem = yield dbCollections_1.dbBlogCollections.findOne({ id: id });
+                const addedItem = yield schemes_1.BlogModel.findOne({ id: id }).lean();
                 if (!addedItem) {
                     return null;
                 }
-                yield dbCollections_1.dbBlogCollections.updateOne({ id: id }, {
+                yield schemes_1.BlogModel.updateOne({ id: id }, {
                     $set: { name, description, websiteUrl }
                 });
                 return true;
@@ -64,7 +66,7 @@ exports.blogMutation = {
     deleteBlogByIdInDb(id) {
         return __awaiter(this, void 0, void 0, function* () {
             try {
-                const res = yield dbCollections_1.dbBlogCollections.deleteOne({ id: id });
+                const res = yield schemes_1.BlogModel.deleteOne({ id: id });
                 if (res.deletedCount === 1) {
                     return true;
                 }

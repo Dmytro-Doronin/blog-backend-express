@@ -10,7 +10,7 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.accessCounterMiddleware = void 0;
-const dbCollections_1 = require("../db/dbCollections");
+const schemes_1 = require("../db/schemes");
 // export const accessCounterMiddleware = async (req: Request, res: Response, next: NextFunction) => {
 //
 //     const currentDate = new Date();
@@ -62,12 +62,12 @@ const accessCounterMiddleware = (req, res, next) => __awaiter(void 0, void 0, vo
             URL: req.originalUrl,
             date: { $gte: tenSecondsAgo },
         };
-        const count = yield dbCollections_1.dbRateLimitCollections.countDocuments(filter);
+        const count = yield schemes_1.RateModel.countDocuments(filter);
         if (count >= 5) {
             res.sendStatus(429);
         }
         else {
-            yield dbCollections_1.dbRateLimitCollections.insertOne(document);
+            yield schemes_1.RateModel.create(document);
             next();
         }
     }

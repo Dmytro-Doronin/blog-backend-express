@@ -10,12 +10,12 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.authQuery = void 0;
-const dbCollections_1 = require("../../db/dbCollections");
+const schemes_1 = require("../../db/schemes");
 exports.authQuery = {
     getUserByConfirmationCode(code) {
         return __awaiter(this, void 0, void 0, function* () {
             try {
-                const user = yield dbCollections_1.dbUsersCollections.findOne({ "emailConfirmation.confirmationCode": code });
+                const user = yield schemes_1.UserModel.findOne({ "emailConfirmation.confirmationCode": code }).lean();
                 if (!user) {
                     return null;
                 }

@@ -1,12 +1,12 @@
 import {BlogViewModelType} from "../../types/commonBlogTypeAndPosts.types";
-import {dbBlogCollections, dbUsersCollections} from "../../db/dbCollections";
 import {blogMapper} from "../../utils/mapper";
+import {UserModel} from "../../db/schemes";
 
 export const authQuery = {
     async getUserByConfirmationCode (code: string)  {
 
         try {
-            const user = await dbUsersCollections.findOne({"emailConfirmation.confirmationCode": code})
+            const user = await UserModel.findOne({"emailConfirmation.confirmationCode": code}).lean()
             if (!user) {
                 return null
             }
