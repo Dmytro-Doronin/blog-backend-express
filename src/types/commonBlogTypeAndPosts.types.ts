@@ -93,6 +93,11 @@ export type RegistrationConfirmationInputType = {
     code: string
 }
 
+export type NewPasswordType = {
+    newPassword: string
+    recoveryCode: string
+}
+
 export type AuthEmail = {
     email: string
 }

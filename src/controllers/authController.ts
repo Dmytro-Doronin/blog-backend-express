@@ -1,6 +1,6 @@
 import {
     AuthEmail,
-    LoginType,
+    LoginType, NewPasswordType,
     RegistrationConfirmationInputType,
     RequestWithBody,
     UsersInputModelType
@@ -69,6 +69,23 @@ export const registrationConfirmationController = async (req: RequestWithBody<Re
     return
 }
 
+export const newPasswordController = async (req: RequestWithBody<NewPasswordType>, res: Response) => {
+    const {recoveryCode, newPassword} = req.body
+
+    // const confirm = await authService.confirmEmail(code)
+
+    const result = await authService.newPassword(recoveryCode, newPassword)
+
+    if (!result) {
+        res.sendStatus(400)
+        return
+    }
+
+    res.sendStatus(204)
+    return
+}
+
+
 export const emailResendingController = async (req: RequestWithBody<AuthEmail>, res: Response) => {
     const {email} = req.body
 
@@ -84,7 +101,7 @@ export const emailResendingController = async (req: RequestWithBody<AuthEmail>, 
     return
 }
 
-export const emailRecoveryController = async (req: RequestWithBody<AuthEmail>, res: Response) => {
+export const passwordRecoveryController = async (req: RequestWithBody<AuthEmail>, res: Response) => {
     const {email} = req.body
 
 

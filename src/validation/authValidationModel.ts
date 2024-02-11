@@ -2,6 +2,7 @@ import {body} from "express-validator";
 import {blogQuery} from "../repositories/queryRepositories/blogQuery";
 import {userQuery} from "../repositories/queryRepositories/userQuery";
 import {authQuery} from "../repositories/queryRepositories/authQuery";
+import {authMutation} from "../repositories/mutationRepositories/authMutation";
 
 export const authLogin = body('login')
     .isString()
@@ -20,6 +21,12 @@ export const authLogin = body('login')
     }).withMessage('Login already exist')
 
 export const authPassword = body('password')
+    .isString()
+    .trim()
+    .isLength({min: 6, max: 20})
+    .withMessage('The field must not be less then 6 symbols and more then 20 symbols')
+
+export const newPassword = body('newPassword')
     .isString()
     .trim()
     .isLength({min: 6, max: 20})
@@ -59,6 +66,24 @@ export const authCode = body('code')
         return true
     }).withMessage('Code already confirmed')
 
+export const recoveryCode = body('recoveryCode')
+    .isString()
+    .notEmpty()
+    .custom(async (value) => {
+        const user = await authQuery.getUserByRecoveryPasswordCode(value)
+
+        if (!user) {
+            throw new Error('Wrong code')
+        }
+
+        if (!user.passwordRecovery.passwordRecoveryCode === value && !(user.passwordRecovery.expirationDate > new Date())) {
+            throw new Error('Ex code')
+        }
+
+        return true
+    }).withMessage('Code is incorrect')
+
+
 export const authEmailResending = body('email')
     .isString()
     .trim()
@@ -90,5 +115,6 @@ export const authRecoveryPassword = body('email')
 
 export const authRegistrationValidationMiddleware = () => [authLogin, authPassword,authEmail]
 export const authRegistrationConfirmationValidationMiddleware = () => [authCode]
+export const newPasswordMiddleware = () => [recoveryCode, newPassword]
 export const authEmailResendingValidationMiddleware = () => [authEmailResending]
 export const authPasswordRecovery = () => [authRecoveryPassword]

@@ -109,11 +109,18 @@ exports.authService = {
                 code: uuidv4(),
                 date: (0, date_fns_1.add)(new Date, { minutes: 3 })
             };
-            const updateRecoveryCode = yield authMutation_1.authMutation.updateRecoveryCode(user.id, data.code, data.date);
+            const updateRecoveryCode = yield authMutation_1.authMutation.updatePasswordRecoveryCode(user.id, data.code, data.date);
             if (!updateRecoveryCode) {
                 return false;
             }
             return yield mailManager_1.mailManager.sendRecoveryPasswordMail(user.accountData.login, user.accountData.email, data.code);
+        });
+    },
+    newPassword(recoveryCode, newPassword) {
+        return __awaiter(this, void 0, void 0, function* () {
+            const passwordSalt = yield bcryptjs_1.default.genSalt(10);
+            const passwordHash = yield this._generateHash(newPassword, passwordSalt);
+            return yield authMutation_1.authMutation.updatePassword(passwordSalt, passwordHash, recoveryCode);
         });
     },
     _generateHash(password, salt) {

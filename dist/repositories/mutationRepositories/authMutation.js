@@ -32,7 +32,7 @@ exports.authMutation = {
             }
         });
     },
-    updateRecoveryCode(id, code, date) {
+    updatePasswordRecoveryCode(id, code, date) {
         return __awaiter(this, void 0, void 0, function* () {
             try {
                 const result = yield schemes_1.UserModel.updateOne({ id }, { $set: {
@@ -46,4 +46,22 @@ exports.authMutation = {
             }
         });
     },
+    updatePassword(passwordSalt, passwordHash, recoveryCode) {
+        return __awaiter(this, void 0, void 0, function* () {
+            try {
+                const user = yield schemes_1.UserModel.findOne({ "passwordRecovery.passwordRecoveryCode": recoveryCode }).lean();
+                if (!user) {
+                    return false;
+                }
+                const result = yield schemes_1.UserModel.updateOne({ id: user.id }, { $set: {
+                        "accountData.passwordHash": passwordHash,
+                        "accountData.passwordSalt": passwordSalt
+                    } });
+                return result.modifiedCount === 1;
+            }
+            catch (e) {
+                throw new Error('Confirmation was not changed');
+            }
+        });
+    }
 };

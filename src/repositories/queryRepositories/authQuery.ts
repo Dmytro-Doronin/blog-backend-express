@@ -14,6 +14,17 @@ export const authQuery = {
         } catch (e) {
             throw new Error('User was not found')
         }
+    },
+    async getUserByRecoveryPasswordCode (code: string)  {
 
+        try {
+            const user = await UserModel.findOne({"passwordRecovery.passwordRecoveryCode": code}).lean()
+            if (!user) {
+                return null
+            }
+            return user
+        } catch (e) {
+            throw new Error('User was not found')
+        }
     },
 }

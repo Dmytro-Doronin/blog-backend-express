@@ -26,4 +26,18 @@ exports.authQuery = {
             }
         });
     },
+    getUserByRecoveryPasswordCode(code) {
+        return __awaiter(this, void 0, void 0, function* () {
+            try {
+                const user = yield schemes_1.UserModel.findOne({ "passwordRecovery.passwordRecoveryCode": code }).lean();
+                if (!user) {
+                    return null;
+                }
+                return user;
+            }
+            catch (e) {
+                throw new Error('User was not found');
+            }
+        });
+    },
 };

@@ -107,13 +107,22 @@ export const authService = {
             date: add(new Date, {minutes: 3})
         }
 
-        const updateRecoveryCode = await authMutation.updateRecoveryCode(user.id, data.code, data.date)
+        const updateRecoveryCode = await authMutation.updatePasswordRecoveryCode(user.id, data.code, data.date)
 
         if (!updateRecoveryCode) {
             return false
         }
 
         return await mailManager.sendRecoveryPasswordMail(user.accountData.login, user.accountData.email, data.code)
+    },
+
+    async newPassword (recoveryCode: string, newPassword: string) {
+
+        const passwordSalt =  await bcrypt.genSalt(10)
+        const passwordHash = await this._generateHash(newPassword, passwordSalt)
+
+        return await authMutation.updatePassword(passwordSalt, passwordHash, recoveryCode)
+
     },
 
     async _generateHash(password: string, salt: string) {

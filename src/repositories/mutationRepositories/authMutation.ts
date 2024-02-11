@@ -22,7 +22,7 @@ export const authMutation = {
             throw new Error('Confirmation was not changed')
         }
     },
-    async updateRecoveryCode (id: string, code: string, date: Date) {
+    async updatePasswordRecoveryCode (id: string, code: string, date: Date) {
         try {
             const result = await UserModel.updateOne(
                 {id},
@@ -36,4 +36,26 @@ export const authMutation = {
             throw new Error('Confirmation was not changed')
         }
     },
+
+    async updatePassword (passwordSalt: string, passwordHash: string, recoveryCode: string) {
+
+        try {
+            const user = await UserModel.findOne({"passwordRecovery.passwordRecoveryCode": recoveryCode}).lean()
+
+            if (!user) {
+                return false
+            }
+
+            const result = await UserModel.updateOne(
+                {id: user.id},
+                {$set: {
+                        "accountData.passwordHash": passwordHash,
+                        "accountData.passwordSalt": passwordSalt
+                    }})
+
+            return result.modifiedCount === 1
+        } catch (e) {
+            throw new Error('Confirmation was not changed')
+        }
+    }
 }

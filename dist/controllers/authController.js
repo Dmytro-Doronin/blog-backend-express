@@ -9,7 +9,7 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
     });
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.logoutController = exports.refreshTokenController = exports.meController = exports.emailRecoveryController = exports.emailResendingController = exports.registrationConfirmationController = exports.registrationController = exports.authController = void 0;
+exports.logoutController = exports.refreshTokenController = exports.meController = exports.passwordRecoveryController = exports.emailResendingController = exports.newPasswordController = exports.registrationConfirmationController = exports.registrationController = exports.authController = void 0;
 const usersService_1 = require("../services/users/usersService");
 const jwtService_1 = require("../application/jwtService");
 const authService_1 = require("../services/auth/authService");
@@ -59,6 +59,18 @@ const registrationConfirmationController = (req, res) => __awaiter(void 0, void 
     return;
 });
 exports.registrationConfirmationController = registrationConfirmationController;
+const newPasswordController = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    const { recoveryCode, newPassword } = req.body;
+    // const confirm = await authService.confirmEmail(code)
+    const result = yield authService_1.authService.newPassword(recoveryCode, newPassword);
+    if (!result) {
+        res.sendStatus(400);
+        return;
+    }
+    res.sendStatus(204);
+    return;
+});
+exports.newPasswordController = newPasswordController;
 const emailResendingController = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const { email } = req.body;
     const result = yield authService_1.authService.resendEmail(email);
@@ -70,7 +82,7 @@ const emailResendingController = (req, res) => __awaiter(void 0, void 0, void 0,
     return;
 });
 exports.emailResendingController = emailResendingController;
-const emailRecoveryController = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+const passwordRecoveryController = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const { email } = req.body;
     const result = yield authService_1.authService.recoveryPassword(email);
     if (!result) {
@@ -80,7 +92,7 @@ const emailRecoveryController = (req, res) => __awaiter(void 0, void 0, void 0, 
     res.sendStatus(204);
     return;
 });
-exports.emailRecoveryController = emailRecoveryController;
+exports.passwordRecoveryController = passwordRecoveryController;
 const meController = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const userId = req.user.id;
     const login = req.user.accountData.login;

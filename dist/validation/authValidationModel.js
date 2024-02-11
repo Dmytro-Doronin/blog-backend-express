@@ -9,7 +9,7 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
     });
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.authPasswordRecovery = exports.authEmailResendingValidationMiddleware = exports.authRegistrationConfirmationValidationMiddleware = exports.authRegistrationValidationMiddleware = exports.authRecoveryPassword = exports.authEmailResending = exports.authCode = exports.authEmail = exports.authPassword = exports.authLogin = void 0;
+exports.authPasswordRecovery = exports.authEmailResendingValidationMiddleware = exports.newPasswordMiddleware = exports.authRegistrationConfirmationValidationMiddleware = exports.authRegistrationValidationMiddleware = exports.authRecoveryPassword = exports.authEmailResending = exports.recoveryCode = exports.authCode = exports.authEmail = exports.newPassword = exports.authPassword = exports.authLogin = void 0;
 const express_validator_1 = require("express-validator");
 const userQuery_1 = require("../repositories/queryRepositories/userQuery");
 const authQuery_1 = require("../repositories/queryRepositories/authQuery");
@@ -27,6 +27,11 @@ exports.authLogin = (0, express_validator_1.body)('login')
     return true;
 })).withMessage('Login already exist');
 exports.authPassword = (0, express_validator_1.body)('password')
+    .isString()
+    .trim()
+    .isLength({ min: 6, max: 20 })
+    .withMessage('The field must not be less then 6 symbols and more then 20 symbols');
+exports.newPassword = (0, express_validator_1.body)('newPassword')
     .isString()
     .trim()
     .isLength({ min: 6, max: 20 })
@@ -58,6 +63,19 @@ exports.authCode = (0, express_validator_1.body)('code')
     }
     return true;
 })).withMessage('Code already confirmed');
+exports.recoveryCode = (0, express_validator_1.body)('recoveryCode')
+    .isString()
+    .notEmpty()
+    .custom((value) => __awaiter(void 0, void 0, void 0, function* () {
+    const user = yield authQuery_1.authQuery.getUserByRecoveryPasswordCode(value);
+    if (!user) {
+        throw new Error('Wrong code');
+    }
+    if (!user.passwordRecovery.passwordRecoveryCode === value && !(user.passwordRecovery.expirationDate > new Date())) {
+        throw new Error('Ex code');
+    }
+    return true;
+})).withMessage('Code is incorrect');
 exports.authEmailResending = (0, express_validator_1.body)('email')
     .isString()
     .trim()
@@ -85,6 +103,8 @@ const authRegistrationValidationMiddleware = () => [exports.authLogin, exports.a
 exports.authRegistrationValidationMiddleware = authRegistrationValidationMiddleware;
 const authRegistrationConfirmationValidationMiddleware = () => [exports.authCode];
 exports.authRegistrationConfirmationValidationMiddleware = authRegistrationConfirmationValidationMiddleware;
+const newPasswordMiddleware = () => [exports.recoveryCode, exports.newPassword];
+exports.newPasswordMiddleware = newPasswordMiddleware;
 const authEmailResendingValidationMiddleware = () => [exports.authEmailResending];
 exports.authEmailResendingValidationMiddleware = authEmailResendingValidationMiddleware;
 const authPasswordRecovery = () => [exports.authRecoveryPassword];
