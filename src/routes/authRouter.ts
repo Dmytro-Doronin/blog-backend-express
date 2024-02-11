@@ -1,14 +1,19 @@
 
 import {Router} from "express";
 import {
-    authController, emailResendingController, logoutController, meController, refreshTokenController,
+    authController,
+    emailRecoveryController,
+    emailResendingController,
+    logoutController,
+    meController,
+    refreshTokenController,
     registrationConfirmationController,
     registrationController
 } from "../controllers/authController";
 import {errorMiddleware} from "../middleware/blogsMiddleware";
 import {loginValidationModelMiddleware} from "../validation/loginValidationModel";
 import {
-    authEmailResendingValidationMiddleware,
+    authEmailResendingValidationMiddleware, authPasswordRecovery,
     authRegistrationConfirmationValidationMiddleware,
     authRegistrationValidationMiddleware
 } from "../validation/authValidationModel";
@@ -28,6 +33,7 @@ authRouter.get('/me', authMiddlewareWithBearer, meController)
 authRouter.post('/login', accessCounterMiddleware , loginValidationModelMiddleware(), errorMiddleware, authController)
 authRouter.post('/logout',verifyTokenMiddleware, logoutController)
 authRouter.post('/refresh-token', verifyTokenMiddleware, refreshTokenController)
+authRouter.post('/password-recovery', accessCounterMiddleware, authPasswordRecovery(), errorMiddleware,  emailRecoveryController )
 authRouter.post('/registration', accessCounterMiddleware , authRegistrationValidationMiddleware(),  errorMiddleware, registrationController)
 authRouter.post('/registration-confirmation', accessCounterMiddleware , authRegistrationConfirmationValidationMiddleware(),  errorMiddleware,  registrationConfirmationController)
 authRouter.post('/registration-email-resending', accessCounterMiddleware , authEmailResendingValidationMiddleware(),  errorMiddleware,  emailResendingController)

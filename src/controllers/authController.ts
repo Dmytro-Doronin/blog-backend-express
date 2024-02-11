@@ -1,6 +1,7 @@
 import {
+    AuthEmail,
     LoginType,
-    RegistrationConfirmationInputType, RegistrationEmailResending,
+    RegistrationConfirmationInputType,
     RequestWithBody,
     UsersInputModelType
 } from "../types/commonBlogTypeAndPosts.types";
@@ -68,11 +69,26 @@ export const registrationConfirmationController = async (req: RequestWithBody<Re
     return
 }
 
-export const emailResendingController = async (req: RequestWithBody<RegistrationEmailResending>, res: Response) => {
+export const emailResendingController = async (req: RequestWithBody<AuthEmail>, res: Response) => {
     const {email} = req.body
 
 
     const result = await authService.resendEmail(email)
+
+    if (!result) {
+        res.sendStatus(400)
+        return
+    }
+
+    res.sendStatus(204);
+    return
+}
+
+export const emailRecoveryController = async (req: RequestWithBody<AuthEmail>, res: Response) => {
+    const {email} = req.body
+
+
+    const result = await authService.recoveryPassword(email)
 
     if (!result) {
         res.sendStatus(400)

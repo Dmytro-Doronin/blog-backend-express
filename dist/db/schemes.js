@@ -35,6 +35,10 @@ exports.UserSchema = new mongoose_1.default.Schema({
         confirmationCode: { type: String, required: true },
         expirationDate: { type: Date, required: true },
         isConfirmed: { type: Boolean, required: true }
+    },
+    passwordRecovery: {
+        passwordRecoveryCode: { type: String, required: true },
+        expirationDate: { type: Date, required: true },
     }
 });
 exports.CommentSchema = new mongoose_1.default.Schema({

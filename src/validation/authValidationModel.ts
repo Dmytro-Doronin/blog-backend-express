@@ -78,7 +78,17 @@ export const authEmailResending = body('email')
     }).withMessage('Email already confirmed')
     // .matches('^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$')
     .withMessage('Wrong email')
+export const authRecoveryPassword = body('email')
+    .isString()
+    .trim()
+    .isLength({min: 1})
+    .isEmail()
+    .withMessage('Email already confirmed')
+    // .matches('^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$')
+
+
 
 export const authRegistrationValidationMiddleware = () => [authLogin, authPassword,authEmail]
 export const authRegistrationConfirmationValidationMiddleware = () => [authCode]
 export const authEmailResendingValidationMiddleware = () => [authEmailResending]
+export const authPasswordRecovery = () => [authRecoveryPassword]

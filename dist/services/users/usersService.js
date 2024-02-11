@@ -37,6 +37,10 @@ exports.usersService = {
                     confirmationCode: uuidv4(),
                     expirationDate: (0, date_fns_1.add)(new Date, { minutes: 3 }),
                     isConfirmed: false
+                },
+                passwordRecovery: {
+                    passwordRecoveryCode: uuidv4(),
+                    expirationDate: (0, date_fns_1.add)(new Date, { minutes: 3 }),
                 }
             };
             const user = yield userMutation_1.userMutation.createUser(newUser);

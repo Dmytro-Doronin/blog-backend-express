@@ -23,6 +23,10 @@ export const usersService = {
                 confirmationCode: uuidv4(),
                 expirationDate: add(new Date, {minutes: 3}),
                 isConfirmed: false
+            },
+            passwordRecovery: {
+                passwordRecoveryCode:  uuidv4(),
+                expirationDate: add(new Date, {minutes: 3}),
             }
 
         }

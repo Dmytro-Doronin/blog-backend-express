@@ -20,5 +20,14 @@ exports.mailManager = {
                         </p>`;
             return yield emailAdapter_1.emailAdapter.send(subject, email, htmlMessage);
         });
-    }
+    },
+    sendRecoveryPasswordMail(subject, email, code) {
+        return __awaiter(this, void 0, void 0, function* () {
+            const htmlMessage = `<h1>Password recovery</h1>
+       <p>To finish password recovery please follow the link below:
+          <a href='https://somesite.com/password-recovery?recoveryCode=${code}'>recovery password</a>
+      </p>`;
+            return yield emailAdapter_1.emailAdapter.send(subject, email, htmlMessage);
+        });
+    },
 };

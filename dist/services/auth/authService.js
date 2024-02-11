@@ -39,6 +39,10 @@ exports.authService = {
                     confirmationCode: uuidv4(),
                     expirationDate: (0, date_fns_1.add)(new Date, { minutes: 3 }),
                     isConfirmed: false
+                },
+                passwordRecovery: {
+                    passwordRecoveryCode: uuidv4(),
+                    expirationDate: (0, date_fns_1.add)(new Date, { minutes: 3 }),
                 }
             };
             const createdUser = yield userMutation_1.userMutation.createUser(newUser);
@@ -93,6 +97,23 @@ exports.authService = {
                 return false;
             }
             return yield mailManager_1.mailManager.sendConfirmationMail(user.accountData.login, user.accountData.email, newCode.code);
+        });
+    },
+    recoveryPassword(email) {
+        return __awaiter(this, void 0, void 0, function* () {
+            const user = yield userQuery_1.userQuery.findUserByLoginOrEmail(email);
+            if (!user) {
+                return true;
+            }
+            const data = {
+                code: uuidv4(),
+                date: (0, date_fns_1.add)(new Date, { minutes: 3 })
+            };
+            const updateRecoveryCode = yield authMutation_1.authMutation.updateRecoveryCode(user.id, data.code, data.date);
+            if (!updateRecoveryCode) {
+                return false;
+            }
+            return yield mailManager_1.mailManager.sendRecoveryPasswordMail(user.accountData.login, user.accountData.email, data.code);
         });
     },
     _generateHash(password, salt) {

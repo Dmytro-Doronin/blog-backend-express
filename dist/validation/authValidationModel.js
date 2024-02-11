@@ -9,7 +9,7 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
     });
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.authEmailResendingValidationMiddleware = exports.authRegistrationConfirmationValidationMiddleware = exports.authRegistrationValidationMiddleware = exports.authEmailResending = exports.authCode = exports.authEmail = exports.authPassword = exports.authLogin = void 0;
+exports.authPasswordRecovery = exports.authEmailResendingValidationMiddleware = exports.authRegistrationConfirmationValidationMiddleware = exports.authRegistrationValidationMiddleware = exports.authRecoveryPassword = exports.authEmailResending = exports.authCode = exports.authEmail = exports.authPassword = exports.authLogin = void 0;
 const express_validator_1 = require("express-validator");
 const userQuery_1 = require("../repositories/queryRepositories/userQuery");
 const authQuery_1 = require("../repositories/queryRepositories/authQuery");
@@ -74,9 +74,18 @@ exports.authEmailResending = (0, express_validator_1.body)('email')
 })).withMessage('Email already confirmed')
     // .matches('^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$')
     .withMessage('Wrong email');
+exports.authRecoveryPassword = (0, express_validator_1.body)('email')
+    .isString()
+    .trim()
+    .isLength({ min: 1 })
+    .isEmail()
+    .withMessage('Email already confirmed');
+// .matches('^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$')
 const authRegistrationValidationMiddleware = () => [exports.authLogin, exports.authPassword, exports.authEmail];
 exports.authRegistrationValidationMiddleware = authRegistrationValidationMiddleware;
 const authRegistrationConfirmationValidationMiddleware = () => [exports.authCode];
 exports.authRegistrationConfirmationValidationMiddleware = authRegistrationConfirmationValidationMiddleware;
 const authEmailResendingValidationMiddleware = () => [exports.authEmailResending];
 exports.authEmailResendingValidationMiddleware = authEmailResendingValidationMiddleware;
+const authPasswordRecovery = () => [exports.authRecoveryPassword];
+exports.authPasswordRecovery = authPasswordRecovery;

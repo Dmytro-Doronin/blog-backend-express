@@ -19,6 +19,7 @@ exports.authRouter.get('/me', authMiddlewareWithBearer_1.authMiddlewareWithBeare
 exports.authRouter.post('/login', rateLimitMiddleware_1.accessCounterMiddleware, (0, loginValidationModel_1.loginValidationModelMiddleware)(), blogsMiddleware_1.errorMiddleware, authController_1.authController);
 exports.authRouter.post('/logout', verifyTokenMiddleware_1.verifyTokenMiddleware, authController_1.logoutController);
 exports.authRouter.post('/refresh-token', verifyTokenMiddleware_1.verifyTokenMiddleware, authController_1.refreshTokenController);
+exports.authRouter.post('/password-recovery', rateLimitMiddleware_1.accessCounterMiddleware, (0, authValidationModel_1.authPasswordRecovery)(), blogsMiddleware_1.errorMiddleware, authController_1.emailRecoveryController);
 exports.authRouter.post('/registration', rateLimitMiddleware_1.accessCounterMiddleware, (0, authValidationModel_1.authRegistrationValidationMiddleware)(), blogsMiddleware_1.errorMiddleware, authController_1.registrationController);
 exports.authRouter.post('/registration-confirmation', rateLimitMiddleware_1.accessCounterMiddleware, (0, authValidationModel_1.authRegistrationConfirmationValidationMiddleware)(), blogsMiddleware_1.errorMiddleware, authController_1.registrationConfirmationController);
 exports.authRouter.post('/registration-email-resending', rateLimitMiddleware_1.accessCounterMiddleware, (0, authValidationModel_1.authEmailResendingValidationMiddleware)(), blogsMiddleware_1.errorMiddleware, authController_1.emailResendingController);

@@ -26,6 +26,10 @@ export const authService = {
                 confirmationCode: uuidv4(),
                 expirationDate: add(new Date, {minutes: 3}),
                 isConfirmed: false
+            },
+            passwordRecovery: {
+                passwordRecoveryCode: uuidv4(),
+                expirationDate: add(new Date, {minutes: 3}),
             }
         }
         const createdUser = await userMutation.createUser(newUser)
@@ -89,6 +93,27 @@ export const authService = {
             return false
         }
         return await mailManager.sendConfirmationMail(user.accountData.login, user.accountData.email, newCode.code)
+    },
+
+    async recoveryPassword (email: string) {
+        const user = await userQuery.findUserByLoginOrEmail(email)
+
+        if (!user) {
+            return true
+        }
+
+        const data = {
+            code: uuidv4(),
+            date: add(new Date, {minutes: 3})
+        }
+
+        const updateRecoveryCode = await authMutation.updateRecoveryCode(user.id, data.code, data.date)
+
+        if (!updateRecoveryCode) {
+            return false
+        }
+
+        return await mailManager.sendRecoveryPasswordMail(user.accountData.login, user.accountData.email, data.code)
     },
 
     async _generateHash(password: string, salt: string) {

@@ -40,6 +40,10 @@ export type userDBType = {
         confirmationCode: string
         expirationDate: Date
         isConfirmed: boolean
+    },
+    passwordRecovery: {
+        passwordRecoveryCode: string
+        expirationDate: Date
     }
 }
 
@@ -89,7 +93,7 @@ export type RegistrationConfirmationInputType = {
     code: string
 }
 
-export type RegistrationEmailResending = {
+export type AuthEmail = {
     email: string
 }
 

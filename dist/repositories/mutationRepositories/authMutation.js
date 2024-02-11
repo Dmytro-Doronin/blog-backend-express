@@ -31,5 +31,19 @@ exports.authMutation = {
                 throw new Error('Confirmation was not changed');
             }
         });
-    }
+    },
+    updateRecoveryCode(id, code, date) {
+        return __awaiter(this, void 0, void 0, function* () {
+            try {
+                const result = yield schemes_1.UserModel.updateOne({ id }, { $set: {
+                        "passwordRecovery.passwordRecoveryCode": code,
+                        "passwordRecovery.expirationDate": date
+                    } });
+                return result.modifiedCount === 1;
+            }
+            catch (e) {
+                throw new Error('Confirmation was not changed');
+            }
+        });
+    },
 };

@@ -21,6 +21,19 @@ export const authMutation = {
         } catch (e) {
             throw new Error('Confirmation was not changed')
         }
+    },
+    async updateRecoveryCode (id: string, code: string, date: Date) {
+        try {
+            const result = await UserModel.updateOne(
+                {id},
+                {$set: {
+                        "passwordRecovery.passwordRecoveryCode": code,
+                        "passwordRecovery.expirationDate": date
+                    }})
 
-    }
+            return result.modifiedCount === 1
+        } catch (e) {
+            throw new Error('Confirmation was not changed')
+        }
+    },
 }
