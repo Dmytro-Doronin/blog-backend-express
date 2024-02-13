@@ -77,9 +77,32 @@ export type CommentViewModelType = {
     content: string
     commentatorInfo: CommentatorInfoType
     createdAt: string
+    "likesInfo": {
+        "likesCount": number,
+        "dislikesCount": number,
+        "myStatus": "None" | "Like" | "Dislike"
+    }
 }
 
-export type commentsDBType = CommentViewModelType & {postId: string}
+// type userForComments = {userId: string}
+
+export type commentsDBType = {
+    id: string
+    postId: string
+    content: string
+    commentatorInfo: CommentatorInfoType
+    createdAt: string
+    "likesInfo": {
+        "likesCount": number,
+        "dislikesCount": number,
+        myStatus: "None" | "Like" | "Dislike"
+    }
+    likedBy: string[]
+    dislikedBy: string[]
+
+}
+
+// export type commentsDBType = CommentViewModelType & {postId: string}
 
 export type BlogInputModelType = Omit<BlogViewModelType, 'id' | 'createdAt' | 'isMembership'>
 export type PostInputModelType = Omit<PostViewModelType, 'id' | 'blogName' | 'createdAt'>

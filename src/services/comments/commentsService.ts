@@ -20,7 +20,14 @@ export const commentsService = {
                 userId,
                 userLogin
             },
-            createdAt: (new Date().toISOString())
+            createdAt: (new Date().toISOString()),
+            likesInfo: {
+                likesCount: 0,
+                dislikesCount: 0,
+                myStatus: "None"
+            },
+            likedBy: [],
+            dislikedBy: []
         }
 
         return commentMutation.createCommentForPostInDb(newComments)

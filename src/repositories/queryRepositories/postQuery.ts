@@ -78,7 +78,7 @@ export const postQuery = {
                 page: +pageNumber,
                 pageSize: +pageSize,
                 totalCount,
-                items: comment.map(commentMapper)
+                items: comment.map((item) => commentMapper(item))
             }
 
         } catch (e) {
