@@ -30,7 +30,8 @@ export const createCommentManager = {
                     createdAt: expect.any(String),
                     likesInfo:  {
                         dislikesCount: expect.any(Number),
-                        likesCount: expect.any(Number)
+                        likesCount: expect.any(Number),
+                        myStatus: "None" || "Like" || "Dislike"
                     },
                 }
             )

@@ -21,7 +21,8 @@ describe('/comment', () => {
 
         const {createdPost, responseToken} = await createUserPostAndBlogManager.createAllEntities()
 
-        await createCommentManager.createComment(content, createdPost.id, responseToken.body.accessToken, 201)
+        const {createdComment} = await createCommentManager.createComment(content, createdPost.id, responseToken.body.accessToken, 201)
+        console.log(createdComment)
 
     })
 

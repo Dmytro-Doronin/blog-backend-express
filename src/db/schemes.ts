@@ -59,6 +59,7 @@ export const CommentSchema = new mongoose.Schema<WithId<commentsDBType>>({
     likesInfo: {
         likesCount: { type: Number, required: true},
         dislikesCount: { type: Number, required: true},
+        myStatus: {type: String, enum: ['Like', 'Dislike', 'None'], required: true },
         likedBy: { type: [String], default: [] },
         dislikedBy: { type: [String], default: [] }
     }
