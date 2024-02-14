@@ -9,7 +9,7 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
     });
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.authMiddlewareWithBearer = void 0;
+exports.customAuthMiddlewareWithBearer = exports.authMiddlewareWithBearer = void 0;
 const jwtService_1 = require("../application/jwtService");
 const userQuery_1 = require("../repositories/queryRepositories/userQuery");
 const login = 'admin';
@@ -30,6 +30,19 @@ const authMiddlewareWithBearer = (req, res, next) => __awaiter(void 0, void 0, v
         return;
     }
     req.user = yield userQuery_1.userQuery.findUserById(userId);
+    req.userId = userId;
     next();
 });
 exports.authMiddlewareWithBearer = authMiddlewareWithBearer;
+const customAuthMiddlewareWithBearer = (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
+    if (req.headers.authorization && req.headers.authorization.split(' ')[0] === 'Bearer') {
+        const token = req.headers.authorization.split(' ')[1];
+        const userId = yield jwtService_1.jwtService.getUserIdByToken(token);
+        if (!userId) {
+            req.userId = '';
+        }
+        req.userId = userId;
+    }
+    next();
+});
+exports.customAuthMiddlewareWithBearer = customAuthMiddlewareWithBearer;

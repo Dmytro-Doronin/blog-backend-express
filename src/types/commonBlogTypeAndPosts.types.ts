@@ -96,10 +96,9 @@ export type commentsDBType = {
         "likesCount": number,
         "dislikesCount": number,
         myStatus: "None" | "Like" | "Dislike"
+        likedBy: string[]
+        dislikedBy: string[]
     }
-    likedBy: string[]
-    dislikedBy: string[]
-
 }
 
 // export type commentsDBType = CommentViewModelType & {postId: string}
@@ -174,6 +173,9 @@ export type ApiErrorResult = {
     errorsMessages: FieldErrorType[]
 }
 
+export type LikeStatusType = {
+    likeStatus: "None" | "Like" | "Dislike"
+}
 
 export type ParamsType = {id: string}
 export type RequestWithParams<P> = Request<P, {}, {}, {}>

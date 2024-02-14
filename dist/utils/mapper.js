@@ -41,7 +41,12 @@ const commentMapper = (value) => {
             userId: value.commentatorInfo.userId,
             userLogin: value.commentatorInfo.userLogin
         },
-        createdAt: value.createdAt
+        createdAt: value.createdAt,
+        likesInfo: {
+            likesCount: value.likesInfo.likesCount,
+            dislikesCount: value.likesInfo.dislikesCount,
+            myStatus: value.likesInfo.myStatus
+        }
     };
 };
 exports.commentMapper = commentMapper;

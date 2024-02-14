@@ -1,6 +1,6 @@
 import {
-    CommentInputModelType, CommentViewModelType,
-    ParamsType,
+    CommentInputModelType, CommentViewModelType, LikeStatusType,
+    ParamsType, RequestWithBody,
     RequestWithParams,
     RequestWithParamsAndBody, ResponseWithData
 } from "../types/commonBlogTypeAndPosts.types";
@@ -11,8 +11,8 @@ import {commentsService} from "../services/comments/commentsService";
 export const getCommentByIdController = async (req: RequestWithParams<ParamsType>, res: ResponseWithData<CommentViewModelType>) => {
 
     const id = req.params.id
-
-    const comment = await commentQuery.getCommentById(id)
+    const userId = req.userId
+    const comment = await commentQuery.getCommentById(id, userId)
 
     if (!comment) {
         res.sendStatus(404)
@@ -22,7 +22,6 @@ export const getCommentByIdController = async (req: RequestWithParams<ParamsType
     res.status(200).send(comment)
 
 }
-
 
 export const changeCommentByIdController = async (req: RequestWithParamsAndBody<ParamsType, CommentInputModelType>, res: Response) => {
 
@@ -67,6 +66,23 @@ export const deleteCommentByIdController = async (req: RequestWithParams<ParamsT
     }
 
     await commentsService.deleteComment(comment.id)
+
+    res.sendStatus(204)
+    return
+}
+
+export const setLikeStatusController = async (req: RequestWithParamsAndBody<ParamsType, LikeStatusType> , res: Response) => {
+
+    const commentId = req.params.id
+    const likeStatus = req.body.likeStatus
+    const userId = req.userId
+
+    const result = await commentsService.changeLikeStatus(commentId, likeStatus, userId)
+
+    if (!result) {
+        res.sendStatus(404)
+        return
+    }
 
     res.sendStatus(204)
     return

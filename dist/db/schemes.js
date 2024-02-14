@@ -50,6 +50,12 @@ exports.CommentSchema = new mongoose_1.default.Schema({
         userLogin: { type: String, required: true },
     },
     createdAt: { type: String, required: true },
+    likesInfo: {
+        likesCount: { type: Number, required: true },
+        dislikesCount: { type: Number, required: true },
+        likedBy: { type: [String], default: [] },
+        dislikedBy: { type: [String], default: [] }
+    }
 });
 exports.BlackListSchema = new mongoose_1.default.Schema({
     token: { type: String, required: true }

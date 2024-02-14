@@ -106,7 +106,7 @@ export const createCommentForPostController = async (req: RequestWithParamsAndBo
 
 export const getAllCommentsForPostController = async (req: RequestWithParamsAndQuery<ParamsType, QueryCommentsInputModel>, res: ResponseWithData<CommentsOutputModelType> ) =>{
     const {id} = req.params
-
+    const userId = req.userId
     const post = await postQuery.getPostByIdFromDb(id)
 
     if (!post) {
@@ -122,7 +122,7 @@ export const getAllCommentsForPostController = async (req: RequestWithParamsAndQ
         pageSize: req.query.pageSize
     }
 
-    const comments = await postQuery.getAllCommentsForPostFromDb(id, sortData)
+    const comments = await postQuery.getAllCommentsForPostFromDb(id, sortData, userId)
 
     return res.status(200).send(comments)
 }

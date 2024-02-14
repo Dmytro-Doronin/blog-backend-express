@@ -34,6 +34,13 @@ export const commentContent = body('content')
     .trim()
     .isLength({min: 20, max: 300}).withMessage('The field must not be more then 300 and less then 20 symbols')
 
+export const likeStatus = body('likeStatus')
+    .isString()
+    .trim()
+    .isIn(['None', 'Like', 'Dislike'])
+    .withMessage('Your field must be: None, Like or Dislike')
+
 export const postsValidationModelMiddleware = () => [postTitle, postShortDescription, postContent, postBlogId]
 export const createPostToBlogModelMiddleware = () => [postTitle, postShortDescription, postContent]
 export const createCommentToPostModelMiddleware = () => [commentContent]
+export const likeStatusModelMiddleware = () => [likeStatus]

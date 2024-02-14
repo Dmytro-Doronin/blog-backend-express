@@ -9,12 +9,13 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
     });
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.deleteCommentByIdController = exports.changeCommentByIdController = exports.getCommentByIdController = void 0;
+exports.setLikeStatusController = exports.deleteCommentByIdController = exports.changeCommentByIdController = exports.getCommentByIdController = void 0;
 const commentQuery_1 = require("../repositories/queryRepositories/commentQuery");
 const commentsService_1 = require("../services/comments/commentsService");
 const getCommentByIdController = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const id = req.params.id;
-    const comment = yield commentQuery_1.commentQuery.getCommentById(id);
+    const userId = req.userId;
+    const comment = yield commentQuery_1.commentQuery.getCommentById(id, userId);
     if (!comment) {
         res.sendStatus(404);
         return;
@@ -57,3 +58,16 @@ const deleteCommentByIdController = (req, res) => __awaiter(void 0, void 0, void
     return;
 });
 exports.deleteCommentByIdController = deleteCommentByIdController;
+const setLikeStatusController = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    const commentId = req.params.id;
+    const likeStatus = req.body.likeStatus;
+    const userId = req.userId;
+    const result = yield commentsService_1.commentsService.changeLikeStatus(commentId, likeStatus, userId);
+    if (!result) {
+        res.sendStatus(404);
+        return;
+    }
+    res.sendStatus(204);
+    return;
+});
+exports.setLikeStatusController = setLikeStatusController;

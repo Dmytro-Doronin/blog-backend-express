@@ -24,10 +24,10 @@ export const commentsService = {
             likesInfo: {
                 likesCount: 0,
                 dislikesCount: 0,
-                myStatus: "None"
+                myStatus: "None",
+                likedBy: [],
+                dislikedBy: []
             },
-            likedBy: [],
-            dislikedBy: []
         }
 
         return commentMutation.createCommentForPostInDb(newComments)
@@ -40,5 +40,10 @@ export const commentsService = {
 
     async deleteComment(id: string) {
         return await commentMutation.deleteCommentById(id)
+    },
+
+    async changeLikeStatus (commentId: string, likeStatus: string, userId: string) {
+
+        return await commentMutation.changeLikeStatus(commentId,likeStatus,userId)
     }
 }

@@ -57,7 +57,7 @@ exports.postQuery = {
             }
         });
     },
-    getAllCommentsForPostFromDb(id, sortData) {
+    getAllCommentsForPostFromDb(id, sortData, userId = '') {
         var _a, _b, _c, _d;
         return __awaiter(this, void 0, void 0, function* () {
             const sortBy = (_a = sortData.sortBy) !== null && _a !== void 0 ? _a : 'createdAt';
@@ -65,12 +65,60 @@ exports.postQuery = {
             const pageNumber = (_c = sortData.pageNumber) !== null && _c !== void 0 ? _c : 1;
             const pageSize = (_d = sortData.pageSize) !== null && _d !== void 0 ? _d : 10;
             try {
-                const comment = yield schemes_1.CommentModel
-                    .find({ postId: id })
-                    .sort((0, sortUtils_1.filterForSort)(sortBy, sortDirection))
-                    .skip((+pageNumber - 1) * +pageSize)
-                    .limit(+pageSize)
-                    .lean();
+                let comment;
+                if (!userId) {
+                    comment = yield schemes_1.CommentModel
+                        .find({ postId: id })
+                        .sort((0, sortUtils_1.filterForSort)(sortBy, sortDirection))
+                        .skip((+pageNumber - 1) * +pageSize)
+                        .limit(+pageSize)
+                        .lean();
+                }
+                else {
+                    comment = yield schemes_1.CommentModel.aggregate([
+                        {
+                            $match: { postId: id }
+                        },
+                        {
+                            $sort: (0, sortUtils_1.filterForSort)(sortBy, sortDirection)
+                        },
+                        {
+                            $skip: (+pageNumber - 1) * +pageSize
+                        },
+                        {
+                            $limit: +pageSize
+                        },
+                        {
+                            $project: {
+                                id: 1,
+                                content: 1,
+                                commentatorInfo: 1,
+                                createdAt: 1,
+                                likesInfo: {
+                                    likesCount: 1,
+                                    dislikesCount: 1,
+                                    myStatus: {
+                                        $cond: [
+                                            {
+                                                $in: [userId, '$likesInfo.likedBy']
+                                            },
+                                            'Like',
+                                            {
+                                                $cond: [
+                                                    {
+                                                        $in: [userId, '$likesInfo.dislikedBy']
+                                                    },
+                                                    'Dislike',
+                                                ]
+                                            },
+                                            'None'
+                                        ]
+                                    }
+                                }
+                            }
+                        }
+                    ]);
+                }
                 const totalCount = yield schemes_1.CommentModel.countDocuments({ postId: id });
                 const pagesCount = Math.ceil(totalCount / +pageSize);
                 return {

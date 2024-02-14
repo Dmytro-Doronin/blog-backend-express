@@ -28,7 +28,14 @@ exports.commentsService = {
                     userId,
                     userLogin
                 },
-                createdAt: (new Date().toISOString())
+                createdAt: (new Date().toISOString()),
+                likesInfo: {
+                    likesCount: 0,
+                    dislikesCount: 0,
+                    myStatus: "None",
+                    likedBy: [],
+                    dislikedBy: []
+                },
             };
             return commentMutation_1.commentMutation.createCommentForPostInDb(newComments);
         });
@@ -41,6 +48,11 @@ exports.commentsService = {
     deleteComment(id) {
         return __awaiter(this, void 0, void 0, function* () {
             return yield commentMutation_1.commentMutation.deleteCommentById(id);
+        });
+    },
+    changeLikeStatus(commentId, likeStatus, userId) {
+        return __awaiter(this, void 0, void 0, function* () {
+            return yield commentMutation_1.commentMutation.changeLikeStatus(commentId, likeStatus, userId);
         });
     }
 };

@@ -39,7 +39,7 @@ export const userMapper = (user: WithId<userDBType>): UserViewModel  => {
     }
 }
 
-export const commentMapper = (value: WithId<commentsDBType>): CommentViewModelType  => {
+export const commentMapper = (value: WithId<commentsDBType> | any): CommentViewModelType  => {
     return {
         id:	value.id,
         content: value.content,

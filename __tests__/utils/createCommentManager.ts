@@ -27,7 +27,11 @@ export const createCommentManager = {
                         userId: expect.any(String),
                         userLogin: expect.any(String)
                     },
-                    createdAt: expect.any(String)
+                    createdAt: expect.any(String),
+                    likesInfo:  {
+                        dislikesCount: expect.any(Number),
+                        likesCount: expect.any(Number)
+                    },
                 }
             )
         }

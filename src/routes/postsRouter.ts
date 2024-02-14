@@ -9,7 +9,7 @@ import {
 import {createCommentToPostModelMiddleware, postsValidationModelMiddleware} from "../validation/postsValidationModel";
 import {errorMiddleware} from "../middleware/blogsMiddleware";
 import {removeAllDataController} from "../controllers/deleteController";
-import {authMiddlewareWithBearer} from "../middleware/authMiddlewareWithBearer";
+import {authMiddlewareWithBearer, customAuthMiddlewareWithBearer} from "../middleware/authMiddlewareWithBearer";
 
 
 export const postsRouter = Router()
@@ -26,4 +26,4 @@ postsRouter.delete('/:id',authMiddleware, deletePostByIdController)
 
 //comments for post
 postsRouter.post('/:id/comments', authMiddlewareWithBearer, createCommentToPostModelMiddleware(), errorMiddleware, createCommentForPostController)
-postsRouter.get('/:id/comments', getAllCommentsForPostController)
+postsRouter.get('/:id/comments',customAuthMiddlewareWithBearer, getAllCommentsForPostController)

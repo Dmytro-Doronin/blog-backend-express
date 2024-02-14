@@ -18,4 +18,4 @@ exports.postsRouter.delete('/:id', authMiddleware_1.authMiddleware, postsControl
 // postsRouter.delete('/testing/all-data', removeAllDataController)
 //comments for post
 exports.postsRouter.post('/:id/comments', authMiddlewareWithBearer_1.authMiddlewareWithBearer, (0, postsValidationModel_1.createCommentToPostModelMiddleware)(), blogsMiddleware_1.errorMiddleware, postsControllers_1.createCommentForPostController);
-exports.postsRouter.get('/:id/comments', postsControllers_1.getAllCommentsForPostController);
+exports.postsRouter.get('/:id/comments', authMiddlewareWithBearer_1.customAuthMiddlewareWithBearer, postsControllers_1.getAllCommentsForPostController);

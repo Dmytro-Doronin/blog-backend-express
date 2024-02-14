@@ -9,7 +9,7 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
     });
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.createCommentToPostModelMiddleware = exports.createPostToBlogModelMiddleware = exports.postsValidationModelMiddleware = exports.commentContent = exports.postBlogId = exports.postContent = exports.postShortDescription = exports.postTitle = void 0;
+exports.likeStatusModelMiddleware = exports.createCommentToPostModelMiddleware = exports.createPostToBlogModelMiddleware = exports.postsValidationModelMiddleware = exports.likeStatus = exports.commentContent = exports.postBlogId = exports.postContent = exports.postShortDescription = exports.postTitle = void 0;
 const express_validator_1 = require("express-validator");
 const blogQuery_1 = require("../repositories/queryRepositories/blogQuery");
 exports.postTitle = (0, express_validator_1.body)('title')
@@ -38,9 +38,16 @@ exports.commentContent = (0, express_validator_1.body)('content')
     .isString()
     .trim()
     .isLength({ min: 20, max: 300 }).withMessage('The field must not be more then 300 and less then 20 symbols');
+exports.likeStatus = (0, express_validator_1.body)('likeStatus')
+    .isString()
+    .trim()
+    .isIn(['None', 'Like', 'Dislike'])
+    .withMessage('Your field must be: None, Like or Dislike');
 const postsValidationModelMiddleware = () => [exports.postTitle, exports.postShortDescription, exports.postContent, exports.postBlogId];
 exports.postsValidationModelMiddleware = postsValidationModelMiddleware;
 const createPostToBlogModelMiddleware = () => [exports.postTitle, exports.postShortDescription, exports.postContent];
 exports.createPostToBlogModelMiddleware = createPostToBlogModelMiddleware;
 const createCommentToPostModelMiddleware = () => [exports.commentContent];
 exports.createCommentToPostModelMiddleware = createCommentToPostModelMiddleware;
+const likeStatusModelMiddleware = () => [exports.likeStatus];
+exports.likeStatusModelMiddleware = likeStatusModelMiddleware;

@@ -56,8 +56,12 @@ export const CommentSchema = new mongoose.Schema<WithId<commentsDBType>>({
         userLogin: { type: String,required: true },
     },
     createdAt: {type: String, required: true},
-    likedBy: { type: [String], default: [] },
-    dislikedBy: { type: [String], default: [] }
+    likesInfo: {
+        likesCount: { type: Number, required: true},
+        dislikesCount: { type: Number, required: true},
+        likedBy: { type: [String], default: [] },
+        dislikedBy: { type: [String], default: [] }
+    }
 })
 
 export const BlackListSchema = new mongoose.Schema<WithId<BlackListOfTokenType>>({
