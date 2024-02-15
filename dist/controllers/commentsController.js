@@ -29,7 +29,8 @@ exports.getCommentByIdController = getCommentByIdController;
 const changeCommentByIdController = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const id = req.params.id;
     const content = req.body.content;
-    const comment = yield commentQuery_1.commentQuery.getCommentById(id);
+    const userId = req.userId;
+    const comment = yield commentQuery_1.commentQuery.getCommentById(id, userId);
     if (!comment) {
         res.sendStatus(404);
         return;
@@ -81,10 +82,10 @@ const setLikeStatusController = (req, res) => __awaiter(void 0, void 0, void 0, 
         return;
     }
     const result = yield likeService_1.likeService.changeLikeStatus(commentId, likeStatus, userId);
-    if (!result) {
-        res.sendStatus(404);
-        return;
-    }
+    // if (!result) {
+    //     res.sendStatus(404)
+    //     return
+    // }
     res.sendStatus(204);
     return;
 });

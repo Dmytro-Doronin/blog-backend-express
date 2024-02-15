@@ -11,7 +11,7 @@ import {
 
 export const commentRouter = Router()
 
+commentRouter.get('/:id', customAuthMiddlewareWithBearer, getCommentByIdController)
 commentRouter.put('/:id', authMiddlewareWithBearer, createCommentToPostModelMiddleware(), errorMiddleware, changeCommentByIdController)
 commentRouter.put('/:id/like-status', authMiddlewareWithBearer, likeStatusModelMiddleware(), errorMiddleware, setLikeStatusController)
-commentRouter.get('/:id', customAuthMiddlewareWithBearer, getCommentByIdController)
 commentRouter.delete('/:id', authMiddlewareWithBearer, deleteCommentByIdController )

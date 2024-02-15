@@ -25,7 +25,7 @@ exports.commentQuery = {
                     const like = yield schemes_1.LikeModel.findOne({ targetId: commentId, userId: userId }).lean();
                     status = like === null || like === void 0 ? void 0 : like.type;
                 }
-                const allLikesAndDislikesForCurrentComment = yield schemes_1.LikeModel.find({ commentId: commentId }).lean();
+                const allLikesAndDislikesForCurrentComment = yield schemes_1.LikeModel.find({ targetId: commentId }).lean();
                 const likes = allLikesAndDislikesForCurrentComment.filter(item => item.type === "Like");
                 const dislikes = allLikesAndDislikesForCurrentComment.filter(item => item.type === "Dislike");
                 return (0, mapper_1.commentMapper)(result, likes.length, dislikes.length, status);

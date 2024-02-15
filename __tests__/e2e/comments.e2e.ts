@@ -4,6 +4,7 @@ import {createCommentManager} from "../utils/createCommentManager";
 import {createUserPostAndBlogManager} from "../utils/createUserPostAndBlogManager";
 import mongoose from "mongoose";
 import {url} from "../../src/db/db";
+import {LikeModel} from "../../src/db/schemes";
 
 describe('/comment', () => {
 
@@ -107,6 +108,53 @@ describe('/comment', () => {
             .expect(204)
 
     })
+
+    it('Like comment twice ', async () => {
+
+        const content = {
+            content: "stringstringstringst"
+        }
+
+        const {createdPost, responseToken} = await createUserPostAndBlogManager.createAllEntities()
+
+        const {createdComment} = await createCommentManager.createComment(content, createdPost.id, responseToken.body.accessToken, 201)
+
+        const status = {
+            likeStatus: "Like"
+        }
+
+         await request(app)
+            .put(`/api/comments/${createdComment.id}/like-status`)
+            .send(status)
+            .set('Authorization', `Bearer ${responseToken.body.accessToken}`)
+            .withCredentials(true)
+            .expect(204)
+
+        const firstTime = await request(app)
+            .get(`/api/comments/${createdComment.id}`)
+            .set('Authorization', `Bearer ${responseToken.body.accessToken}`)
+            .withCredentials(true)
+            .expect(200)
+
+
+        await request(app)
+            .put(`/api/comments/${createdComment.id}/like-status`)
+            .send(status)
+            .set('Authorization', `Bearer ${responseToken.body.accessToken}`)
+            .withCredentials(true)
+            .expect(204)
+
+        const secondTime = await request(app)
+            .get(`/api/comments/${createdComment.id}`)
+            .set('Authorization', `Bearer ${responseToken.body.accessToken}`)
+            .withCredentials(true)
+            .expect(200)
+        const allLikesAndDislikesForCurrentComment = await LikeModel.find({targetId: createdComment.id}).lean();
+        // console.log(allLikesAndDislikesForCurrentComment)
+        expect(firstTime.body).toEqual(secondTime.body)
+
+    })
+
     afterAll(async () => {
         await mongoose.connection.close()
     })

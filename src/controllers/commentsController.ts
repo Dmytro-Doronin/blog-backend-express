@@ -30,7 +30,8 @@ export const changeCommentByIdController = async (req: RequestWithParamsAndBody<
 
     const id = req.params.id
     const content = req.body.content
-    const comment = await commentQuery.getCommentById(id)
+    const userId = req.userId
+    const comment = await commentQuery.getCommentById(id, userId)
 
     if (!comment) {
         res.sendStatus(404)
@@ -94,6 +95,7 @@ export const setLikeStatusController = async (req: RequestWithParamsAndBody<Para
         res.sendStatus(204)
         return
     }
+
     if (likeStatus === likeOrDislike.type) {
         res.sendStatus(204)
         return
@@ -101,10 +103,10 @@ export const setLikeStatusController = async (req: RequestWithParamsAndBody<Para
 
     const result = await likeService.changeLikeStatus(commentId, likeStatus, userId)
 
-    if (!result) {
-        res.sendStatus(404)
-        return
-    }
+    // if (!result) {
+    //     res.sendStatus(404)
+    //     return
+    // }
 
     res.sendStatus(204)
     return

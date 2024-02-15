@@ -74,7 +74,7 @@ export const postsService = {
         // }
 
         const mappedItems = await Promise.all(comments.items.map(async (item) => {
-            let status: likeStatusType | undefined = "None"
+            let status: likeStatusType | undefined
 
             if (userId) {
                 const likeForCurrentComment = await likeMutation.getLike(userId, item.id);

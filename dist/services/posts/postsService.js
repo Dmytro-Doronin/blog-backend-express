@@ -77,7 +77,7 @@ exports.postsService = {
             // }
             const mappedItems = yield Promise.all(comments.items.map((item) => __awaiter(this, void 0, void 0, function* () {
                 var _a, _b;
-                let status = "None";
+                let status;
                 if (userId) {
                     const likeForCurrentComment = yield likeMutation_1.likeMutation.getLike(userId, item.id);
                     status = likeForCurrentComment === null || likeForCurrentComment === void 0 ? void 0 : likeForCurrentComment.type;

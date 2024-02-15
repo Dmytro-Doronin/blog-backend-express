@@ -15,7 +15,7 @@ exports.likeMutation = {
     getLike(userId, commentId) {
         return __awaiter(this, void 0, void 0, function* () {
             try {
-                return yield schemes_1.LikeModel.findOne({ userId: userId, commentId: commentId }).lean();
+                return yield schemes_1.LikeModel.findOne({ userId: userId, targetId: commentId }).lean();
             }
             catch (e) {
                 throw new Error('Can not get like or dislike');
@@ -25,7 +25,7 @@ exports.likeMutation = {
     getAllLikesAndDislikesForComment(commentId) {
         return __awaiter(this, void 0, void 0, function* () {
             try {
-                return yield schemes_1.LikeModel.find({ commentId: commentId }).lean();
+                return yield schemes_1.LikeModel.find({ targetId: commentId }).lean();
             }
             catch (e) {
                 throw new Error('Can not get likes or dislikes for comment');
@@ -50,7 +50,7 @@ exports.likeMutation = {
     updateLike(userId, commentId, likeStatus) {
         return __awaiter(this, void 0, void 0, function* () {
             try {
-                const result = yield schemes_1.LikeModel.updateOne({ userId, commentId }, {
+                const result = yield schemes_1.LikeModel.updateOne({ userId, targetId: commentId }, {
                     $set: { type: likeStatus }
                 });
                 return result.modifiedCount === 1;
