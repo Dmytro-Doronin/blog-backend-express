@@ -1,7 +1,7 @@
 import {WithId} from "mongodb";
 import {
     BlogViewModelType,
-    commentsDBType, CommentViewModelType, DeviceDBType, DeviceResponse,
+    commentsDBType, CommentViewModelType, DeviceDBType, DeviceResponse, likeStatusType,
     PostViewModelType,
     userDBType,
     UserViewModel
@@ -39,7 +39,7 @@ export const userMapper = (user: WithId<userDBType>): UserViewModel  => {
     }
 }
 
-export const commentMapper = (value: WithId<commentsDBType> | any): CommentViewModelType  => {
+export const commentMapper = (value: WithId<commentsDBType>, likesCount: number = 0, dislikesCount: number = 0, status: likeStatusType = "None"): CommentViewModelType  => {
     return {
         id:	value.id,
         content: value.content,
@@ -49,9 +49,9 @@ export const commentMapper = (value: WithId<commentsDBType> | any): CommentViewM
         },
         createdAt: value.createdAt,
         likesInfo: {
-            likesCount: value.likesInfo.likesCount,
-            dislikesCount: value.likesInfo.dislikesCount,
-            myStatus: value.likesInfo.myStatus
+            likesCount: likesCount,
+            dislikesCount: dislikesCount,
+            myStatus: status
         }
     }
 }

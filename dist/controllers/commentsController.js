@@ -12,10 +12,13 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.setLikeStatusController = exports.deleteCommentByIdController = exports.changeCommentByIdController = exports.getCommentByIdController = void 0;
 const commentQuery_1 = require("../repositories/queryRepositories/commentQuery");
 const commentsService_1 = require("../services/comments/commentsService");
+const likeService_1 = require("../services/likes/likeService");
+const likeMutation_1 = require("../repositories/mutationRepositories/likeMutation");
+const commentMutation_1 = require("../repositories/mutationRepositories/commentMutation");
 const getCommentByIdController = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    const id = req.params.id;
+    const commentId = req.params.id;
     const userId = req.userId;
-    const comment = yield commentQuery_1.commentQuery.getCommentById(id, userId);
+    const comment = yield commentQuery_1.commentQuery.getCommentById(commentId, userId);
     if (!comment) {
         res.sendStatus(404);
         return;
@@ -62,7 +65,22 @@ const setLikeStatusController = (req, res) => __awaiter(void 0, void 0, void 0, 
     const commentId = req.params.id;
     const likeStatus = req.body.likeStatus;
     const userId = req.userId;
-    const result = yield commentsService_1.commentsService.changeLikeStatus(commentId, likeStatus, userId);
+    const comment = yield commentMutation_1.commentMutation.getCommentById(commentId);
+    if (!comment) {
+        res.sendStatus(404);
+        return;
+    }
+    const likeOrDislike = yield likeMutation_1.likeMutation.getLike(userId, commentId);
+    if (!likeOrDislike) {
+        yield likeService_1.likeService.createLike(commentId, likeStatus, userId);
+        res.sendStatus(204);
+        return;
+    }
+    if (likeStatus === likeOrDislike.type) {
+        res.sendStatus(204);
+        return;
+    }
+    const result = yield likeService_1.likeService.changeLikeStatus(commentId, likeStatus, userId);
     if (!result) {
         res.sendStatus(404);
         return;

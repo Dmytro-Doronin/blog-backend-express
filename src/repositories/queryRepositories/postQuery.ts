@@ -45,7 +45,6 @@ export const postQuery = {
             if (!result) {
                 return null
             }
-
             return postMapper(result)
         } catch (e) {
             throw new Error('Blog was not found')
@@ -53,84 +52,93 @@ export const postQuery = {
 
     },
 
-    async getAllCommentsForPostFromDb (id: string, sortData: QueryCommentsInputModel, userId: string  = '' ) {
-
-        const sortBy = sortData.sortBy ?? 'createdAt'
-        const sortDirection = sortData.sortDirection ?? 'desc'
-        const pageNumber = sortData.pageNumber ?? 1
-        const pageSize = sortData.pageSize ?? 10
-
-        try {
-            let comment
-            if (!userId) {
-                 comment = await CommentModel
-                    .find({postId: id})
-                    .sort(filterForSort(sortBy, sortDirection))
-                    .skip((+pageNumber - 1) * +pageSize)
-                    .limit(+pageSize)
-                    .lean()
-            } else {
-                 comment = await CommentModel.aggregate([
-                    {
-                        $match: {postId: id}
-                    },
-                    {
-                        $sort: filterForSort(sortBy, sortDirection)
-                    },
-                    {
-                        $skip: (+pageNumber - 1) * +pageSize
-                    },
-                    {
-                        $limit: +pageSize
-                    },
-                    {
-                        $project: {
-                            id: 1,
-                            content: 1,
-                            commentatorInfo: 1,
-                            createdAt: 1,
-                            likesInfo: {
-                                likesCount: 1,
-                                dislikesCount: 1,
-                                myStatus: {
-                                    $cond: [
-                                        {
-                                            $in: [userId, '$likesInfo.likedBy']
-                                        },
-                                        'Like',
-                                        {
-                                            $cond: [
-                                                {
-                                                    $in: [userId, '$likesInfo.dislikedBy']
-                                                },
-                                                'Dislike',
-                                            ]
-                                        },
-                                        'None'
-                                    ]
-                                }
-                            }
-                        }
-                    }
-                ])
-            }
-
-
-            const totalCount = await CommentModel.countDocuments({postId: id})
-
-            const pagesCount = Math.ceil(totalCount / +pageSize)
-
-            return {
-                pagesCount,
-                page: +pageNumber,
-                pageSize: +pageSize,
-                totalCount,
-                items: comment.map(commentMapper)
-            }
-
-        } catch (e) {
-            throw new Error('Comments was not get')
-        }
-
-    }
+    // async getAllCommentsForPostFromDb (id: string, sortData: QueryCommentsInputModel, userId: string) {
+    //
+    //     const sortBy = sortData.sortBy ?? 'createdAt'
+    //     const sortDirection = sortData.sortDirection ?? 'desc'
+    //     const pageNumber = sortData.pageNumber ?? 1
+    //     const pageSize = sortData.pageSize ?? 10
+    //
+    //
+    //     try {
+    //         const comment = await CommentModel
+    //             .find({postId: id})
+    //             .sort(filterForSort(sortBy, sortDirection))
+    //             .skip((+pageNumber - 1) * +pageSize)
+    //             .limit(+pageSize)
+    //             .lean()
+    //
+    //         const totalCount = await CommentModel.countDocuments({postId: id})
+    //
+    //         const pagesCount = Math.ceil(totalCount / +pageSize)
+    //
+    //         return {
+    //             pagesCount,
+    //             page: +pageNumber,
+    //             pageSize: +pageSize,
+    //             totalCount,
+    //             items: comment.map(commentMapper)
+    //         }
+    //
+    //
+    //     } catch (e) {
+    //         throw new Error('Comments was not get')
+    //     }
+    //
+    //     // try {
+    //     //     let comment
+    //     //     if (!userId) {
+    //     //          comment = await CommentModel
+    //     //             .find({postId: id})
+    //     //             .sort(filterForSort(sortBy, sortDirection))
+    //     //             .skip((+pageNumber - 1) * +pageSize)
+    //     //             .limit(+pageSize)
+    //     //             .lean()
+    //     //     } else {
+    //     //          comment = await CommentModel.aggregate([
+    //     //             {
+    //     //                 $match: {postId: id}
+    //     //             },
+    //     //             {
+    //     //                 $sort: filterForSort(sortBy, sortDirection)
+    //     //             },
+    //     //             {
+    //     //                 $skip: (+pageNumber - 1) * +pageSize
+    //     //             },
+    //     //             {
+    //     //                 $limit: +pageSize
+    //     //             },
+    //     //             {
+    //     //                 $project: {
+    //     //                     id: 1,
+    //     //                     content: 1,
+    //     //                     commentatorInfo: 1,
+    //     //                     createdAt: 1,
+    //     //                     likesInfo: {
+    //     //                         likesCount: 1,
+    //     //                         dislikesCount: 1,
+    //     //                         myStatus: {
+    //     //                             $cond: [
+    //     //                                 {
+    //     //                                     $in: [userId, '$likesInfo.likedBy']
+    //     //                                 },
+    //     //                                 'Like',
+    //     //                                 {
+    //     //                                     $cond: [
+    //     //                                         {
+    //     //                                             $in: [userId, '$likesInfo.dislikedBy']
+    //     //                                         },
+    //     //                                         'Dislike',
+    //     //                                     ]
+    //     //                                 },
+    //     //                                 'None'
+    //     //                             ]
+    //     //                         }
+    //     //                     }
+    //     //                 }
+    //     //             }
+    //     //         ])
+    //     //     }
+    //
+    // }
 }

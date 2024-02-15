@@ -92,13 +92,15 @@ export type commentsDBType = {
     content: string
     commentatorInfo: CommentatorInfoType
     createdAt: string
-    "likesInfo": {
-        "likesCount": number,
-        "dislikesCount": number,
-        myStatus: "None" | "Like" | "Dislike"
-        likedBy: string[]
-        dislikedBy: string[]
-    }
+}
+
+export type likeStatusType = 'Like' | 'Dislike' | 'None'
+
+export type LikesType = {
+    id: string,
+    userId: string,
+    targetId: string,
+    type: likeStatusType ,
 }
 
 // export type commentsDBType = CommentViewModelType & {postId: string}
@@ -162,6 +164,14 @@ export type CommentsOutputModelType = {
     pageSize?: number
     totalCount?: number
     items: CommentViewModelType[]
+}
+
+export type CommentsPaginationDbModelType = {
+    pagesCount?: number
+    page?: number
+    pageSize?: number
+    totalCount?: number
+    items: commentsDBType[]
 }
 
 export type FieldErrorType = {

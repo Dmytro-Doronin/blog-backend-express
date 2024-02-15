@@ -3,7 +3,7 @@ import { WithId } from 'mongodb'
 import {
     BlackListOfTokenType,
     BlogViewModelType,
-    commentsDBType, DeviceDBType,
+    commentsDBType, DeviceDBType, LikesType,
     PostViewModelType,
     userDBType
 } from "../types/commonBlogTypeAndPosts.types";
@@ -56,14 +56,14 @@ export const CommentSchema = new mongoose.Schema<WithId<commentsDBType>>({
         userLogin: { type: String,required: true },
     },
     createdAt: {type: String, required: true},
-    likesInfo: {
-        likesCount: { type: Number, required: true},
-        dislikesCount: { type: Number, required: true},
-        myStatus: {type: String, enum: ['Like', 'Dislike', 'None'], required: true },
-        likedBy: { type: [String], default: [] },
-        dislikedBy: { type: [String], default: [] }
-    }
 })
+export const LikeSchema = new mongoose.Schema<WithId<LikesType>>({
+    id: { type: String, required: true },
+    userId: { type: String, ref: 'User', required: true },
+    targetId: { type: String, required: true },
+    type: { type: String, enum: ['Like', 'Dislike', 'None'], required: true },
+});
+
 
 export const BlackListSchema = new mongoose.Schema<WithId<BlackListOfTokenType>>({
     token: {type: String, required: true}
@@ -91,6 +91,7 @@ export const CommentModel = mongoose.model<WithId<commentsDBType>>('comments', C
 export const BlackListModel = mongoose.model<WithId<BlackListOfTokenType>>('blackListOfToken', BlackListSchema)
 export const DeviceModel = mongoose.model<WithId<DeviceDBType>>('device', DeviceSchema)
 export const RateModel = mongoose.model<WithId<{IP:any, URL: any, date: Date}>>('rate', RateSchema)
+export const LikeModel = mongoose.model<WithId<LikesType>>('likes', LikeSchema)
 
 
 

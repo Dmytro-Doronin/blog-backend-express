@@ -7,12 +7,15 @@ import {
 import {commentQuery} from "../repositories/queryRepositories/commentQuery";
 import {Response} from "express";
 import {commentsService} from "../services/comments/commentsService";
+import {likeService} from "../services/likes/likeService";
+import {likeMutation} from "../repositories/mutationRepositories/likeMutation";
+import {commentMutation} from "../repositories/mutationRepositories/commentMutation";
 
 export const getCommentByIdController = async (req: RequestWithParams<ParamsType>, res: ResponseWithData<CommentViewModelType>) => {
 
-    const id = req.params.id
+    const commentId = req.params.id
     const userId = req.userId
-    const comment = await commentQuery.getCommentById(id, userId)
+    const comment = await commentQuery.getCommentById(commentId, userId)
 
     if (!comment) {
         res.sendStatus(404)
@@ -77,7 +80,26 @@ export const setLikeStatusController = async (req: RequestWithParamsAndBody<Para
     const likeStatus = req.body.likeStatus
     const userId = req.userId
 
-    const result = await commentsService.changeLikeStatus(commentId, likeStatus, userId)
+    const comment = await commentMutation.getCommentById(commentId)
+
+    if (!comment) {
+        res.sendStatus(404)
+        return
+    }
+
+    const likeOrDislike = await likeMutation.getLike(userId, commentId)
+
+    if (!likeOrDislike) {
+        await likeService.createLike(commentId, likeStatus, userId)
+        res.sendStatus(204)
+        return
+    }
+    if (likeStatus === likeOrDislike.type) {
+        res.sendStatus(204)
+        return
+    }
+
+    const result = await likeService.changeLikeStatus(commentId, likeStatus, userId)
 
     if (!result) {
         res.sendStatus(404)

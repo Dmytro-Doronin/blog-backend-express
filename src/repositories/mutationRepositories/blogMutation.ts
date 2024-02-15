@@ -18,10 +18,8 @@ const { v4: uuidv4 } = require('uuid');
 export const blogMutation = {
     async createBlogInDb (newBlog : BlogViewModelType) {
         try {
-            debugger
             await BlogModel.create(newBlog)
             const result = await BlogModel.findOne({id: newBlog.id}).lean()
-            debugger
 
             if (!result) {
                 return null

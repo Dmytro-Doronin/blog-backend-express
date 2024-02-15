@@ -17,10 +17,8 @@ exports.blogMutation = {
     createBlogInDb(newBlog) {
         return __awaiter(this, void 0, void 0, function* () {
             try {
-                debugger;
                 yield schemes_1.BlogModel.create(newBlog);
                 const result = yield schemes_1.BlogModel.findOne({ id: newBlog.id }).lean();
-                debugger;
                 if (!result) {
                     return null;
                 }

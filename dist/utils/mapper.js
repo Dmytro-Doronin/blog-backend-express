@@ -33,7 +33,7 @@ const userMapper = (user) => {
     };
 };
 exports.userMapper = userMapper;
-const commentMapper = (value) => {
+const commentMapper = (value, likesCount = 0, dislikesCount = 0, status = "None") => {
     return {
         id: value.id,
         content: value.content,
@@ -43,9 +43,9 @@ const commentMapper = (value) => {
         },
         createdAt: value.createdAt,
         likesInfo: {
-            likesCount: value.likesInfo.likesCount,
-            dislikesCount: value.likesInfo.dislikesCount,
-            myStatus: value.likesInfo.myStatus
+            likesCount: likesCount,
+            dislikesCount: dislikesCount,
+            myStatus: status
         }
     };
 };
