@@ -25,10 +25,7 @@ export const userMutation = {
         try {
             const res = await UserModel.deleteOne({id: id})
 
-            if (res.deletedCount === 1) {
-                return true
-            }
-            return null
+            return res.deletedCount === 1
 
         } catch (e) {
             throw new Error('User was not deleted')

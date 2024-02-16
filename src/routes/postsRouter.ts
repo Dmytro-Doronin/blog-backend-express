@@ -8,7 +8,6 @@ import {
 } from "../controllers/postsControllers";
 import {createCommentToPostModelMiddleware, postsValidationModelMiddleware} from "../validation/postsValidationModel";
 import {errorMiddleware} from "../middleware/blogsMiddleware";
-import {removeAllDataController} from "../controllers/deleteController";
 import {authMiddlewareWithBearer, customAuthMiddlewareWithBearer} from "../middleware/authMiddlewareWithBearer";
 
 
@@ -22,7 +21,6 @@ postsRouter.post('/',authMiddleware, postsValidationModelMiddleware(), errorMidd
 postsRouter.get('/:id', getPostByIdController)
 postsRouter.put('/:id',authMiddleware, postsValidationModelMiddleware(), errorMiddleware, changePostByIdController)
 postsRouter.delete('/:id',authMiddleware, deletePostByIdController)
-// postsRouter.delete('/testing/all-data', removeAllDataController)
 
 //comments for post
 postsRouter.post('/:id/comments', authMiddlewareWithBearer, createCommentToPostModelMiddleware(), errorMiddleware, createCommentForPostController)

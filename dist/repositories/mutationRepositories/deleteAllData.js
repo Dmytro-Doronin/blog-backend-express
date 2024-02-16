@@ -22,6 +22,7 @@ exports.deleteAllDataMutation = {
                 yield schemes_1.BlackListModel.deleteMany({});
                 yield schemes_1.DeviceModel.deleteMany({});
                 yield schemes_1.RateModel.deleteMany({});
+                yield schemes_1.LikeModel.deleteMany({});
             }
             catch (e) {
                 console.log(e);

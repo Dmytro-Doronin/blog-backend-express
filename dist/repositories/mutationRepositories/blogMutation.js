@@ -10,7 +10,6 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.blogMutation = void 0;
-const mapper_1 = require("../../utils/mapper");
 const schemes_1 = require("../../db/schemes");
 const { v4: uuidv4 } = require('uuid');
 exports.blogMutation = {
@@ -22,7 +21,7 @@ exports.blogMutation = {
                 if (!result) {
                     return null;
                 }
-                return (0, mapper_1.blogMapper)(result);
+                return result;
             }
             catch (e) {
                 throw new Error('Blog was not created');
@@ -37,7 +36,7 @@ exports.blogMutation = {
                 if (!postFromDb) {
                     return null;
                 }
-                return (0, mapper_1.postMapper)(postFromDb);
+                return postFromDb;
             }
             catch (e) {
                 throw new Error('Blog was not created');
@@ -51,10 +50,10 @@ exports.blogMutation = {
                 if (!addedItem) {
                     return null;
                 }
-                yield schemes_1.BlogModel.updateOne({ id: id }, {
+                const result = yield schemes_1.BlogModel.updateOne({ id: id }, {
                     $set: { name, description, websiteUrl }
                 });
-                return true;
+                return result.modifiedCount === 1;
             }
             catch (e) {
                 throw new Error('Blog was not changed by id');
@@ -65,10 +64,7 @@ exports.blogMutation = {
         return __awaiter(this, void 0, void 0, function* () {
             try {
                 const res = yield schemes_1.BlogModel.deleteOne({ id: id });
-                if (res.deletedCount === 1) {
-                    return true;
-                }
-                return null;
+                return res.deletedCount === 1;
             }
             catch (e) {
                 throw new Error('Blog was nod deleted');

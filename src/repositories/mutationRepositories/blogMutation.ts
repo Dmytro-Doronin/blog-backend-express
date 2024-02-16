@@ -25,7 +25,7 @@ export const blogMutation = {
                 return null
             }
 
-            return blogMapper(result)
+            return result
         } catch (e) {
             throw new Error('Blog was not created')
         }
@@ -42,7 +42,8 @@ export const blogMutation = {
                 return null
             }
 
-            return postMapper(postFromDb)
+            return postFromDb
+
 
         } catch (e) {
             throw new Error('Blog was not created')
@@ -60,14 +61,14 @@ export const blogMutation = {
                 return null
             }
 
-            await BlogModel.updateOne(
+           const result = await BlogModel.updateOne(
                 {id: id},
                 {
                     $set: {name, description, websiteUrl}
                 }
             )
 
-            return true
+            return result.modifiedCount === 1
         } catch (e) {
             throw new Error('Blog was not changed by id')
         }
@@ -78,10 +79,7 @@ export const blogMutation = {
         try {
             const res = await BlogModel.deleteOne({id: id})
 
-            if (res.deletedCount === 1) {
-                return true
-            }
-            return null
+            return res.deletedCount === 1
 
         } catch (e) {
             throw new Error('Blog was nod deleted')

@@ -10,7 +10,6 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.commentMutation = void 0;
-const mapper_1 = require("../../utils/mapper");
 const schemes_1 = require("../../db/schemes");
 exports.commentMutation = {
     getCommentById(commentId) {
@@ -30,7 +29,7 @@ exports.commentMutation = {
                 if (!comment) {
                     return null;
                 }
-                return (0, mapper_1.commentMapper)(comment);
+                return comment;
             }
             catch (e) {
                 throw new Error('Comment was not created');

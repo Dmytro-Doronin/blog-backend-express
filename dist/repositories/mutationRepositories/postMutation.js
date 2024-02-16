@@ -10,7 +10,6 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.postMutation = void 0;
-const mapper_1 = require("../../utils/mapper");
 const schemes_1 = require("../../db/schemes");
 const sortUtils_1 = require("../../utils/sortUtils");
 //export const dbPostCollections = client.db('Blogs').collection<PostViewModelType>('posts')
@@ -23,7 +22,7 @@ exports.postMutation = {
                 if (!result) {
                     return null;
                 }
-                return (0, mapper_1.postMapper)(result);
+                return result;
             }
             catch (e) {
                 throw new Error('Post was not add');
@@ -51,10 +50,7 @@ exports.postMutation = {
         return __awaiter(this, void 0, void 0, function* () {
             try {
                 const res = yield schemes_1.PostModel.deleteOne({ id: id });
-                if (res.deletedCount === 1) {
-                    return true;
-                }
-                return null;
+                return res.deletedCount === 1;
             }
             catch (e) {
                 throw new Error('Blog was nod deleted');

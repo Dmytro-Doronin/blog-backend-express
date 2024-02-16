@@ -32,10 +32,7 @@ exports.userMutation = {
         return __awaiter(this, void 0, void 0, function* () {
             try {
                 const res = yield schemes_1.UserModel.deleteOne({ id: id });
-                if (res.deletedCount === 1) {
-                    return true;
-                }
-                return null;
+                return res.deletedCount === 1;
             }
             catch (e) {
                 throw new Error('User was not deleted');

@@ -1,6 +1,7 @@
 import {postQuery} from "../../repositories/queryRepositories/postQuery";
 import {commentsDBType,} from "../../types/commonBlogTypeAndPosts.types";
 import {commentMutation} from "../../repositories/mutationRepositories/commentMutation";
+import {commentMapper} from "../../utils/mapper";
 const { v4: uuidv4 } = require('uuid');
 export const commentsService = {
 
@@ -24,7 +25,13 @@ export const commentsService = {
 
         }
 
-        return commentMutation.createCommentForPostInDb(newComments)
+        const comment = await commentMutation.createCommentForPostInDb(newComments)
+
+        if (!comment) {
+            return null
+        }
+
+        return commentMapper(comment)
 
     },
 

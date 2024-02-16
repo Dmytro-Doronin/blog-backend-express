@@ -14,35 +14,24 @@ const postQuery_1 = require("../repositories/queryRepositories/postQuery");
 const postsService_1 = require("../services/posts/postsService");
 const commentsService_1 = require("../services/comments/commentsService");
 const getAllPostsController = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    // const sortData = req.query
     const sortData = {
         sortBy: req.query.sortBy,
         sortDirection: req.query.sortDirection,
         pageNumber: req.query.pageNumber,
         pageSize: req.query.pageSize
     };
-    try {
-        const result = yield postQuery_1.postQuery.getAllPostsFromDb(sortData);
-        return res.status(200).send(result);
-    }
-    catch (e) {
-        throw new Error('Posts does not get');
-    }
+    const result = yield postQuery_1.postQuery.getAllPostsFromDb(sortData);
+    return res.status(200).send(result);
 });
 exports.getAllPostsController = getAllPostsController;
 const createNewPostController = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    try {
-        const { title, shortDescription, content, blogId } = req.body;
-        const result = yield postsService_1.postsService.createPostService({ title, shortDescription, content, blogId });
-        if (!result) {
-            res.sendStatus(400);
-            return;
-        }
-        return res.status(201).send(result);
+    const { title, shortDescription, content, blogId } = req.body;
+    const result = yield postsService_1.postsService.createPostService({ title, shortDescription, content, blogId });
+    if (!result) {
+        res.sendStatus(400);
+        return;
     }
-    catch (e) {
-        throw new Error('Blogs does not create');
-    }
+    return res.status(201).send(result);
 });
 exports.createNewPostController = createNewPostController;
 const getPostByIdController = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
@@ -65,7 +54,7 @@ const changePostByIdController = (req, res) => __awaiter(void 0, void 0, void 0,
 exports.changePostByIdController = changePostByIdController;
 const deletePostByIdController = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const result = yield postsService_1.postsService.deletePostByIdService(req.params.id);
-    if (result === null) {
+    if (!result) {
         return res.sendStatus(404);
     }
     return res.sendStatus(204);
@@ -98,7 +87,6 @@ const getAllCommentsForPostController = (req, res) => __awaiter(void 0, void 0, 
         pageSize: req.query.pageSize
     };
     const comments = yield postsService_1.postsService.getAllCommentsForPostService(postId, sortData, userId);
-    // const comments = await postQuery.getAllCommentsForPostFromDb(postId, sortData, userId)
     return res.status(200).send(comments);
 });
 exports.getAllCommentsForPostController = getAllCommentsForPostController;

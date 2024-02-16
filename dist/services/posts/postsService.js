@@ -13,6 +13,7 @@ exports.postsService = void 0;
 const postMutation_1 = require("../../repositories/mutationRepositories/postMutation");
 const blogQuery_1 = require("../../repositories/queryRepositories/blogQuery");
 const likeMutation_1 = require("../../repositories/mutationRepositories/likeMutation");
+const mapper_1 = require("../../utils/mapper");
 const { v4: uuidv4 } = require('uuid');
 exports.postsService = {
     createPostService({ title, shortDescription, content, blogId }) {
@@ -30,7 +31,11 @@ exports.postsService = {
                 createdAt: (new Date().toISOString()),
                 blogName: blog.name
             };
-            return yield postMutation_1.postMutation.createPostInDb(newPost);
+            const post = yield postMutation_1.postMutation.createPostInDb(newPost);
+            if (!post) {
+                return null;
+            }
+            return (0, mapper_1.postMapper)(post);
         });
     },
     changePostByIdService({ id, title, shortDescription, content, blogId }) {
@@ -51,30 +56,6 @@ exports.postsService = {
     },
     _mapService(comments, userId) {
         return __awaiter(this, void 0, void 0, function* () {
-            // return {
-            //     pagesCount: comments.pagesCount,
-            //     page: comments.page,
-            //     pageSize: comments.pageSize,
-            //     totalCount: comments.totalCount,
-            //     items: comments.items.map( async (item) => {
-            //         const likeForCurrentComment = await likeMutation.getLike(userId, item.id)
-            //         const allLikesAndDislikesForCurrentComment = await likeMutation.getAllLikesAndDislikesForComment(item.id)
-            //         const likes = allLikesAndDislikesForCurrentComment.filter(item => item.type === "Like")
-            //         const dislikes = allLikesAndDislikesForCurrentComment.filter(item => item.type === "Dislike")
-            //
-            //         return {
-            //             id: item.id,
-            //             content: item.content,
-            //             commentatorInfo: item.commentatorInfo,
-            //             createdAt: item.createdAt,
-            //             likesInfo: {
-            //                 likesCount: likes.length ?? 0,
-            //                 dislikesCount: dislikes.length ?? 0,
-            //                 myStatus: likeForCurrentComment?.type ?? "None"
-            //             }
-            //         }
-            //     })
-            // }
             const mappedItems = yield Promise.all(comments.items.map((item) => __awaiter(this, void 0, void 0, function* () {
                 var _a, _b;
                 let status;

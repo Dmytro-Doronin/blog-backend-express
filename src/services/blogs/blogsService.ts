@@ -7,7 +7,7 @@ import {
 import {blogMutation} from "../../repositories/mutationRepositories/blogMutation";
 import {ChangeBlogByIdTypes} from "../serviceTypes/blogsTypes";
 import {blogQuery} from "../../repositories/queryRepositories/blogQuery";
-import {postQuery} from "../../repositories/queryRepositories/postQuery";
+import {blogMapper, postMapper} from "../../utils/mapper";
 const { v4: uuidv4 } = require('uuid');
 
 
@@ -23,7 +23,13 @@ export const blogsService = {
             isMembership: false
         }
 
-        return await blogMutation.createBlogInDb(newBlog)
+        const blog = await blogMutation.createBlogInDb(newBlog)
+
+        if (!blog) {
+            return null
+        }
+
+        return blogMapper(blog)
 
     },
 
@@ -52,7 +58,12 @@ export const blogsService = {
             blogName: blog.name
         }
 
-        return await blogMutation.createPostToBlogInDb(newPost)
+        const postFromDb = await blogMutation.createPostToBlogInDb(newPost)
+
+        if (!postFromDb) {
+            return null
+        }
+        return postMapper(postFromDb)
 
     }
 }

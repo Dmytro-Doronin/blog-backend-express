@@ -103,7 +103,7 @@ export const deleteBlogsByIdController = async (req: RequestWithParams<ParamsTyp
 
     const result = await blogsService.deleteBlogByIdService(req.params.id)
 
-    if (result === null) {
+    if (!result) {
         return res.sendStatus(404)
     }
 

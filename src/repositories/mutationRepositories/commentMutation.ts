@@ -26,7 +26,7 @@ export const commentMutation = {
                 return null
             }
 
-            return commentMapper(comment)
+            return comment
 
         } catch (e) {
             throw new Error('Comment was not created')

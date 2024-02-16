@@ -12,6 +12,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.blogsService = void 0;
 const blogMutation_1 = require("../../repositories/mutationRepositories/blogMutation");
 const blogQuery_1 = require("../../repositories/queryRepositories/blogQuery");
+const mapper_1 = require("../../utils/mapper");
 const { v4: uuidv4 } = require('uuid');
 exports.blogsService = {
     createBlogService({ name, description, websiteUrl }) {
@@ -24,7 +25,11 @@ exports.blogsService = {
                 createdAt: new Date().toISOString(),
                 isMembership: false
             };
-            return yield blogMutation_1.blogMutation.createBlogInDb(newBlog);
+            const blog = yield blogMutation_1.blogMutation.createBlogInDb(newBlog);
+            if (!blog) {
+                return null;
+            }
+            return (0, mapper_1.blogMapper)(blog);
         });
     },
     changeBlogByIdService({ id, name, description, websiteUrl }) {
@@ -52,7 +57,11 @@ exports.blogsService = {
                 createdAt: (new Date().toISOString()),
                 blogName: blog.name
             };
-            return yield blogMutation_1.blogMutation.createPostToBlogInDb(newPost);
+            const postFromDb = yield blogMutation_1.blogMutation.createPostToBlogInDb(newPost);
+            if (!postFromDb) {
+                return null;
+            }
+            return (0, mapper_1.postMapper)(postFromDb);
         });
     }
 };

@@ -1,7 +1,14 @@
 
-
-
-import {BlackListModel, BlogModel, CommentModel, DeviceModel, PostModel, RateModel, UserModel} from "../../db/schemes";
+import {
+    BlackListModel,
+    BlogModel,
+    CommentModel,
+    DeviceModel,
+    LikeModel,
+    PostModel,
+    RateModel,
+    UserModel
+} from "../../db/schemes";
 
 export const deleteAllDataMutation = {
     async deleteAllDataFromDb () {
@@ -13,6 +20,7 @@ export const deleteAllDataMutation = {
             await BlackListModel.deleteMany({})
             await DeviceModel.deleteMany({})
             await RateModel.deleteMany({})
+            await LikeModel.deleteMany({})
         } catch (e) {
             console.log(e)
             throw new Error('All data was not deleted')

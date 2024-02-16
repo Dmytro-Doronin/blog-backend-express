@@ -19,7 +19,7 @@ export const postMutation = {
                 return null
             }
 
-            return postMapper(result)
+            return result
         } catch (e) {
             throw new Error('Post was not add')
         }
@@ -54,10 +54,7 @@ export const postMutation = {
         try {
             const res = await PostModel.deleteOne({id: id})
 
-            if (res.deletedCount === 1) {
-                return true
-            }
-            return null
+            return res.deletedCount === 1
 
         } catch (e) {
             throw new Error('Blog was nod deleted')

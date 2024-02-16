@@ -83,7 +83,7 @@ const changeBlogsByIdController = (req, res) => __awaiter(void 0, void 0, void 0
 exports.changeBlogsByIdController = changeBlogsByIdController;
 const deleteBlogsByIdController = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const result = yield blogsService_1.blogsService.deleteBlogByIdService(req.params.id);
-    if (result === null) {
+    if (!result) {
         return res.sendStatus(404);
     }
     return res.sendStatus(204);

@@ -40,7 +40,7 @@ export const getAllUsersController = async (req: RequestWithQuery<UsersQueryInpu
 export const deleteUserByIdController = async (req: RequestWithParams<ParamsType>, res: Response) => {
     const result = await usersService.deleteUserById(req.params.id)
 
-    if (result === null) {
+    if (!result) {
         return res.sendStatus(404)
     }
 

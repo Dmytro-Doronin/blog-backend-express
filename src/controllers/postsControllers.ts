@@ -13,8 +13,6 @@ import {commentsService} from "../services/comments/commentsService";
 
 export const getAllPostsController = async (req: RequestWithQuery<QueryPostInputModel>, res: ResponseWithData<PostsOutputModelType>) => {
 
-    // const sortData = req.query
-
     const sortData = {
         sortBy: req.query.sortBy,
         sortDirection: req.query.sortDirection,
@@ -22,32 +20,23 @@ export const getAllPostsController = async (req: RequestWithQuery<QueryPostInput
         pageSize: req.query.pageSize
     }
 
-    try {
-        const result = await postQuery.getAllPostsFromDb(sortData)
-        return res.status(200).send(result)
-    } catch (e) {
-        throw new Error('Posts does not get')
-    }
+    const result = await postQuery.getAllPostsFromDb(sortData)
+    return res.status(200).send(result)
+
 }
 
 export const createNewPostController = async (req: RequestWithBody<PostInputModelType> , res: Response) => {
 
-    try {
-        const {title, shortDescription, content, blogId} = req.body
+    const {title, shortDescription, content, blogId} = req.body
 
-        const result = await postsService.createPostService({title, shortDescription, content, blogId})
+    const result = await postsService.createPostService({title, shortDescription, content, blogId})
 
-        if (!result) {
-            res.sendStatus(400)
-            return
-        }
-
-        return res.status(201).send(result)
-
-    } catch (e) {
-        throw new Error('Blogs does not create')
+    if (!result) {
+        res.sendStatus(400)
+        return
     }
 
+    return res.status(201).send(result)
 
 }
 
@@ -81,7 +70,7 @@ export const deletePostByIdController = async (req: RequestWithParams<ParamsType
 
     const result = await postsService.deletePostByIdService(req.params.id)
 
-    if (result === null) {
+    if (!result) {
         return res.sendStatus(404)
     }
 
@@ -123,8 +112,6 @@ export const getAllCommentsForPostController = async (req: RequestWithParamsAndQ
     }
 
     const comments = await postsService.getAllCommentsForPostService(postId, sortData, userId)
-
-    // const comments = await postQuery.getAllCommentsForPostFromDb(postId, sortData, userId)
 
     return res.status(200).send(comments)
 }

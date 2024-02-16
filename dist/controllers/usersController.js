@@ -36,7 +36,7 @@ const getAllUsersController = (req, res) => __awaiter(void 0, void 0, void 0, fu
 exports.getAllUsersController = getAllUsersController;
 const deleteUserByIdController = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const result = yield usersService_1.usersService.deleteUserById(req.params.id);
-    if (result === null) {
+    if (!result) {
         return res.sendStatus(404);
     }
     return res.sendStatus(204);

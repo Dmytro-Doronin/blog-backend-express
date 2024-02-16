@@ -12,6 +12,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.commentsService = void 0;
 const postQuery_1 = require("../../repositories/queryRepositories/postQuery");
 const commentMutation_1 = require("../../repositories/mutationRepositories/commentMutation");
+const mapper_1 = require("../../utils/mapper");
 const { v4: uuidv4 } = require('uuid');
 exports.commentsService = {
     createComment(postId, content, userId, userLogin) {
@@ -30,7 +31,11 @@ exports.commentsService = {
                 },
                 createdAt: (new Date().toISOString()),
             };
-            return commentMutation_1.commentMutation.createCommentForPostInDb(newComments);
+            const comment = yield commentMutation_1.commentMutation.createCommentForPostInDb(newComments);
+            if (!comment) {
+                return null;
+            }
+            return (0, mapper_1.commentMapper)(comment);
         });
     },
     changeComment(id, content) {

@@ -20,8 +20,6 @@ const getAllDeviceController = (req, res) => __awaiter(void 0, void 0, void 0, f
 });
 exports.getAllDeviceController = getAllDeviceController;
 const deleteAllDevicesExcludeCurrentController = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    // const refreshToken = req.headers.cookie?.split('=')[1]
-    // const {deviceId} = await jwtService.verifyToken(refreshToken!)
     const deviceId = req.deviceId;
     const result = yield securityDevices_1.securityDevicesService.deleteAllDeviceExcludeCurrent(deviceId);
     if (!result) {
