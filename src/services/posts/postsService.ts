@@ -6,11 +6,14 @@ import {
 } from "../../types/commonBlogTypeAndPosts.types";
 import {postMutation} from "../../repositories/mutationRepositories/postMutation";
 import {CreatePostsServiceType} from "../serviceTypes/postsTypes";
-import {blogQuery} from "../../repositories/queryRepositories/blogQuery";
+import {BlogQuery} from "../../repositories/queryRepositories/blogQuery";
 import {QueryCommentsInputModel} from "../../types/posts/queryPosts.types";
 import {likeMutation} from "../../repositories/mutationRepositories/likeMutation";
 import {postMapper} from "../../utils/mapper";
 const { v4: uuidv4 } = require('uuid');
+
+
+const blogQuery = new BlogQuery()
 
 export const postsService = {
     async createPostService ({title, shortDescription, content, blogId}: PostInputModelType) {

@@ -15,10 +15,11 @@ const blogQuery_1 = require("../../repositories/queryRepositories/blogQuery");
 const likeMutation_1 = require("../../repositories/mutationRepositories/likeMutation");
 const mapper_1 = require("../../utils/mapper");
 const { v4: uuidv4 } = require('uuid');
+const blogQuery = new blogQuery_1.BlogQuery();
 exports.postsService = {
     createPostService({ title, shortDescription, content, blogId }) {
         return __awaiter(this, void 0, void 0, function* () {
-            const blog = yield blogQuery_1.blogQuery.getBlogByIdInDb(blogId);
+            const blog = yield blogQuery.getBlogByIdInDb(blogId);
             if (!blog) {
                 return null;
             }

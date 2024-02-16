@@ -1,12 +1,10 @@
 import {blogMapper, postMapper} from "../../utils/mapper";
 import {BlogViewModelType, ParamsType} from "../../types/commonBlogTypeAndPosts.types";
-import {client} from "../../db/db";
-// import {dbBlogCollections, dbPostCollections} from "../../db/dbCollections";
 import {QueryBlogInputModel} from "../../types/blogs/queryBlog.types";
 import {filterForSort} from "../../utils/sortUtils";
 import {BlogModel, PostModel} from "../../db/schemes";
 
-export const blogQuery = {
+export class BlogQuery {
     async getAllBlogInDb(sortData: QueryBlogInputModel) {
         const searchNameTerm = sortData.searchNameTerm ?? null
         const sortBy = sortData.sortBy ?? 'createdAt'
@@ -47,7 +45,7 @@ export const blogQuery = {
             throw new Error('Does not get all blogs')
         }
 
-    },
+    }
 
     async getAllPostsInBlogFromDb (blogId: string ,sortData: QueryBlogInputModel) {
 
@@ -78,7 +76,7 @@ export const blogQuery = {
         } catch (e) {
             throw new Error('Posts was not get')
         }
-    },
+    }
 
     async getBlogByIdInDb (id: string): Promise<BlogViewModelType | null>  {
 
@@ -92,5 +90,5 @@ export const blogQuery = {
             throw new Error('Blog was not found')
         }
 
-    },
+    }
 }

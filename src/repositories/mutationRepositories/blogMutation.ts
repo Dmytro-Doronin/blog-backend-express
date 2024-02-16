@@ -1,21 +1,16 @@
 import {
-    BlogInputModelType,
     BlogViewModelType,
-    CreatePostToBlogType,
     PostViewModelType
 } from "../../types/commonBlogTypeAndPosts.types";
-import {blogMapper, postMapper} from "../../utils/mapper";
 
-import {client} from "../../db/db";
 import {ChangeBlogByIdTypes} from "../../services/serviceTypes/blogsTypes";
-// import {dbPostCollections} from "../../db/dbCollections";
-import {blogQuery} from "../queryRepositories/blogQuery";
+
 import {BlogModel, PostModel} from "../../db/schemes";
 const { v4: uuidv4 } = require('uuid');
 
 
 
-export const blogMutation = {
+export class BlogMutation  {
     async createBlogInDb (newBlog : BlogViewModelType) {
         try {
             await BlogModel.create(newBlog)
@@ -30,7 +25,7 @@ export const blogMutation = {
             throw new Error('Blog was not created')
         }
 
-    },
+    }
 
     async createPostToBlogInDb (post: PostViewModelType) {
 
@@ -49,7 +44,7 @@ export const blogMutation = {
             throw new Error('Blog was not created')
         }
 
-    },
+    }
 
     async changeBlogByIdInDb ({id ,name, description, websiteUrl}: ChangeBlogByIdTypes) {
 
@@ -72,7 +67,7 @@ export const blogMutation = {
         } catch (e) {
             throw new Error('Blog was not changed by id')
         }
-    },
+    }
 
     async deleteBlogByIdInDb (id: string) {
 
@@ -84,5 +79,19 @@ export const blogMutation = {
         } catch (e) {
             throw new Error('Blog was nod deleted')
         }
+    }
+
+    async getBlogByIdInDb (id: string): Promise<BlogViewModelType | null>  {
+
+        try {
+            const blog = await BlogModel.findOne({id: id}).lean()
+            if (!blog) {
+                return null
+            }
+            return blog
+        } catch (e) {
+            throw new Error('Blog was not found')
+        }
+
     }
 }

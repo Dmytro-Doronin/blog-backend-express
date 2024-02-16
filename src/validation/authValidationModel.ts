@@ -1,8 +1,6 @@
 import {body} from "express-validator";
-import {blogQuery} from "../repositories/queryRepositories/blogQuery";
 import {userQuery} from "../repositories/queryRepositories/userQuery";
 import {authQuery} from "../repositories/queryRepositories/authQuery";
-import {authMutation} from "../repositories/mutationRepositories/authMutation";
 
 export const authLogin = body('login')
     .isString()

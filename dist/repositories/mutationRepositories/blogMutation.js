@@ -9,10 +9,10 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
     });
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.blogMutation = void 0;
+exports.BlogMutation = void 0;
 const schemes_1 = require("../../db/schemes");
 const { v4: uuidv4 } = require('uuid');
-exports.blogMutation = {
+class BlogMutation {
     createBlogInDb(newBlog) {
         return __awaiter(this, void 0, void 0, function* () {
             try {
@@ -27,7 +27,7 @@ exports.blogMutation = {
                 throw new Error('Blog was not created');
             }
         });
-    },
+    }
     createPostToBlogInDb(post) {
         return __awaiter(this, void 0, void 0, function* () {
             try {
@@ -42,7 +42,7 @@ exports.blogMutation = {
                 throw new Error('Blog was not created');
             }
         });
-    },
+    }
     changeBlogByIdInDb({ id, name, description, websiteUrl }) {
         return __awaiter(this, void 0, void 0, function* () {
             try {
@@ -59,7 +59,7 @@ exports.blogMutation = {
                 throw new Error('Blog was not changed by id');
             }
         });
-    },
+    }
     deleteBlogByIdInDb(id) {
         return __awaiter(this, void 0, void 0, function* () {
             try {
@@ -71,4 +71,19 @@ exports.blogMutation = {
             }
         });
     }
-};
+    getBlogByIdInDb(id) {
+        return __awaiter(this, void 0, void 0, function* () {
+            try {
+                const blog = yield schemes_1.BlogModel.findOne({ id: id }).lean();
+                if (!blog) {
+                    return null;
+                }
+                return blog;
+            }
+            catch (e) {
+                throw new Error('Blog was not found');
+            }
+        });
+    }
+}
+exports.BlogMutation = BlogMutation;

@@ -9,12 +9,13 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
     });
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.blogsService = void 0;
-const blogMutation_1 = require("../../repositories/mutationRepositories/blogMutation");
-const blogQuery_1 = require("../../repositories/queryRepositories/blogQuery");
+exports.BlogsService = void 0;
 const mapper_1 = require("../../utils/mapper");
 const { v4: uuidv4 } = require('uuid');
-exports.blogsService = {
+class BlogsService {
+    constructor(blogMutation) {
+        this.blogMutation = blogMutation;
+    }
     createBlogService({ name, description, websiteUrl }) {
         return __awaiter(this, void 0, void 0, function* () {
             const newBlog = {
@@ -25,26 +26,26 @@ exports.blogsService = {
                 createdAt: new Date().toISOString(),
                 isMembership: false
             };
-            const blog = yield blogMutation_1.blogMutation.createBlogInDb(newBlog);
+            const blog = yield this.blogMutation.createBlogInDb(newBlog);
             if (!blog) {
                 return null;
             }
             return (0, mapper_1.blogMapper)(blog);
         });
-    },
+    }
     changeBlogByIdService({ id, name, description, websiteUrl }) {
         return __awaiter(this, void 0, void 0, function* () {
-            return yield blogMutation_1.blogMutation.changeBlogByIdInDb({ id, name, description, websiteUrl });
+            return yield this.blogMutation.changeBlogByIdInDb({ id, name, description, websiteUrl });
         });
-    },
+    }
     deleteBlogByIdService(id) {
         return __awaiter(this, void 0, void 0, function* () {
-            return yield blogMutation_1.blogMutation.deleteBlogByIdInDb(id);
+            return yield this.blogMutation.deleteBlogByIdInDb(id);
         });
-    },
+    }
     createPostToBlogService({ id }, { title, shortDescription, content }) {
         return __awaiter(this, void 0, void 0, function* () {
-            const blog = yield blogQuery_1.blogQuery.getBlogByIdInDb(id);
+            const blog = yield this.blogMutation.getBlogByIdInDb(id);
             if (!blog) {
                 return null;
             }
@@ -57,11 +58,12 @@ exports.blogsService = {
                 createdAt: (new Date().toISOString()),
                 blogName: blog.name
             };
-            const postFromDb = yield blogMutation_1.blogMutation.createPostToBlogInDb(newPost);
+            const postFromDb = yield this.blogMutation.createPostToBlogInDb(newPost);
             if (!postFromDb) {
                 return null;
             }
             return (0, mapper_1.postMapper)(postFromDb);
         });
     }
-};
+}
+exports.BlogsService = BlogsService;

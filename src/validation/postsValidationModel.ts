@@ -1,5 +1,7 @@
 import {body} from 'express-validator'
-import {blogQuery} from "../repositories/queryRepositories/blogQuery";
+import {BlogQuery} from "../repositories/queryRepositories/blogQuery";
+
+const blogQuery = new BlogQuery()
 
 export const postTitle = body('title')
     .isString()

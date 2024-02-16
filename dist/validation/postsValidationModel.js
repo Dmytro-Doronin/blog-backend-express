@@ -12,6 +12,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.likeStatusModelMiddleware = exports.createCommentToPostModelMiddleware = exports.createPostToBlogModelMiddleware = exports.postsValidationModelMiddleware = exports.likeStatus = exports.commentContent = exports.postBlogId = exports.postContent = exports.postShortDescription = exports.postTitle = void 0;
 const express_validator_1 = require("express-validator");
 const blogQuery_1 = require("../repositories/queryRepositories/blogQuery");
+const blogQuery = new blogQuery_1.BlogQuery();
 exports.postTitle = (0, express_validator_1.body)('title')
     .isString()
     .trim()
@@ -28,7 +29,7 @@ exports.postBlogId = (0, express_validator_1.body)('blogId')
     .isString()
     .trim()
     .custom((value) => __awaiter(void 0, void 0, void 0, function* () {
-    const blog = yield blogQuery_1.blogQuery.getBlogByIdInDb(value);
+    const blog = yield blogQuery.getBlogByIdInDb(value);
     if (!blog) {
         throw new Error('Incorrect blogId');
     }

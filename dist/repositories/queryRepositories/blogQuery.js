@@ -9,11 +9,11 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
     });
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.blogQuery = void 0;
+exports.BlogQuery = void 0;
 const mapper_1 = require("../../utils/mapper");
 const sortUtils_1 = require("../../utils/sortUtils");
 const schemes_1 = require("../../db/schemes");
-exports.blogQuery = {
+class BlogQuery {
     getAllBlogInDb(sortData) {
         var _a, _b, _c, _d, _e;
         return __awaiter(this, void 0, void 0, function* () {
@@ -49,7 +49,7 @@ exports.blogQuery = {
                 throw new Error('Does not get all blogs');
             }
         });
-    },
+    }
     getAllPostsInBlogFromDb(blogId, sortData) {
         var _a, _b, _c, _d;
         return __awaiter(this, void 0, void 0, function* () {
@@ -78,7 +78,7 @@ exports.blogQuery = {
                 throw new Error('Posts was not get');
             }
         });
-    },
+    }
     getBlogByIdInDb(id) {
         return __awaiter(this, void 0, void 0, function* () {
             try {
@@ -92,5 +92,6 @@ exports.blogQuery = {
                 throw new Error('Blog was not found');
             }
         });
-    },
-};
+    }
+}
+exports.BlogQuery = BlogQuery;
