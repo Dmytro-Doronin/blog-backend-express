@@ -100,6 +100,8 @@ export type LikesType = {
     id: string,
     userId: string,
     targetId: string,
+    target: string
+    newestPostLikes: string[]
     type: likeStatusType ,
 }
 

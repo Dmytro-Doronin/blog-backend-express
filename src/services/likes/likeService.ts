@@ -5,19 +5,21 @@ const { v4: uuidv4 } = require('uuid');
 
 export const likeService = {
 
-    async createLike(commentId: string, likeStatus: likeStatusType, userId: string) {
+    async createLike(commentId: string, likeStatus: likeStatusType, userId: string, target: string) {
 
         const liseData: LikesType = {
             id: uuidv4(),
             userId,
             targetId: commentId,
+            target,
+            newestPostLikes: [],
             type: likeStatus
         }
         return await likeMutation.createLike(liseData)
 
     },
 
-    async changeLikeStatus (commentId: string, likeStatus: likeStatusType, userId: string) {
-        return await likeMutation.updateLike(userId, commentId, likeStatus)
+    async changeLikeStatus (commentId: string, likeStatus: likeStatusType, userId: string, target: string) {
+        return await likeMutation.updateLike(userId, commentId, likeStatus, target)
     }
 }

@@ -5,7 +5,7 @@ import {errorMiddleware} from "../middleware/blogsMiddleware";
 import {
     changeCommentByIdController,
     deleteCommentByIdController,
-    getCommentByIdController, setLikeStatusController
+    getCommentByIdController, setLikeStatusForCommentsController
 } from "../controllers/commentsController";
 
 
@@ -13,5 +13,5 @@ export const commentRouter = Router()
 
 commentRouter.get('/:id', customAuthMiddlewareWithBearer, getCommentByIdController)
 commentRouter.put('/:id', authMiddlewareWithBearer, createCommentToPostModelMiddleware(), errorMiddleware, changeCommentByIdController)
-commentRouter.put('/:id/like-status', authMiddlewareWithBearer, likeStatusModelMiddleware(), errorMiddleware, setLikeStatusController)
+commentRouter.put('/:id/like-status', authMiddlewareWithBearer, likeStatusModelMiddleware(), errorMiddleware, setLikeStatusForCommentsController)
 commentRouter.delete('/:id', authMiddlewareWithBearer, deleteCommentByIdController )

@@ -36,7 +36,7 @@ export const likeMutation = {
         }
     },
 
-    async updateLike(userId: string ,commentId: string, likeStatus: likeStatusType ) {
+    async updateLike(userId: string ,commentId: string, likeStatus: likeStatusType, target: string ) {
 
         try {
             const result = await LikeModel.updateOne(

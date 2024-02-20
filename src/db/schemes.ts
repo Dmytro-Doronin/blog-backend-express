@@ -61,9 +61,10 @@ export const LikeSchema = new mongoose.Schema<WithId<LikesType>>({
     id: { type: String, required: true },
     userId: { type: String, ref: 'User', required: true },
     targetId: { type: String, required: true },
+    target: { type: String, enum: ['Comment', 'Dislike'], required: true },
+    newestPostLikes: { type: [String], default: [] },
     type: { type: String, enum: ['Like', 'Dislike', 'None'], required: true },
 });
-
 
 export const BlackListSchema = new mongoose.Schema<WithId<BlackListOfTokenType>>({
     token: {type: String, required: true}

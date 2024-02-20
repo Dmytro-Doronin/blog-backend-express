@@ -75,8 +75,8 @@ export const deleteCommentByIdController = async (req: RequestWithParams<ParamsT
     return
 }
 
-export const setLikeStatusController = async (req: RequestWithParamsAndBody<ParamsType, LikeStatusType> , res: Response) => {
-
+export const setLikeStatusForCommentsController = async (req: RequestWithParamsAndBody<ParamsType, LikeStatusType> , res: Response) => {
+    const target = "Comment"
     const commentId = req.params.id
     const likeStatus = req.body.likeStatus
     const userId = req.userId
@@ -91,7 +91,7 @@ export const setLikeStatusController = async (req: RequestWithParamsAndBody<Para
     const likeOrDislike = await likeMutation.getLike(userId, commentId)
 
     if (!likeOrDislike) {
-        await likeService.createLike(commentId, likeStatus, userId)
+        await likeService.createLike(commentId, likeStatus, userId, target)
         res.sendStatus(204)
         return
     }
@@ -101,7 +101,7 @@ export const setLikeStatusController = async (req: RequestWithParamsAndBody<Para
         return
     }
 
-    const result = await likeService.changeLikeStatus(commentId, likeStatus, userId)
+    const result = await likeService.changeLikeStatus(commentId, likeStatus, userId, target)
 
     // if (!result) {
     //     res.sendStatus(404)
