@@ -13,20 +13,22 @@ exports.likeService = void 0;
 const likeMutation_1 = require("../../repositories/mutationRepositories/likeMutation");
 const { v4: uuidv4 } = require('uuid');
 exports.likeService = {
-    createLike(commentId, likeStatus, userId) {
+    createLike(commentId, likeStatus, userId, target) {
         return __awaiter(this, void 0, void 0, function* () {
             const liseData = {
                 id: uuidv4(),
                 userId,
                 targetId: commentId,
+                target,
+                newestPostLikes: [],
                 type: likeStatus
             };
             return yield likeMutation_1.likeMutation.createLike(liseData);
         });
     },
-    changeLikeStatus(commentId, likeStatus, userId) {
+    changeLikeStatus(commentId, likeStatus, userId, target) {
         return __awaiter(this, void 0, void 0, function* () {
-            return yield likeMutation_1.likeMutation.updateLike(userId, commentId, likeStatus);
+            return yield likeMutation_1.likeMutation.updateLike(userId, commentId, likeStatus, target);
         });
     }
 };

@@ -47,10 +47,10 @@ exports.likeMutation = {
             }
         });
     },
-    updateLike(userId, commentId, likeStatus) {
+    updateLike(userId, commentId, likeStatus, target) {
         return __awaiter(this, void 0, void 0, function* () {
             try {
-                const result = yield schemes_1.LikeModel.updateOne({ userId, targetId: commentId }, {
+                const result = yield schemes_1.LikeModel.updateOne({ userId, targetId: commentId, target }, {
                     $set: { type: likeStatus }
                 });
                 return result.modifiedCount === 1;

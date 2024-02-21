@@ -1,6 +1,6 @@
 import {Request, Response} from "express";
 import {
-    BlogInputModelType, CommentInputModelType, CommentsOutputModelType, ParamsType,
+    BlogInputModelType, CommentInputModelType, CommentsOutputModelType, LikeStatusType, ParamsType,
     PostInputModelType, PostsOutputModelType,
     RequestWithBody,
     RequestWithParams, RequestWithParamsAndBody, RequestWithParamsAndQuery, RequestWithQuery, ResponseWithData
@@ -9,6 +9,10 @@ import {postQuery} from "../repositories/queryRepositories/postQuery";
 import {postsService} from "../services/posts/postsService";
 import {QueryCommentsInputModel, QueryPostInputModel} from "../types/posts/queryPosts.types";
 import {commentsService} from "../services/comments/commentsService";
+import {commentMutation} from "../repositories/mutationRepositories/commentMutation";
+import {likeMutation} from "../repositories/mutationRepositories/likeMutation";
+import {likeService} from "../services/likes/likeService";
+import {postMutation} from "../repositories/mutationRepositories/postMutation";
 
 
 export const getAllPostsController = async (req: RequestWithQuery<QueryPostInputModel>, res: ResponseWithData<PostsOutputModelType>) => {
@@ -114,4 +118,41 @@ export const getAllCommentsForPostController = async (req: RequestWithParamsAndQ
     const comments = await postsService.getAllCommentsForPostService(postId, sortData, userId)
 
     return res.status(200).send(comments)
+}
+
+export const setLikeStatusForPostsController = async (req: RequestWithParamsAndBody<ParamsType, LikeStatusType> , res: Response) => {
+    const target = "Post"
+    const postId = req.params.id
+    const likeStatus = req.body.likeStatus
+    const userId = req.userId
+
+    const post = await postMutation.getPostById(postId)
+
+    if (!post) {
+        res.sendStatus(404)
+        return
+    }
+
+    const likeOrDislike = await likeMutation.getLike(userId, postId)
+
+    if (!likeOrDislike) {
+        await likeService.createLike(postId, likeStatus, userId, target)
+        res.sendStatus(204)
+        return
+    }
+
+    if (likeStatus === likeOrDislike.type) {
+        res.sendStatus(204)
+        return
+    }
+
+    const result = await likeService.changeLikeStatus(postId, likeStatus, userId, target)
+
+    if (!result) {
+        res.sendStatus(404)
+        return
+    }
+
+    res.sendStatus(204)
+    return
 }

@@ -14,6 +14,20 @@ const schemes_1 = require("../../db/schemes");
 const sortUtils_1 = require("../../utils/sortUtils");
 //export const dbPostCollections = client.db('Blogs').collection<PostViewModelType>('posts')
 exports.postMutation = {
+    getPostById(id) {
+        return __awaiter(this, void 0, void 0, function* () {
+            try {
+                const result = yield schemes_1.PostModel.findOne({ id: id }).lean();
+                if (!result) {
+                    return null;
+                }
+                return result;
+            }
+            catch (e) {
+                throw new Error('Post was not found');
+            }
+        });
+    },
     createPostInDb(newPost) {
         return __awaiter(this, void 0, void 0, function* () {
             try {

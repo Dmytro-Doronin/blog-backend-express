@@ -103,10 +103,10 @@ export const setLikeStatusForCommentsController = async (req: RequestWithParamsA
 
     const result = await likeService.changeLikeStatus(commentId, likeStatus, userId, target)
 
-    // if (!result) {
-    //     res.sendStatus(404)
-    //     return
-    // }
+    if (!result) {
+        res.sendStatus(404)
+        return
+    }
 
     res.sendStatus(204)
     return

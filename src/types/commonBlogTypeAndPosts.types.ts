@@ -96,12 +96,18 @@ export type commentsDBType = {
 
 export type likeStatusType = 'Like' | 'Dislike' | 'None'
 
+type newestLikesType = {
+    addedAt: string,
+    userId: string,
+    login: string,
+}
+
 export type LikesType = {
     id: string,
     userId: string,
     targetId: string,
     target: string
-    newestPostLikes: string[]
+    newestPostLikes: newestLikesType[]
     type: likeStatusType ,
 }
 

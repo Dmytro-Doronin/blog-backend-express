@@ -61,8 +61,14 @@ export const LikeSchema = new mongoose.Schema<WithId<LikesType>>({
     id: { type: String, required: true },
     userId: { type: String, ref: 'User', required: true },
     targetId: { type: String, required: true },
-    target: { type: String, enum: ['Comment', 'Dislike'], required: true },
-    newestPostLikes: { type: [String], default: [] },
+    target: { type: String, enum: ['Comment', 'Post'], required: true },
+    newestPostLikes: [
+        {
+            addedAt: { type: String, required: true, default: (new Date().toISOString()) },
+            userId: { type: String, required: true },
+            login: { type: String, required: true },
+        }
+    ],
     type: { type: String, enum: ['Like', 'Dislike', 'None'], required: true },
 });
 

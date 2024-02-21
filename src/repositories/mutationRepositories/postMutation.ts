@@ -9,6 +9,19 @@ import {QueryCommentsInputModel} from "../../types/posts/queryPosts.types";
 //export const dbPostCollections = client.db('Blogs').collection<PostViewModelType>('posts')
 
 export const postMutation = {
+    async getPostById (id: string) {
+        try {
+            const result = await PostModel.findOne({id: id}).lean()
+
+            if (!result) {
+                return null
+            }
+            return result
+        } catch (e) {
+            throw new Error('Post was not found')
+        }
+
+    },
     async createPostInDb (newPost : PostViewModelType) {
         try {
 

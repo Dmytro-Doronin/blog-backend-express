@@ -9,5 +9,5 @@ const commentsController_1 = require("../controllers/commentsController");
 exports.commentRouter = (0, express_1.Router)();
 exports.commentRouter.get('/:id', authMiddlewareWithBearer_1.customAuthMiddlewareWithBearer, commentsController_1.getCommentByIdController);
 exports.commentRouter.put('/:id', authMiddlewareWithBearer_1.authMiddlewareWithBearer, (0, postsValidationModel_1.createCommentToPostModelMiddleware)(), blogsMiddleware_1.errorMiddleware, commentsController_1.changeCommentByIdController);
-exports.commentRouter.put('/:id/like-status', authMiddlewareWithBearer_1.authMiddlewareWithBearer, (0, postsValidationModel_1.likeStatusModelMiddleware)(), blogsMiddleware_1.errorMiddleware, commentsController_1.setLikeStatusController);
+exports.commentRouter.put('/:id/like-status', authMiddlewareWithBearer_1.authMiddlewareWithBearer, (0, postsValidationModel_1.likeStatusModelMiddleware)(), blogsMiddleware_1.errorMiddleware, commentsController_1.setLikeStatusForCommentsController);
 exports.commentRouter.delete('/:id', authMiddlewareWithBearer_1.authMiddlewareWithBearer, commentsController_1.deleteCommentByIdController);

@@ -40,7 +40,7 @@ export const likeMutation = {
 
         try {
             const result = await LikeModel.updateOne(
-                {userId, targetId: commentId},
+                {userId, targetId: commentId, target},
                 {
                     $set: {type: likeStatus}
                 }

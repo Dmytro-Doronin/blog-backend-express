@@ -9,7 +9,7 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
     });
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.setLikeStatusController = exports.deleteCommentByIdController = exports.changeCommentByIdController = exports.getCommentByIdController = void 0;
+exports.setLikeStatusForCommentsController = exports.deleteCommentByIdController = exports.changeCommentByIdController = exports.getCommentByIdController = void 0;
 const commentQuery_1 = require("../repositories/queryRepositories/commentQuery");
 const commentsService_1 = require("../services/comments/commentsService");
 const likeService_1 = require("../services/likes/likeService");
@@ -62,7 +62,8 @@ const deleteCommentByIdController = (req, res) => __awaiter(void 0, void 0, void
     return;
 });
 exports.deleteCommentByIdController = deleteCommentByIdController;
-const setLikeStatusController = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+const setLikeStatusForCommentsController = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    const target = "Comment";
     const commentId = req.params.id;
     const likeStatus = req.body.likeStatus;
     const userId = req.userId;
@@ -73,7 +74,7 @@ const setLikeStatusController = (req, res) => __awaiter(void 0, void 0, void 0, 
     }
     const likeOrDislike = yield likeMutation_1.likeMutation.getLike(userId, commentId);
     if (!likeOrDislike) {
-        yield likeService_1.likeService.createLike(commentId, likeStatus, userId);
+        yield likeService_1.likeService.createLike(commentId, likeStatus, userId, target);
         res.sendStatus(204);
         return;
     }
@@ -81,12 +82,12 @@ const setLikeStatusController = (req, res) => __awaiter(void 0, void 0, void 0, 
         res.sendStatus(204);
         return;
     }
-    const result = yield likeService_1.likeService.changeLikeStatus(commentId, likeStatus, userId);
-    // if (!result) {
-    //     res.sendStatus(404)
-    //     return
-    // }
+    const result = yield likeService_1.likeService.changeLikeStatus(commentId, likeStatus, userId, target);
+    if (!result) {
+        res.sendStatus(404);
+        return;
+    }
     res.sendStatus(204);
     return;
 });
-exports.setLikeStatusController = setLikeStatusController;
+exports.setLikeStatusForCommentsController = setLikeStatusForCommentsController;
