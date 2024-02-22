@@ -2,7 +2,7 @@ import {
     BlogInputModelType,
     BlogViewModelType,
     CreatePostToBlogType,
-    ParamsType, PostViewModelType
+    ParamsType, PostDbModelType, PostViewModelType
 } from "../../types/commonBlogTypeAndPosts.types";
 import {BlogMutation} from "../../repositories/mutationRepositories/blogMutation";
 import {ChangeBlogByIdTypes} from "../serviceTypes/blogsTypes";
@@ -50,7 +50,7 @@ export class BlogsService {
             return null
         }
 
-        const newPost: PostViewModelType = {
+        const newPost: PostDbModelType = {
             id: uuidv4(),
             title,
             shortDescription,

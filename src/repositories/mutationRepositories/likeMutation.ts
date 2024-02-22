@@ -42,7 +42,7 @@ export const likeMutation = {
             const result = await LikeModel.updateOne(
                 {userId, targetId: commentId, target},
                 {
-                    $set: {type: likeStatus}
+                    $set: {type: likeStatus, addedAt: (new Date().toISOString())}
                 }
             )
             return result.modifiedCount === 1;

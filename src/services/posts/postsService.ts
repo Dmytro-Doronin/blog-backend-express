@@ -1,21 +1,29 @@
 import {
     CommentsOutputModelType,
-    CommentsPaginationDbModelType, likeStatusType,
+    CommentsPaginationDbModelType, likeStatusType, PostDbMappedModelType, PostDbModelType,
     PostInputModelType,
     PostViewModelType
 } from "../../types/commonBlogTypeAndPosts.types";
 import {postMutation} from "../../repositories/mutationRepositories/postMutation";
 import {CreatePostsServiceType} from "../serviceTypes/postsTypes";
 import {BlogQuery} from "../../repositories/queryRepositories/blogQuery";
-import {QueryCommentsInputModel} from "../../types/posts/queryPosts.types";
+import {QueryCommentsInputModel, QueryPostInputModel} from "../../types/posts/queryPosts.types";
 import {likeMutation} from "../../repositories/mutationRepositories/likeMutation";
 import {postMapper} from "../../utils/mapper";
+import {LikeModel, PostModel} from "../../db/schemes";
+import {filterForSort} from "../../utils/sortUtils";
 const { v4: uuidv4 } = require('uuid');
 
 
 const blogQuery = new BlogQuery()
 
 export const postsService = {
+    async getAllPosts (sortData: QueryPostInputModel, userId: string, blogId: null | string = null) {
+        const posts: PostDbMappedModelType = await postMutation.getAllPosts(sortData, blogId)
+
+        return this._mapPosts(posts, userId)
+
+    },
     async createPostService ({title, shortDescription, content, blogId}: PostInputModelType) {
 
         const blog = await blogQuery.getBlogByIdInDb(blogId)
@@ -24,7 +32,7 @@ export const postsService = {
             return null
         }
 
-        const newPost: PostViewModelType = {
+        const newPost: PostDbModelType = {
             id: uuidv4(),
             title,
             shortDescription,
@@ -55,9 +63,9 @@ export const postsService = {
 
         const comments: CommentsPaginationDbModelType = await postMutation.getAllCommentForPostFromDb(postId, sortData)
 
-        return this._mapService(comments, userId)
+        return this._mapCommentService(comments, userId)
     },
-    async _mapService (comments: CommentsPaginationDbModelType, userId: string): Promise<CommentsOutputModelType> {
+    async _mapCommentService (comments: CommentsPaginationDbModelType, userId: string): Promise<CommentsOutputModelType> {
 
         const mappedItems = await Promise.all(comments.items.map(async (item) => {
             let status: likeStatusType | undefined
@@ -90,6 +98,60 @@ export const postsService = {
             page: comments.page,
             pageSize: comments.pageSize,
             totalCount: comments.totalCount,
+            items: mappedItems
+        };
+    },
+    async _mapPosts (posts: PostDbMappedModelType, userId: string) {
+        const mappedItems = await Promise.all(posts.items.map(async (item) => {
+            let status: likeStatusType | undefined
+
+            if (userId) {
+                const likeForCurrentComment = await likeMutation.getLike(userId, item.id);
+                status = likeForCurrentComment?.type
+            }
+
+
+            const allLikesAndDislikesForCurrentComment = await likeMutation.getAllLikesAndDislikesForComment(item.id);
+            const likes = allLikesAndDislikesForCurrentComment.filter(item => item.type === "Like");
+            const dislikes = allLikesAndDislikesForCurrentComment.filter(item => item.type === "Dislike");
+
+
+            const likesFromDb = await LikeModel
+                .find({type: 'Like'})
+                .sort({['addedAt']: 1})
+                .limit(3)
+                .lean()
+
+            const newestLikes = likesFromDb.map(item => {
+                return {
+                    addedAt: item.addedAt,
+                    userId: item.userId,
+                    login: item.login
+                }
+            })
+
+            return {
+                id: item.id,
+                title: item.title,
+                shortDescription: item.shortDescription,
+                content: item.content,
+                blogId: item.blogId,
+                blogName: item.blogName,
+                createdAt: item.createdAt,
+                extendedLikesInfo: {
+                    likesCount: likes.length ?? 0,
+                    dislikesCount: dislikes.length ?? 0,
+                    myStatus: status ?? "None",
+                    newestLikes : newestLikes
+                }
+            };
+        }));
+
+        return {
+            pagesCount: posts.pagesCount,
+            page: posts.page,
+            pageSize: posts.pageSize,
+            totalCount: posts.totalCount,
             items: mappedItems
         };
     }

@@ -14,6 +14,42 @@ const schemes_1 = require("../../db/schemes");
 const sortUtils_1 = require("../../utils/sortUtils");
 //export const dbPostCollections = client.db('Blogs').collection<PostViewModelType>('posts')
 exports.postMutation = {
+    getAllPosts(sortData, blogId = null) {
+        var _a, _b, _c, _d;
+        return __awaiter(this, void 0, void 0, function* () {
+            const sortBy = (_a = sortData.sortBy) !== null && _a !== void 0 ? _a : 'createdAt';
+            const sortDirection = (_b = sortData.sortDirection) !== null && _b !== void 0 ? _b : 'desc';
+            const pageNumber = (_c = sortData.pageNumber) !== null && _c !== void 0 ? _c : 1;
+            const pageSize = (_d = sortData.pageSize) !== null && _d !== void 0 ? _d : 10;
+            let filter;
+            if (blogId) {
+                filter = { blogId: blogId };
+            }
+            else {
+                filter = {};
+            }
+            try {
+                const posts = yield schemes_1.PostModel
+                    .find(filter)
+                    .sort((0, sortUtils_1.filterForSort)(sortBy, sortDirection))
+                    .skip((+pageNumber - 1) * +pageSize)
+                    .limit(+pageSize)
+                    .lean();
+                const totalCount = yield schemes_1.PostModel.countDocuments({});
+                const pagesCount = Math.ceil(totalCount / +pageSize);
+                return {
+                    pagesCount,
+                    page: +pageNumber,
+                    pageSize: +pageSize,
+                    totalCount,
+                    items: posts
+                };
+            }
+            catch (e) {
+                throw new Error('Posts was not get');
+            }
+        });
+    },
     getPostById(id) {
         return __awaiter(this, void 0, void 0, function* () {
             try {

@@ -51,7 +51,7 @@ exports.likeMutation = {
         return __awaiter(this, void 0, void 0, function* () {
             try {
                 const result = yield schemes_1.LikeModel.updateOne({ userId, targetId: commentId, target }, {
-                    $set: { type: likeStatus }
+                    $set: { type: likeStatus, addedAt: (new Date().toISOString()) }
                 });
                 return result.modifiedCount === 1;
             }

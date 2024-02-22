@@ -18,7 +18,7 @@ import {authMiddlewareWithBearer, customAuthMiddlewareWithBearer} from "../middl
 export const postsRouter = Router()
 
 //basic
-postsRouter.get('/', getAllPostsController)
+postsRouter.get('/',customAuthMiddlewareWithBearer , getAllPostsController)
 postsRouter.post('/',authMiddleware, postsValidationModelMiddleware(), errorMiddleware, createNewPostController)
 
 //by id

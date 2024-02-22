@@ -10,6 +10,30 @@ export type BlogViewModelType = {
     isMembership: boolean
 }
 
+type newestLikesTypes =  {
+    addedAt: string
+    userId: string
+    login: string
+}
+
+export type PostDbModelType = {
+    id:	string
+    title: string
+    shortDescription: string
+    content: string
+    blogId:	string
+    blogName: string
+    createdAt: string
+}
+
+export type PostDbMappedModelType = {
+    pagesCount?: number
+    page?: number
+    pageSize?: number
+    totalCount?: number
+    items: PostDbModelType[]
+}
+
 export type PostViewModelType = {
     id:	string
     title: string
@@ -18,6 +42,12 @@ export type PostViewModelType = {
     blogId:	string
     blogName: string
     createdAt: string
+    extendedLikesInfo: {
+        likesCount: number,
+        dislikesCount: number,
+        myStatus: likeStatusType,
+        newestLikes: newestLikesTypes[]
+    }
 }
 
 export type UserViewModel = {
@@ -80,7 +110,7 @@ export type CommentViewModelType = {
     "likesInfo": {
         "likesCount": number,
         "dislikesCount": number,
-        "myStatus": "None" | "Like" | "Dislike"
+        "myStatus": likeStatusType
     }
 }
 
@@ -105,17 +135,28 @@ type newestLikesType = {
 export type LikesType = {
     id: string,
     userId: string,
+    login: string
     targetId: string,
     target: string
-    newestPostLikes: newestLikesType[]
-    type: likeStatusType ,
+    addedAt: string,
+    type: likeStatusType,
 }
 
 // export type commentsDBType = CommentViewModelType & {postId: string}
 
 export type BlogInputModelType = Omit<BlogViewModelType, 'id' | 'createdAt' | 'isMembership'>
-export type PostInputModelType = Omit<PostViewModelType, 'id' | 'blogName' | 'createdAt'>
-export type CreatePostToBlogType = Omit<PostViewModelType, 'id' | 'blogName' | 'createdAt' | 'blogId'>
+export type PostInputModelType = {
+    title: string,
+    shortDescription: string,
+    content: string,
+    blogId: string
+}
+export type CreatePostToBlogType = {
+    title: string,
+    shortDescription: string,
+    content: string
+}
+
 export type UsersInputModelType = {
     login: string
     password: string

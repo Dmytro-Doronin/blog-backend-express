@@ -3,7 +3,7 @@ import { WithId } from 'mongodb'
 import {
     BlackListOfTokenType,
     BlogViewModelType,
-    commentsDBType, DeviceDBType, LikesType,
+    commentsDBType, DeviceDBType, LikesType, PostDbModelType,
     PostViewModelType,
     userDBType
 } from "../types/commonBlogTypeAndPosts.types";
@@ -16,7 +16,7 @@ export const BlogScheme = new mongoose.Schema<WithId<BlogViewModelType>>({
     isMembership: {type: Boolean, required: true }
 })
 
-export const PostSchema = new mongoose.Schema<WithId<PostViewModelType>>({
+export const PostSchema = new mongoose.Schema<WithId<PostDbModelType>>({
     id:	{type: String, required: true},
     title: {type: String, required: true},
     shortDescription: {type: String, required: true},
@@ -60,15 +60,10 @@ export const CommentSchema = new mongoose.Schema<WithId<commentsDBType>>({
 export const LikeSchema = new mongoose.Schema<WithId<LikesType>>({
     id: { type: String, required: true },
     userId: { type: String, ref: 'User', required: true },
+    login: { type: String, required: true },
     targetId: { type: String, required: true },
     target: { type: String, enum: ['Comment', 'Post'], required: true },
-    newestPostLikes: [
-        {
-            addedAt: { type: String, required: true, default: (new Date().toISOString()) },
-            userId: { type: String, required: true },
-            login: { type: String, required: true },
-        }
-    ],
+    addedAt: { type: String, required: true, default: (new Date().toISOString()) },
     type: { type: String, enum: ['Like', 'Dislike', 'None'], required: true },
 });
 
@@ -92,7 +87,7 @@ export const RateSchema = new mongoose.Schema<WithId<{IP:any, URL: any, date: Da
 })
 
 export const BlogModel = mongoose.model<WithId<BlogViewModelType>>('blogs', BlogScheme)
-export const PostModel = mongoose.model<WithId<PostViewModelType>>('posts', PostSchema )
+export const PostModel = mongoose.model<WithId<PostDbModelType>>('posts', PostSchema )
 export const UserModel = mongoose.model<WithId<userDBType>>('users', UserSchema)
 export const CommentModel = mongoose.model<WithId<commentsDBType>>('comments', CommentSchema)
 export const BlackListModel = mongoose.model<WithId<BlackListOfTokenType>>('blackListOfToken', BlackListSchema)

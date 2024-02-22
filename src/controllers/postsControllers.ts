@@ -1,7 +1,7 @@
 import {Request, Response} from "express";
 import {
     BlogInputModelType, CommentInputModelType, CommentsOutputModelType, LikeStatusType, ParamsType,
-    PostInputModelType, PostsOutputModelType,
+    PostInputModelType, PostsOutputModelType, PostViewModelType,
     RequestWithBody,
     RequestWithParams, RequestWithParamsAndBody, RequestWithParamsAndQuery, RequestWithQuery, ResponseWithData
 } from "../types/commonBlogTypeAndPosts.types";
@@ -17,6 +17,8 @@ import {postMutation} from "../repositories/mutationRepositories/postMutation";
 
 export const getAllPostsController = async (req: RequestWithQuery<QueryPostInputModel>, res: ResponseWithData<PostsOutputModelType>) => {
 
+    const userId = req.userId
+
     const sortData = {
         sortBy: req.query.sortBy,
         sortDirection: req.query.sortDirection,
@@ -24,7 +26,7 @@ export const getAllPostsController = async (req: RequestWithQuery<QueryPostInput
         pageSize: req.query.pageSize
     }
 
-    const result = await postQuery.getAllPostsFromDb(sortData)
+    const result: PostsOutputModelType = await postsService.getAllPosts(sortData, userId)
     return res.status(200).send(result)
 
 }

@@ -14,9 +14,16 @@ const postMutation_1 = require("../../repositories/mutationRepositories/postMuta
 const blogQuery_1 = require("../../repositories/queryRepositories/blogQuery");
 const likeMutation_1 = require("../../repositories/mutationRepositories/likeMutation");
 const mapper_1 = require("../../utils/mapper");
+const schemes_1 = require("../../db/schemes");
 const { v4: uuidv4 } = require('uuid');
 const blogQuery = new blogQuery_1.BlogQuery();
 exports.postsService = {
+    getAllPosts(sortData, userId, blogId = null) {
+        return __awaiter(this, void 0, void 0, function* () {
+            const posts = yield postMutation_1.postMutation.getAllPosts(sortData, blogId);
+            return this._mapPosts(posts, userId);
+        });
+    },
     createPostService({ title, shortDescription, content, blogId }) {
         return __awaiter(this, void 0, void 0, function* () {
             const blog = yield blogQuery.getBlogByIdInDb(blogId);
@@ -52,10 +59,10 @@ exports.postsService = {
     getAllCommentsForPostService(postId, sortData, userId) {
         return __awaiter(this, void 0, void 0, function* () {
             const comments = yield postMutation_1.postMutation.getAllCommentForPostFromDb(postId, sortData);
-            return this._mapService(comments, userId);
+            return this._mapCommentService(comments, userId);
         });
     },
-    _mapService(comments, userId) {
+    _mapCommentService(comments, userId) {
         return __awaiter(this, void 0, void 0, function* () {
             const mappedItems = yield Promise.all(comments.items.map((item) => __awaiter(this, void 0, void 0, function* () {
                 var _a, _b;
@@ -84,6 +91,55 @@ exports.postsService = {
                 page: comments.page,
                 pageSize: comments.pageSize,
                 totalCount: comments.totalCount,
+                items: mappedItems
+            };
+        });
+    },
+    _mapPosts(posts, userId) {
+        return __awaiter(this, void 0, void 0, function* () {
+            const mappedItems = yield Promise.all(posts.items.map((item) => __awaiter(this, void 0, void 0, function* () {
+                var _a, _b;
+                let status;
+                if (userId) {
+                    const likeForCurrentComment = yield likeMutation_1.likeMutation.getLike(userId, item.id);
+                    status = likeForCurrentComment === null || likeForCurrentComment === void 0 ? void 0 : likeForCurrentComment.type;
+                }
+                const allLikesAndDislikesForCurrentComment = yield likeMutation_1.likeMutation.getAllLikesAndDislikesForComment(item.id);
+                const likes = allLikesAndDislikesForCurrentComment.filter(item => item.type === "Like");
+                const dislikes = allLikesAndDislikesForCurrentComment.filter(item => item.type === "Dislike");
+                const likesFromDb = yield schemes_1.LikeModel
+                    .find({ type: 'Like' })
+                    .sort({ ['addedAt']: 1 })
+                    .limit(3)
+                    .lean();
+                const newestLikes = likesFromDb.map(item => {
+                    return {
+                        addedAt: item.addedAt,
+                        userId: item.userId,
+                        login: item.login
+                    };
+                });
+                return {
+                    id: item.id,
+                    title: item.title,
+                    shortDescription: item.shortDescription,
+                    content: item.content,
+                    blogId: item.blogId,
+                    blogName: item.blogName,
+                    createdAt: item.createdAt,
+                    extendedLikesInfo: {
+                        likesCount: (_a = likes.length) !== null && _a !== void 0 ? _a : 0,
+                        dislikesCount: (_b = dislikes.length) !== null && _b !== void 0 ? _b : 0,
+                        myStatus: status !== null && status !== void 0 ? status : "None",
+                        newestLikes: newestLikes
+                    }
+                };
+            })));
+            return {
+                pagesCount: posts.pagesCount,
+                page: posts.page,
+                pageSize: posts.pageSize,
+                totalCount: posts.totalCount,
                 items: mappedItems
             };
         });

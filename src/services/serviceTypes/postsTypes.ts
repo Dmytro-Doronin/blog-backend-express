@@ -1,3 +1,9 @@
 import {PostViewModelType} from "../../types/commonBlogTypeAndPosts.types";
 
-export type CreatePostsServiceType = Omit<PostViewModelType, "blogName" | "createdAt">
+export type CreatePostsServiceType = {
+    id: string
+    title: string,
+    shortDescription: string,
+    content: string,
+    blogId: string
+}

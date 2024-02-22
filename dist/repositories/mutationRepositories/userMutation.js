@@ -12,6 +12,17 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.userMutation = void 0;
 const schemes_1 = require("../../db/schemes");
 exports.userMutation = {
+    getUserById(userId) {
+        return __awaiter(this, void 0, void 0, function* () {
+            try {
+                const res = yield schemes_1.UserModel.findOne({ id: userId }).lean();
+                return res;
+            }
+            catch (e) {
+                throw new Error('User was not found');
+            }
+        });
+    },
     createUser(newUser) {
         return __awaiter(this, void 0, void 0, function* () {
             try {

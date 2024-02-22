@@ -17,13 +17,14 @@ const likeMutation_1 = require("../repositories/mutationRepositories/likeMutatio
 const likeService_1 = require("../services/likes/likeService");
 const postMutation_1 = require("../repositories/mutationRepositories/postMutation");
 const getAllPostsController = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    const userId = req.userId;
     const sortData = {
         sortBy: req.query.sortBy,
         sortDirection: req.query.sortDirection,
         pageNumber: req.query.pageNumber,
         pageSize: req.query.pageSize
     };
-    const result = yield postQuery_1.postQuery.getAllPostsFromDb(sortData);
+    const result = yield postsService_1.postsService.getAllPosts(sortData, userId);
     return res.status(200).send(result);
 });
 exports.getAllPostsController = getAllPostsController;

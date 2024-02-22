@@ -1,14 +1,51 @@
-import {PostInputModelType, PostViewModelType} from "../../types/commonBlogTypeAndPosts.types";
+import {PostDbModelType, PostInputModelType, PostViewModelType} from "../../types/commonBlogTypeAndPosts.types";
 import {commentMapper, postMapper} from "../../utils/mapper";
 import {client} from "../../db/db";
 import {CreatePostsServiceType} from "../../services/serviceTypes/postsTypes";
 import {CommentModel, PostModel} from "../../db/schemes";
 import {filterForSort} from "../../utils/sortUtils";
-import {QueryCommentsInputModel} from "../../types/posts/queryPosts.types";
+import {QueryCommentsInputModel, QueryPostInputModel} from "../../types/posts/queryPosts.types";
 
 //export const dbPostCollections = client.db('Blogs').collection<PostViewModelType>('posts')
 
 export const postMutation = {
+    async getAllPosts (sortData: QueryPostInputModel, blogId: null | string = null) {
+
+        const sortBy = sortData.sortBy ?? 'createdAt'
+        const sortDirection = sortData.sortDirection ?? 'desc'
+        const pageNumber = sortData.pageNumber ?? 1
+        const pageSize = sortData.pageSize ?? 10
+
+        let filter
+
+        if (blogId) {
+            filter = { blogId: blogId }
+        } else {
+            filter = {}
+        }
+
+        try {
+            const posts = await PostModel
+                .find(filter)
+                .sort(filterForSort(sortBy, sortDirection))
+                .skip((+pageNumber - 1) * +pageSize)
+                .limit(+pageSize)
+                .lean()
+
+            const totalCount = await PostModel.countDocuments({})
+
+            const pagesCount = Math.ceil(totalCount / +pageSize)
+            return {
+                pagesCount,
+                page: +pageNumber,
+                pageSize: +pageSize,
+                totalCount,
+                items: posts
+            }
+        } catch (e) {
+            throw new Error('Posts was not get')
+        }
+    },
     async getPostById (id: string) {
         try {
             const result = await PostModel.findOne({id: id}).lean()
@@ -22,7 +59,7 @@ export const postMutation = {
         }
 
     },
-    async createPostInDb (newPost : PostViewModelType) {
+    async createPostInDb (newPost : PostDbModelType) {
         try {
 
             await PostModel.create(newPost)

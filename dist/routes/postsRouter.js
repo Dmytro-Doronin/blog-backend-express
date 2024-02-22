@@ -9,7 +9,7 @@ const blogsMiddleware_1 = require("../middleware/blogsMiddleware");
 const authMiddlewareWithBearer_1 = require("../middleware/authMiddlewareWithBearer");
 exports.postsRouter = (0, express_1.Router)();
 //basic
-exports.postsRouter.get('/', postsControllers_1.getAllPostsController);
+exports.postsRouter.get('/', authMiddlewareWithBearer_1.customAuthMiddlewareWithBearer, postsControllers_1.getAllPostsController);
 exports.postsRouter.post('/', authMiddleware_1.authMiddleware, (0, postsValidationModel_1.postsValidationModelMiddleware)(), blogsMiddleware_1.errorMiddleware, postsControllers_1.createNewPostController);
 //by id
 exports.postsRouter.get('/:id', postsControllers_1.getPostByIdController);

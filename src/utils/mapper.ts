@@ -1,7 +1,7 @@
 import {WithId} from "mongodb";
 import {
     BlogViewModelType,
-    commentsDBType, CommentViewModelType, DeviceDBType, DeviceResponse, likeStatusType,
+    commentsDBType, CommentViewModelType, DeviceDBType, DeviceResponse, likeStatusType, PostDbModelType,
     PostViewModelType,
     userDBType,
     UserViewModel
@@ -18,7 +18,7 @@ export const blogMapper = (blog: WithId<BlogViewModelType>): BlogViewModelType  
     }
 }
 
-export const postMapper = (post: WithId<PostViewModelType>): PostViewModelType  => {
+export const postMapper = (post: WithId<PostDbModelType>)   => {
     return {
         id:	post.id,
         title: post.title,
@@ -26,7 +26,13 @@ export const postMapper = (post: WithId<PostViewModelType>): PostViewModelType  
         content: post.content,
         blogId: post.blogId,
         blogName: post.blogName,
-        createdAt: post.createdAt
+        createdAt: post.createdAt,
+        extendedLikesInfo: {
+            likesCount: 0,
+            dislikesCount: 0,
+            myStatus: "None",
+            newestLikes : []
+        }
     }
 }
 

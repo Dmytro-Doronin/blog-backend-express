@@ -17,49 +17,49 @@ export class BlogController {
     constructor(protected blogsService: BlogsService, protected blogQuery: BlogQuery ) {}
 
     async getAllBlogsController(req: RequestWithQuery<QueryBlogInputModel>, res: ResponseWithData<BlogOutputModelType>)  {
-    // const sortData = req.query
-    const sortData = {
-        searchNameTerm: req.query.searchNameTerm,
-        sortBy: req.query.sortBy,
-        sortDirection: req.query.sortDirection,
-        pageNumber: req.query.pageNumber,
-        pageSize: req.query.pageSize
-    }
-    const result = await this.blogQuery.getAllBlogInDb(sortData)
-    return res.status(200).send(result)
+        // const sortData = req.query
+        const sortData = {
+            searchNameTerm: req.query.searchNameTerm,
+            sortBy: req.query.sortBy,
+            sortDirection: req.query.sortDirection,
+            pageNumber: req.query.pageNumber,
+            pageSize: req.query.pageSize
+        }
+        const result = await this.blogQuery.getAllBlogInDb(sortData)
+        return res.status(200).send(result)
 }
 
     async getAllPostInBlogController(req: RequestWithParamsAndQuery<ParamsType, QueryBlogToPostsInputModel>, res: Response)  {
-    const blogId = req.params.id
-    // const sortData = req.query
-    const sortData = {
-        sortBy: req.query.sortBy,
-        sortDirection: req.query.sortDirection,
-        pageNumber: req.query.pageNumber,
-        pageSize: req.query.pageSize
-    }
-    const blog = await this.blogQuery.getBlogByIdInDb(blogId)
+        const blogId = req.params.id
+        // const sortData = req.query
+        const sortData = {
+            sortBy: req.query.sortBy,
+            sortDirection: req.query.sortDirection,
+            pageNumber: req.query.pageNumber,
+            pageSize: req.query.pageSize
+        }
+        const blog = await this.blogQuery.getBlogByIdInDb(blogId)
 
-    if (!blog) {
-        res.sendStatus(404)
-        return
-    }
+        if (!blog) {
+            res.sendStatus(404)
+            return
+        }
 
-    const posts = await this.blogQuery.getAllPostsInBlogFromDb(blogId, sortData)
+        const posts = await this.blogQuery.getAllPostsInBlogFromDb(blogId, sortData)
 
-return res.status(200).send(posts)
+        return res.status(200).send(posts)
 
 }
 
     async getBlogsByIdController(req: RequestWithParams<ParamsType>, res: Response) {
 
-    const result = await this.blogQuery.getBlogByIdInDb(req.params.id)
+        const result = await this.blogQuery.getBlogByIdInDb(req.params.id)
 
-    if (!result) {
-        return res.sendStatus(404)
-    }
+        if (!result) {
+            return res.sendStatus(404)
+        }
 
-    return res.status(200).send(result)
+        return res.status(200).send(result)
 
 }
 
@@ -73,17 +73,17 @@ return res.status(200).send(posts)
 }
 
     async createPostToBlogController(req: RequestWithParamsAndBody<ParamsType, CreatePostToBlogType>, res: Response)  {
-    const id = req.params
-    const {title, shortDescription, content} = req.body
+        const id = req.params
+        const {title, shortDescription, content} = req.body
 
-    const post = await this.blogsService.createPostToBlogService(id, {title, shortDescription, content})
+        const post = await this.blogsService.createPostToBlogService(id, {title, shortDescription, content})
 
-    if (!post) {
-        res.sendStatus(404)
-        return
-    }
+        if (!post) {
+            res.sendStatus(404)
+            return
+        }
 
-    res.status(201).send(post)
+        res.status(201).send(post)
     }
 
     async changeBlogsByIdController(req: RequestWithParamsAndBody<ParamsType, BlogInputModelType>, res: Response) {

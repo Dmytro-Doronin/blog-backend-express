@@ -20,7 +20,13 @@ const postMapper = (post) => {
         content: post.content,
         blogId: post.blogId,
         blogName: post.blogName,
-        createdAt: post.createdAt
+        createdAt: post.createdAt,
+        extendedLikesInfo: {
+            likesCount: 0,
+            dislikesCount: 0,
+            myStatus: "None",
+            newestLikes: []
+        }
     };
 };
 exports.postMapper = postMapper;

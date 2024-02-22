@@ -11,16 +11,22 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.likeService = void 0;
 const likeMutation_1 = require("../../repositories/mutationRepositories/likeMutation");
+const userMutation_1 = require("../../repositories/mutationRepositories/userMutation");
 const { v4: uuidv4 } = require('uuid');
 exports.likeService = {
     createLike(commentId, likeStatus, userId, target) {
         return __awaiter(this, void 0, void 0, function* () {
+            const user = yield userMutation_1.userMutation.getUserById(userId);
+            if (!user) {
+                return null;
+            }
             const liseData = {
                 id: uuidv4(),
                 userId,
+                login: user.accountData.login,
                 targetId: commentId,
                 target,
-                newestPostLikes: [],
+                addedAt: (new Date().toISOString()),
                 type: likeStatus
             };
             return yield likeMutation_1.likeMutation.createLike(liseData);

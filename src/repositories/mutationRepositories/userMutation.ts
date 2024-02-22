@@ -4,6 +4,18 @@ import {UserModel} from "../../db/schemes";
 
 
 export const userMutation = {
+
+    async getUserById (userId: string) {
+        try {
+            const res = await UserModel.findOne({id: userId}).lean()
+
+            return res
+
+        } catch (e) {
+            throw new Error('User was not found')
+        }
+    },
+
     async createUser (newUser : userDBType) {
         try {
             await UserModel.create(newUser)

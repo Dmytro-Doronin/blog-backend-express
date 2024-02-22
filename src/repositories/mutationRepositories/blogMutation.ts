@@ -1,5 +1,5 @@
 import {
-    BlogViewModelType,
+    BlogViewModelType, PostDbModelType,
     PostViewModelType
 } from "../../types/commonBlogTypeAndPosts.types";
 
@@ -27,7 +27,7 @@ export class BlogMutation  {
 
     }
 
-    async createPostToBlogInDb (post: PostViewModelType) {
+    async createPostToBlogInDb (post: PostDbModelType) {
 
         try {
             await PostModel.create(post)
