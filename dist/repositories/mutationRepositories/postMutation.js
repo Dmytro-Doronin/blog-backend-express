@@ -23,7 +23,7 @@ exports.postMutation = {
             const pageSize = (_d = sortData.pageSize) !== null && _d !== void 0 ? _d : 10;
             let filter;
             if (blogId) {
-                filter = { postId: blogId };
+                filter = { blogId: blogId };
             }
             else {
                 filter = {};

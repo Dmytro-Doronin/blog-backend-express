@@ -19,7 +19,7 @@ export const postMutation = {
         let filter
 
         if (blogId) {
-            filter = { postId: blogId }
+            filter = { blogId: blogId }
         } else {
             filter = {}
         }
