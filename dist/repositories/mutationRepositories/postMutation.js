@@ -23,7 +23,7 @@ exports.postMutation = {
             const pageSize = (_d = sortData.pageSize) !== null && _d !== void 0 ? _d : 10;
             let filter;
             if (blogId) {
-                filter = { blogId: blogId };
+                filter = { postId: blogId };
             }
             else {
                 filter = {};
@@ -35,7 +35,7 @@ exports.postMutation = {
                     .skip((+pageNumber - 1) * +pageSize)
                     .limit(+pageSize)
                     .lean();
-                const totalCount = yield schemes_1.PostModel.countDocuments({});
+                const totalCount = yield schemes_1.PostModel.countDocuments(filter);
                 const pagesCount = Math.ceil(totalCount / +pageSize);
                 return {
                     pagesCount,

@@ -19,7 +19,7 @@ export const postMutation = {
         let filter
 
         if (blogId) {
-            filter = { blogId: blogId }
+            filter = { postId: blogId }
         } else {
             filter = {}
         }
@@ -32,7 +32,7 @@ export const postMutation = {
                 .limit(+pageSize)
                 .lean()
 
-            const totalCount = await PostModel.countDocuments({})
+            const totalCount = await PostModel.countDocuments(filter)
 
             const pagesCount = Math.ceil(totalCount / +pageSize)
             return {

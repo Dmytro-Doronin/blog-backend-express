@@ -48,7 +48,7 @@ export class BlogController {
         }
 
         // const posts = await this.blogQuery.getAllPostsInBlogFromDb(blogId, sortData)
-        const posts = await postsService.getAllPosts(sortData,userId, blogId)
+        const posts = await postsService.getAllPosts(sortData, userId, blogId)
         return res.status(200).send(posts)
 
 }
