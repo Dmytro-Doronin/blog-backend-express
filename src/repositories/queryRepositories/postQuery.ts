@@ -44,14 +44,53 @@ export const postQuery = {
     //     }
     // },
 
-    async getPostByIdFromDb (id: string) {
+    async getPostByIdFromDb (postId: string, userId: string = '') {
         try {
-            const result = await PostModel.findOne({id: id})
+            const post = await PostModel.findOne({id: postId}).lean()
 
-            if (!result) {
+            if (!post) {
                 return null
             }
-            return postMapper(result)
+
+            let status: likeStatusType | undefined
+            if (userId) {
+                const like = await LikeModel.findOne({targetId: postId, userId: userId}).lean()
+                status = like?.type
+            }
+            const allLikesAndDislikesForCurrentComment = await LikeModel.find({targetId: postId}).lean();
+            const likes = allLikesAndDislikesForCurrentComment.filter(item => item.type === "Like");
+            const dislikes = allLikesAndDislikesForCurrentComment.filter(item => item.type === "Dislike");
+
+
+            const likesFromDb = await LikeModel
+                .find({type: 'Like', targetId: postId, target: 'Post'})
+                .sort({['addedAt']: -1})
+                .limit(3)
+                .lean()
+
+            const newestLikes = likesFromDb.map(item => {
+                return {
+                    addedAt: item.addedAt,
+                    userId: item.userId,
+                    login: item.login
+                }
+            })
+
+            return {
+                id:	post.id,
+                title: post.title,
+                shortDescription: post.shortDescription,
+                content: post.content,
+                blogId: post.blogId,
+                blogName: post.blogName,
+                createdAt: post.createdAt,
+                extendedLikesInfo: {
+                    likesCount: likes.length ?? 0,
+                    dislikesCount: dislikes.length ?? 0,
+                    myStatus: status ?? "None",
+                    newestLikes : newestLikes ?? []
+                }
+            }
         } catch (e) {
             throw new Error('Blog was not found')
         }

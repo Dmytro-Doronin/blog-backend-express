@@ -12,7 +12,7 @@ exports.postsRouter = (0, express_1.Router)();
 exports.postsRouter.get('/', authMiddlewareWithBearer_1.customAuthMiddlewareWithBearer, postsControllers_1.getAllPostsController);
 exports.postsRouter.post('/', authMiddleware_1.authMiddleware, (0, postsValidationModel_1.postsValidationModelMiddleware)(), blogsMiddleware_1.errorMiddleware, postsControllers_1.createNewPostController);
 //by id
-exports.postsRouter.get('/:id', postsControllers_1.getPostByIdController);
+exports.postsRouter.get('/:id', authMiddlewareWithBearer_1.customAuthMiddlewareWithBearer, postsControllers_1.getPostByIdController);
 exports.postsRouter.put('/:id', authMiddleware_1.authMiddleware, (0, postsValidationModel_1.postsValidationModelMiddleware)(), blogsMiddleware_1.errorMiddleware, postsControllers_1.changePostByIdController);
 exports.postsRouter.delete('/:id', authMiddleware_1.authMiddleware, postsControllers_1.deletePostByIdController);
 //comments for post

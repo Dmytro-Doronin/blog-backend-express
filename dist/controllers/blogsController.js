@@ -10,6 +10,7 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.BlogController = void 0;
+const postsService_1 = require("../services/posts/postsService");
 class BlogController {
     constructor(blogsService, blogQuery) {
         this.blogsService = blogsService;
@@ -32,6 +33,7 @@ class BlogController {
     getAllPostInBlogController(req, res) {
         return __awaiter(this, void 0, void 0, function* () {
             const blogId = req.params.id;
+            const userId = req.userId;
             // const sortData = req.query
             const sortData = {
                 sortBy: req.query.sortBy,
@@ -44,7 +46,8 @@ class BlogController {
                 res.sendStatus(404);
                 return;
             }
-            const posts = yield this.blogQuery.getAllPostsInBlogFromDb(blogId, sortData);
+            // const posts = await this.blogQuery.getAllPostsInBlogFromDb(blogId, sortData)
+            const posts = yield postsService_1.postsService.getAllPosts(sortData, userId, blogId);
             return res.status(200).send(posts);
         });
     }
@@ -66,9 +69,10 @@ class BlogController {
     }
     createPostToBlogController(req, res) {
         return __awaiter(this, void 0, void 0, function* () {
-            const id = req.params;
+            const blogId = req.params.id;
             const { title, shortDescription, content } = req.body;
-            const post = yield this.blogsService.createPostToBlogService(id, { title, shortDescription, content });
+            // const post = await this.blogsService.createPostToBlogService(blogId, {title, shortDescription, content})
+            const post = yield postsService_1.postsService.createPostService({ title, shortDescription, content, blogId });
             if (!post) {
                 res.sendStatus(404);
                 return;

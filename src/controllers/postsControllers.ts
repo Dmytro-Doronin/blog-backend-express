@@ -48,7 +48,9 @@ export const createNewPostController = async (req: RequestWithBody<PostInputMode
 
 export const getPostByIdController = async (req: RequestWithParams<ParamsType>, res: Response) => {
 
-    const result = await postQuery.getPostByIdFromDb(req.params.id)
+    const userId = req.userId
+    const postId = req.params.id
+    const result = await postQuery.getPostByIdFromDb(postId, userId)
 
     if (!result) {
         return res.sendStatus(404)
@@ -102,7 +104,7 @@ export const createCommentForPostController = async (req: RequestWithParamsAndBo
 export const getAllCommentsForPostController = async (req: RequestWithParamsAndQuery<ParamsType, QueryCommentsInputModel>, res: ResponseWithData<CommentsOutputModelType> ) =>{
     const postId = req.params.id
     const userId = req.userId
-    const post = await postQuery.getPostByIdFromDb(postId)
+    const post = await postQuery.getPostByIdFromDb(postId, userId)
 
     if (!post) {
         res.sendStatus(404)

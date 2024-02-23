@@ -22,6 +22,16 @@ exports.likeMutation = {
             }
         });
     },
+    getLikesForTarget(userId, commentId) {
+        return __awaiter(this, void 0, void 0, function* () {
+            try {
+                return yield schemes_1.LikeModel.find({ userId: userId, targetId: commentId }).lean();
+            }
+            catch (e) {
+                throw new Error('Can not get like or dislike');
+            }
+        });
+    },
     getAllLikesAndDislikesForComment(commentId) {
         return __awaiter(this, void 0, void 0, function* () {
             try {

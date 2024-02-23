@@ -108,8 +108,8 @@ exports.postsService = {
                 const likes = allLikesAndDislikesForCurrentComment.filter(item => item.type === "Like");
                 const dislikes = allLikesAndDislikesForCurrentComment.filter(item => item.type === "Dislike");
                 const likesFromDb = yield schemes_1.LikeModel
-                    .find({ type: 'Like' })
-                    .sort({ ['addedAt']: 1 })
+                    .find({ type: 'Like', targetId: item.id, })
+                    .sort({ ['addedAt']: -1 })
                     .limit(3)
                     .lean();
                 const newestLikes = likesFromDb.map(item => {

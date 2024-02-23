@@ -22,7 +22,7 @@ postsRouter.get('/',customAuthMiddlewareWithBearer , getAllPostsController)
 postsRouter.post('/',authMiddleware, postsValidationModelMiddleware(), errorMiddleware, createNewPostController)
 
 //by id
-postsRouter.get('/:id', getPostByIdController)
+postsRouter.get('/:id',customAuthMiddlewareWithBearer, getPostByIdController)
 postsRouter.put('/:id',authMiddleware, postsValidationModelMiddleware(), errorMiddleware, changePostByIdController)
 postsRouter.delete('/:id',authMiddleware, deletePostByIdController)
 

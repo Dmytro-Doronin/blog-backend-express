@@ -9,6 +9,7 @@ import {RequestWithBody, RequestWithParams, ParamsType} from "../types/commonBlo
 import {BlogQuery} from "../repositories/queryRepositories/blogQuery";
 import {BlogsService} from "../services/blogs/blogsService";
 import {QueryBlogInputModel, QueryBlogToPostsInputModel} from "../types/blogs/queryBlog.types";
+import {postsService} from "../services/posts/postsService";
 
 
 
@@ -31,6 +32,7 @@ export class BlogController {
 
     async getAllPostInBlogController(req: RequestWithParamsAndQuery<ParamsType, QueryBlogToPostsInputModel>, res: Response)  {
         const blogId = req.params.id
+        const userId = req.userId
         // const sortData = req.query
         const sortData = {
             sortBy: req.query.sortBy,
@@ -45,8 +47,8 @@ export class BlogController {
             return
         }
 
-        const posts = await this.blogQuery.getAllPostsInBlogFromDb(blogId, sortData)
-
+        // const posts = await this.blogQuery.getAllPostsInBlogFromDb(blogId, sortData)
+        const posts = await postsService.getAllPosts(sortData,userId, blogId)
         return res.status(200).send(posts)
 
 }
@@ -73,11 +75,11 @@ export class BlogController {
 }
 
     async createPostToBlogController(req: RequestWithParamsAndBody<ParamsType, CreatePostToBlogType>, res: Response)  {
-        const id = req.params
+        const blogId = req.params.id
         const {title, shortDescription, content} = req.body
 
-        const post = await this.blogsService.createPostToBlogService(id, {title, shortDescription, content})
-
+        // const post = await this.blogsService.createPostToBlogService(blogId, {title, shortDescription, content})
+        const post = await postsService.createPostService({title, shortDescription, content, blogId})
         if (!post) {
             res.sendStatus(404)
             return

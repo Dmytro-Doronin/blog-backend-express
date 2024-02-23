@@ -17,7 +17,7 @@ const { v4: uuidv4 } = require('uuid');
 exports.commentsService = {
     createComment(postId, content, userId, userLogin) {
         return __awaiter(this, void 0, void 0, function* () {
-            const post = yield postQuery_1.postQuery.getPostByIdFromDb(postId);
+            const post = yield postQuery_1.postQuery.getPostByIdFromDb(postId, userId);
             if (!post) {
                 return null;
             }

@@ -14,7 +14,6 @@ export const createPostManager = {
             .expect(statusCode)
 
         let createdPost
-
         if (statusCode === 201) {
             createdPost = createResponse.body
 
@@ -26,6 +25,12 @@ export const createPostManager = {
                 blogId: data.blogId,
                 createdAt: expect.any(String),
                 blogName: expect.any(String),
+                extendedLikesInfo: {
+                    dislikesCount: expect.any(Number),
+                    likesCount: expect.any(Number),
+                    myStatus: "None",
+                    newestLikes: [],
+                }
             })
         }
 

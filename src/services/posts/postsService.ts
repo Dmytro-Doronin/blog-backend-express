@@ -117,8 +117,8 @@ export const postsService = {
 
 
             const likesFromDb = await LikeModel
-                .find({type: 'Like'})
-                .sort({['addedAt']: 1})
+                .find({type: 'Like', targetId: item.id,})
+                .sort({['addedAt']: -1})
                 .limit(3)
                 .lean()
 

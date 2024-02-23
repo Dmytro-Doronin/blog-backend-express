@@ -11,6 +11,15 @@ export const likeMutation = {
         }
     },
 
+    async getLikesForTarget (userId: string, commentId: string) {
+        try {
+            return await LikeModel.find({userId: userId ,targetId: commentId}).lean()
+
+        } catch (e) {
+            throw new Error('Can not get like or dislike')
+        }
+    },
+
     async getAllLikesAndDislikesForComment(commentId: string) {
         try {
             return await LikeModel.find({targetId: commentId}).lean()

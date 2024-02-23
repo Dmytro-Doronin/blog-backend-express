@@ -7,7 +7,7 @@ export const commentsService = {
 
     async createComment (postId: string, content: string, userId: string, userLogin: string) {
 
-        const post = await postQuery.getPostByIdFromDb(postId)
+        const post = await postQuery.getPostByIdFromDb(postId, userId)
 
         if (!post) {
             return null

@@ -39,7 +39,9 @@ const createNewPostController = (req, res) => __awaiter(void 0, void 0, void 0, 
 });
 exports.createNewPostController = createNewPostController;
 const getPostByIdController = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    const result = yield postQuery_1.postQuery.getPostByIdFromDb(req.params.id);
+    const userId = req.userId;
+    const postId = req.params.id;
+    const result = yield postQuery_1.postQuery.getPostByIdFromDb(postId, userId);
     if (!result) {
         return res.sendStatus(404);
     }
@@ -79,7 +81,7 @@ exports.createCommentForPostController = createCommentForPostController;
 const getAllCommentsForPostController = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const postId = req.params.id;
     const userId = req.userId;
-    const post = yield postQuery_1.postQuery.getPostByIdFromDb(postId);
+    const post = yield postQuery_1.postQuery.getPostByIdFromDb(postId, userId);
     if (!post) {
         res.sendStatus(404);
         return;

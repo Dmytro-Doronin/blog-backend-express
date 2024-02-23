@@ -10,7 +10,6 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.postQuery = void 0;
-const mapper_1 = require("../../utils/mapper");
 const schemes_1 = require("../../db/schemes");
 exports.postQuery = {
     // async getAllPostsFromDb (sortData: QueryPostInputModel, userId: string) {
@@ -42,14 +41,49 @@ exports.postQuery = {
     //         throw new Error('Posts was not get')
     //     }
     // },
-    getPostByIdFromDb(id) {
+    getPostByIdFromDb(postId, userId = '') {
+        var _a, _b;
         return __awaiter(this, void 0, void 0, function* () {
             try {
-                const result = yield schemes_1.PostModel.findOne({ id: id });
-                if (!result) {
+                const post = yield schemes_1.PostModel.findOne({ id: postId }).lean();
+                if (!post) {
                     return null;
                 }
-                return (0, mapper_1.postMapper)(result);
+                let status;
+                if (userId) {
+                    const like = yield schemes_1.LikeModel.findOne({ targetId: postId, userId: userId }).lean();
+                    status = like === null || like === void 0 ? void 0 : like.type;
+                }
+                const allLikesAndDislikesForCurrentComment = yield schemes_1.LikeModel.find({ targetId: postId }).lean();
+                const likes = allLikesAndDislikesForCurrentComment.filter(item => item.type === "Like");
+                const dislikes = allLikesAndDislikesForCurrentComment.filter(item => item.type === "Dislike");
+                const likesFromDb = yield schemes_1.LikeModel
+                    .find({ type: 'Like', targetId: postId, target: 'Post' })
+                    .sort({ ['addedAt']: -1 })
+                    .limit(3)
+                    .lean();
+                const newestLikes = likesFromDb.map(item => {
+                    return {
+                        addedAt: item.addedAt,
+                        userId: item.userId,
+                        login: item.login
+                    };
+                });
+                return {
+                    id: post.id,
+                    title: post.title,
+                    shortDescription: post.shortDescription,
+                    content: post.content,
+                    blogId: post.blogId,
+                    blogName: post.blogName,
+                    createdAt: post.createdAt,
+                    extendedLikesInfo: {
+                        likesCount: (_a = likes.length) !== null && _a !== void 0 ? _a : 0,
+                        dislikesCount: (_b = dislikes.length) !== null && _b !== void 0 ? _b : 0,
+                        myStatus: status !== null && status !== void 0 ? status : "None",
+                        newestLikes: newestLikes !== null && newestLikes !== void 0 ? newestLikes : []
+                    }
+                };
             }
             catch (e) {
                 throw new Error('Blog was not found');
