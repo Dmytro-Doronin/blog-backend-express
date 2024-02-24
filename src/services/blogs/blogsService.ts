@@ -8,11 +8,13 @@ import {BlogMutation} from "../../repositories/mutationRepositories/blogMutation
 import {ChangeBlogByIdTypes} from "../serviceTypes/blogsTypes";
 import {blogMapper, postMapper} from "../../utils/mapper";
 const { v4: uuidv4 } = require('uuid');
+import {injectable, inject} from "inversify";
 
 
+@injectable()
 export class BlogsService {
 
-    constructor( protected blogMutation: BlogMutation) {}
+    constructor(@inject(BlogMutation) protected blogMutation: BlogMutation) {}
 
     async createBlogService ({name, description, websiteUrl}: BlogInputModelType) {
 

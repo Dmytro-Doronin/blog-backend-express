@@ -9,18 +9,15 @@ const authValidationModel_1 = require("../validation/authValidationModel");
 const authMiddlewareWithBearer_1 = require("../middleware/authMiddlewareWithBearer");
 const verifyTokenMiddleware_1 = require("../middleware/verifyTokenMiddleware");
 const rateLimitMiddleware_1 = require("../middleware/rateLimitMiddleware");
+const compositionRoot_1 = require("../compositionRoot");
 exports.authRouter = (0, express_1.Router)();
-// export const registrationLimiter = rateLimit({
-//     windowMs: 10 * 1000,
-//     limit: 5,
-//     message: 'Too many requests from this IP, please try again later.',
-// });
-exports.authRouter.get('/me', authMiddlewareWithBearer_1.authMiddlewareWithBearer, authController_1.meController);
-exports.authRouter.post('/login', rateLimitMiddleware_1.accessCounterMiddleware, (0, loginValidationModel_1.loginValidationModelMiddleware)(), blogsMiddleware_1.errorMiddleware, authController_1.authController);
-exports.authRouter.post('/logout', verifyTokenMiddleware_1.verifyTokenMiddleware, authController_1.logoutController);
-exports.authRouter.post('/new-password', rateLimitMiddleware_1.accessCounterMiddleware, (0, authValidationModel_1.newPasswordMiddleware)(), blogsMiddleware_1.errorMiddleware, authController_1.newPasswordController);
-exports.authRouter.post('/refresh-token', verifyTokenMiddleware_1.verifyTokenMiddleware, authController_1.refreshTokenController);
-exports.authRouter.post('/password-recovery', rateLimitMiddleware_1.accessCounterMiddleware, (0, authValidationModel_1.authPasswordRecovery)(), blogsMiddleware_1.errorMiddleware, authController_1.passwordRecoveryController);
-exports.authRouter.post('/registration', rateLimitMiddleware_1.accessCounterMiddleware, (0, authValidationModel_1.authRegistrationValidationMiddleware)(), blogsMiddleware_1.errorMiddleware, authController_1.registrationController);
-exports.authRouter.post('/registration-confirmation', rateLimitMiddleware_1.accessCounterMiddleware, (0, authValidationModel_1.authRegistrationConfirmationValidationMiddleware)(), blogsMiddleware_1.errorMiddleware, authController_1.registrationConfirmationController);
-exports.authRouter.post('/registration-email-resending', rateLimitMiddleware_1.accessCounterMiddleware, (0, authValidationModel_1.authEmailResendingValidationMiddleware)(), blogsMiddleware_1.errorMiddleware, authController_1.emailResendingController);
+const authControllerInstance = compositionRoot_1.container.resolve(authController_1.AuthController);
+exports.authRouter.get('/me', authMiddlewareWithBearer_1.authMiddlewareWithBearer, authControllerInstance.meController.bind(authControllerInstance));
+exports.authRouter.post('/login', rateLimitMiddleware_1.accessCounterMiddleware, (0, loginValidationModel_1.loginValidationModelMiddleware)(), blogsMiddleware_1.errorMiddleware, authControllerInstance.authController.bind(authControllerInstance));
+exports.authRouter.post('/logout', verifyTokenMiddleware_1.verifyTokenMiddleware, authControllerInstance.logoutController.bind(authControllerInstance));
+exports.authRouter.post('/new-password', rateLimitMiddleware_1.accessCounterMiddleware, (0, authValidationModel_1.newPasswordMiddleware)(), blogsMiddleware_1.errorMiddleware, authControllerInstance.newPasswordController.bind(authControllerInstance));
+exports.authRouter.post('/refresh-token', verifyTokenMiddleware_1.verifyTokenMiddleware, authControllerInstance.refreshTokenController.bind(authControllerInstance));
+exports.authRouter.post('/password-recovery', rateLimitMiddleware_1.accessCounterMiddleware, (0, authValidationModel_1.authPasswordRecovery)(), blogsMiddleware_1.errorMiddleware, authControllerInstance.passwordRecoveryController.bind(authControllerInstance));
+exports.authRouter.post('/registration', rateLimitMiddleware_1.accessCounterMiddleware, (0, authValidationModel_1.authRegistrationValidationMiddleware)(), blogsMiddleware_1.errorMiddleware, authControllerInstance.registrationController.bind(authControllerInstance));
+exports.authRouter.post('/registration-confirmation', rateLimitMiddleware_1.accessCounterMiddleware, (0, authValidationModel_1.authRegistrationConfirmationValidationMiddleware)(), blogsMiddleware_1.errorMiddleware, authControllerInstance.registrationConfirmationController.bind(authControllerInstance));
+exports.authRouter.post('/registration-email-resending', rateLimitMiddleware_1.accessCounterMiddleware, (0, authValidationModel_1.authEmailResendingValidationMiddleware)(), blogsMiddleware_1.errorMiddleware, authControllerInstance.emailResendingController.bind(authControllerInstance));

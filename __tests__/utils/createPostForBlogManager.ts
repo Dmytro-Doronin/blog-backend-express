@@ -29,6 +29,12 @@ export const createPostForBlogManager = {
                     blogId: blog.id,
                     createdAt: expect.any(String),
                     blogName: expect.any(String),
+                    extendedLikesInfo: {
+                        dislikesCount: 0,
+                        likesCount: 0,
+                        myStatus: "None",
+                        newestLikes: [],
+                    },
                 }
             )
         }

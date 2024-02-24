@@ -4,7 +4,7 @@ import {
     PostInputModelType,
     PostViewModelType
 } from "../../types/commonBlogTypeAndPosts.types";
-import {postMutation} from "../../repositories/mutationRepositories/postMutation";
+import {PostMutation} from "../../repositories/mutationRepositories/postMutation";
 import {CreatePostsServiceType} from "../serviceTypes/postsTypes";
 import {BlogQuery} from "../../repositories/queryRepositories/blogQuery";
 import {QueryCommentsInputModel, QueryPostInputModel} from "../../types/posts/queryPosts.types";
@@ -13,20 +13,22 @@ import {postMapper} from "../../utils/mapper";
 import {LikeModel, PostModel} from "../../db/schemes";
 import {filterForSort} from "../../utils/sortUtils";
 const { v4: uuidv4 } = require('uuid');
+import {inject, injectable} from "inversify";
 
 
-const blogQuery = new BlogQuery()
-
-export const postsService = {
+@injectable()
+export class PostsService  {
+    constructor(@inject(PostMutation) protected postMutation: PostMutation,
+                @inject(BlogQuery) protected blogQuery: BlogQuery) {}
     async getAllPosts (sortData: QueryPostInputModel, userId: string, blogId: null | string = null) {
-        const posts: PostDbMappedModelType = await postMutation.getAllPosts(sortData, blogId)
+        const posts: PostDbMappedModelType = await this.postMutation.getAllPosts(sortData, blogId)
 
         return this._mapPosts(posts, userId)
 
-    },
+    }
     async createPostService ({title, shortDescription, content, blogId}: PostInputModelType) {
 
-        const blog = await blogQuery.getBlogByIdInDb(blogId)
+        const blog = await this.blogQuery.getBlogByIdInDb(blogId)
 
         if (!blog) {
             return null
@@ -42,29 +44,28 @@ export const postsService = {
             blogName: blog.name
         }
 
-        const post = await postMutation.createPostInDb(newPost)
+        const post = await this.postMutation.createPostInDb(newPost)
 
         if (!post) {
             return null
         }
 
        return postMapper(post)
-    },
-
+    }
     async changePostByIdService ({id, title, shortDescription, content, blogId}: CreatePostsServiceType) {
-        return await postMutation.changePostByIdInDb({id, title, shortDescription, content, blogId})
-    },
+        return await this.postMutation.changePostByIdInDb({id, title, shortDescription, content, blogId})
+    }
 
     async deletePostByIdService (id: string) {
-        return await postMutation.deletePostByIdInDb(id)
-    },
+        return await this.postMutation.deletePostByIdInDb(id)
+    }
 
     async getAllCommentsForPostService (postId: string, sortData: QueryCommentsInputModel, userId: string) {
 
-        const comments: CommentsPaginationDbModelType = await postMutation.getAllCommentForPostFromDb(postId, sortData)
+        const comments: CommentsPaginationDbModelType = await this.postMutation.getAllCommentForPostFromDb(postId, sortData)
 
         return this._mapCommentService(comments, userId)
-    },
+    }
     async _mapCommentService (comments: CommentsPaginationDbModelType, userId: string): Promise<CommentsOutputModelType> {
 
         const mappedItems = await Promise.all(comments.items.map(async (item) => {
@@ -100,7 +101,7 @@ export const postsService = {
             totalCount: comments.totalCount,
             items: mappedItems
         };
-    },
+    }
     async _mapPosts (posts: PostDbMappedModelType, userId: string) {
         const mappedItems = await Promise.all(posts.items.map(async (item) => {
             let status: likeStatusType | undefined

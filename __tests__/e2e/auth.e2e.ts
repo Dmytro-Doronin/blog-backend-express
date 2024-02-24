@@ -8,12 +8,15 @@ import {registrationUserManager} from "../utils/registrationUserManager";
 import {userQuery} from "../../src/repositories/queryRepositories/userQuery";
 import {sendEmailAndGetUserManager} from "../utils/sendEmailAndGetUserManager";
 import {sendEmail} from "../utils/sendEmail";
+import mongoose from "mongoose";
+import {url} from "../../src/db/db";
 
 
 
 describe('/auth', () => {
 
     beforeEach(async () => {
+        await mongoose.connect(url)
         await request(app).delete('/api/testing/all-data')
     })
 
@@ -60,5 +63,8 @@ describe('/auth', () => {
 
     })
 
+    afterAll(async () => {
+        await mongoose.connection.close()
+    })
 
 })

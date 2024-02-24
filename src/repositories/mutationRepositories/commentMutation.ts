@@ -1,9 +1,10 @@
 import {CommentInputModelType, commentsDBType} from "../../types/commonBlogTypeAndPosts.types";
-import {commentQuery} from "../queryRepositories/commentQuery";
-import {commentMapper} from "../../utils/mapper";
 import {CommentModel} from "../../db/schemes";
+import {injectable} from "inversify";
 
-export const commentMutation = {
+
+@injectable()
+export class CommentMutation {
 
     async getCommentById (commentId: string) {
         const comment = await CommentModel.findOne({id: commentId}).lean()
@@ -13,7 +14,7 @@ export const commentMutation = {
         }
 
         return comment
-    },
+    }
 
     async createCommentForPostInDb (newComments: commentsDBType) {
 
@@ -31,7 +32,7 @@ export const commentMutation = {
         } catch (e) {
             throw new Error('Comment was not created')
         }
-    },
+    }
 
     async changeCommentByIdInDb (id: string, newContent: string) {
         try {
@@ -46,10 +47,10 @@ export const commentMutation = {
             throw new Error('Comment was not changed by id')
         }
 
-    },
+    }
 
     async deleteCommentById (id: string) {
         await CommentModel.deleteOne({id: id})
-    },
+    }
 
 }

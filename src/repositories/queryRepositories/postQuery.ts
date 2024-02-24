@@ -1,19 +1,14 @@
-import {commentMapper, postMapper} from "../../utils/mapper";
 
-import {client} from "../../db/db";
 import {
     likeStatusType,
-    PostDbMappedModelType,
-    PostDbModelType,
-    PostViewModelType
+
 } from "../../types/commonBlogTypeAndPosts.types";
-import {QueryCommentsInputModel, QueryPostInputModel} from "../../types/posts/queryPosts.types";
-import {filterForSort} from "../../utils/sortUtils";
-import {CommentModel, LikeModel, PostModel} from "../../db/schemes";
-import {likeMutation} from "../mutationRepositories/likeMutation";
 
+import { LikeModel, PostModel} from "../../db/schemes";
+import {inject, injectable} from "inversify";
 
-export const postQuery = {
+@injectable()
+export class PostQuery  {
     // async getAllPostsFromDb (sortData: QueryPostInputModel, userId: string) {
     //
     //     const sortBy = sortData.sortBy ?? 'createdAt'
@@ -95,7 +90,7 @@ export const postQuery = {
             throw new Error('Blog was not found')
         }
 
-    },
+    }
 
     // async _mapPosts (posts: PostDbModelType[], userId: string) {
     //     const mappedItems = await Promise.all(posts.map(async (item) => {

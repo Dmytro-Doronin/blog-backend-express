@@ -3,11 +3,13 @@ import {blogValidationModelMiddleware} from "../validation/blogsValidationModel"
 import {errorMiddleware} from "../middleware/blogsMiddleware";
 import {authMiddleware} from "../middleware/authMiddleware";
 import {createPostToBlogModelMiddleware} from "../validation/postsValidationModel";
-import {blogControllerInstance} from "../compositionRoot";
+import {container} from "../compositionRoot";
 import {customAuthMiddlewareWithBearer} from "../middleware/authMiddlewareWithBearer";
+import {BlogController} from "../controllers/blogsController";
 
 export const blogsRouter = Router()
 
+const blogControllerInstance = container.resolve(BlogController)
 
 blogsRouter.get('/', blogControllerInstance.getAllBlogsController.bind(blogControllerInstance))
 blogsRouter.post('/',authMiddleware, blogValidationModelMiddleware(),errorMiddleware, blogControllerInstance.createNewBlogController.bind(blogControllerInstance))

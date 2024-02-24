@@ -7,9 +7,10 @@ import {ChangeBlogByIdTypes} from "../../services/serviceTypes/blogsTypes";
 
 import {BlogModel, PostModel} from "../../db/schemes";
 const { v4: uuidv4 } = require('uuid');
+import {injectable} from "inversify";
 
 
-
+@injectable()
 export class BlogMutation  {
     async createBlogInDb (newBlog : BlogViewModelType) {
         try {
@@ -36,10 +37,7 @@ export class BlogMutation  {
             if (!postFromDb) {
                 return null
             }
-
             return postFromDb
-
-
         } catch (e) {
             throw new Error('Blog was not created')
         }

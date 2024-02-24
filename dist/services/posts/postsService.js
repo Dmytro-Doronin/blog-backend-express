@@ -1,4 +1,16 @@
 "use strict";
+var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
+    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+    return c > 3 && r && Object.defineProperty(target, key, r), r;
+};
+var __metadata = (this && this.__metadata) || function (k, v) {
+    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
+};
+var __param = (this && this.__param) || function (paramIndex, decorator) {
+    return function (target, key) { decorator(target, key, paramIndex); }
+};
 var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
     function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
     return new (P || (P = Promise))(function (resolve, reject) {
@@ -9,24 +21,28 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
     });
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.postsService = void 0;
+exports.PostsService = void 0;
 const postMutation_1 = require("../../repositories/mutationRepositories/postMutation");
 const blogQuery_1 = require("../../repositories/queryRepositories/blogQuery");
 const likeMutation_1 = require("../../repositories/mutationRepositories/likeMutation");
 const mapper_1 = require("../../utils/mapper");
 const schemes_1 = require("../../db/schemes");
 const { v4: uuidv4 } = require('uuid');
-const blogQuery = new blogQuery_1.BlogQuery();
-exports.postsService = {
+const inversify_1 = require("inversify");
+let PostsService = class PostsService {
+    constructor(postMutation, blogQuery) {
+        this.postMutation = postMutation;
+        this.blogQuery = blogQuery;
+    }
     getAllPosts(sortData, userId, blogId = null) {
         return __awaiter(this, void 0, void 0, function* () {
-            const posts = yield postMutation_1.postMutation.getAllPosts(sortData, blogId);
+            const posts = yield this.postMutation.getAllPosts(sortData, blogId);
             return this._mapPosts(posts, userId);
         });
-    },
+    }
     createPostService({ title, shortDescription, content, blogId }) {
         return __awaiter(this, void 0, void 0, function* () {
-            const blog = yield blogQuery.getBlogByIdInDb(blogId);
+            const blog = yield this.blogQuery.getBlogByIdInDb(blogId);
             if (!blog) {
                 return null;
             }
@@ -39,29 +55,29 @@ exports.postsService = {
                 createdAt: (new Date().toISOString()),
                 blogName: blog.name
             };
-            const post = yield postMutation_1.postMutation.createPostInDb(newPost);
+            const post = yield this.postMutation.createPostInDb(newPost);
             if (!post) {
                 return null;
             }
             return (0, mapper_1.postMapper)(post);
         });
-    },
+    }
     changePostByIdService({ id, title, shortDescription, content, blogId }) {
         return __awaiter(this, void 0, void 0, function* () {
-            return yield postMutation_1.postMutation.changePostByIdInDb({ id, title, shortDescription, content, blogId });
+            return yield this.postMutation.changePostByIdInDb({ id, title, shortDescription, content, blogId });
         });
-    },
+    }
     deletePostByIdService(id) {
         return __awaiter(this, void 0, void 0, function* () {
-            return yield postMutation_1.postMutation.deletePostByIdInDb(id);
+            return yield this.postMutation.deletePostByIdInDb(id);
         });
-    },
+    }
     getAllCommentsForPostService(postId, sortData, userId) {
         return __awaiter(this, void 0, void 0, function* () {
-            const comments = yield postMutation_1.postMutation.getAllCommentForPostFromDb(postId, sortData);
+            const comments = yield this.postMutation.getAllCommentForPostFromDb(postId, sortData);
             return this._mapCommentService(comments, userId);
         });
-    },
+    }
     _mapCommentService(comments, userId) {
         return __awaiter(this, void 0, void 0, function* () {
             const mappedItems = yield Promise.all(comments.items.map((item) => __awaiter(this, void 0, void 0, function* () {
@@ -94,7 +110,7 @@ exports.postsService = {
                 items: mappedItems
             };
         });
-    },
+    }
     _mapPosts(posts, userId) {
         return __awaiter(this, void 0, void 0, function* () {
             const mappedItems = yield Promise.all(posts.items.map((item) => __awaiter(this, void 0, void 0, function* () {
@@ -145,3 +161,11 @@ exports.postsService = {
         });
     }
 };
+exports.PostsService = PostsService;
+exports.PostsService = PostsService = __decorate([
+    (0, inversify_1.injectable)(),
+    __param(0, (0, inversify_1.inject)(postMutation_1.PostMutation)),
+    __param(1, (0, inversify_1.inject)(blogQuery_1.BlogQuery)),
+    __metadata("design:paramtypes", [postMutation_1.PostMutation,
+        blogQuery_1.BlogQuery])
+], PostsService);

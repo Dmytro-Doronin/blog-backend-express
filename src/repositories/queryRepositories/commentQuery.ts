@@ -1,9 +1,10 @@
 import {commentMapper} from "../../utils/mapper";
 import {CommentModel, LikeModel} from "../../db/schemes";
 import {likeStatusType} from "../../types/commonBlogTypeAndPosts.types";
+import {injectable} from "inversify";
 
-
-export const commentQuery = {
+@injectable()
+export class CommentQuery  {
     async getCommentById (commentId: string, userId: string = '') {
 
         try {

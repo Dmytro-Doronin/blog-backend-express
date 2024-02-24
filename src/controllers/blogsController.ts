@@ -9,13 +9,16 @@ import {RequestWithBody, RequestWithParams, ParamsType} from "../types/commonBlo
 import {BlogQuery} from "../repositories/queryRepositories/blogQuery";
 import {BlogsService} from "../services/blogs/blogsService";
 import {QueryBlogInputModel, QueryBlogToPostsInputModel} from "../types/blogs/queryBlog.types";
-import {postsService} from "../services/posts/postsService";
+import {PostsService} from "../services/posts/postsService";
+import {inject, injectable} from "inversify";
 
 
-
+@injectable()
 export class BlogController {
 
-    constructor(protected blogsService: BlogsService, protected blogQuery: BlogQuery ) {}
+    constructor(@inject(BlogsService) protected blogsService: BlogsService,
+                @inject(BlogQuery)protected blogQuery: BlogQuery,
+                @inject(PostsService)protected postsService: PostsService) {}
 
     async getAllBlogsController(req: RequestWithQuery<QueryBlogInputModel>, res: ResponseWithData<BlogOutputModelType>)  {
         // const sortData = req.query
@@ -48,7 +51,7 @@ export class BlogController {
         }
 
         // const posts = await this.blogQuery.getAllPostsInBlogFromDb(blogId, sortData)
-        const posts = await postsService.getAllPosts(sortData, userId, blogId)
+        const posts = await this.postsService.getAllPosts(sortData, userId, blogId)
         return res.status(200).send(posts)
 
 }
@@ -79,7 +82,7 @@ export class BlogController {
         const {title, shortDescription, content} = req.body
 
         // const post = await this.blogsService.createPostToBlogService(blogId, {title, shortDescription, content})
-        const post = await postsService.createPostService({title, shortDescription, content, blogId})
+        const post = await this.postsService.createPostService({title, shortDescription, content, blogId})
         if (!post) {
             res.sendStatus(404)
             return

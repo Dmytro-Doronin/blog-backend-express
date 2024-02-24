@@ -1,11 +1,6 @@
 import {Router} from "express";
 import {authMiddleware} from "../middleware/authMiddleware";
-import {
-    changePostByIdController, createCommentForPostController,
-    createNewPostController, deletePostByIdController, getAllCommentsForPostController,
-    getAllPostsController,
-    getPostByIdController, setLikeStatusForPostsController
-} from "../controllers/postsControllers";
+import {PostController} from "../controllers/postsControllers";
 import {
     createCommentToPostModelMiddleware,
     likeStatusModelMiddleware,
@@ -13,22 +8,63 @@ import {
 } from "../validation/postsValidationModel";
 import {errorMiddleware} from "../middleware/blogsMiddleware";
 import {authMiddlewareWithBearer, customAuthMiddlewareWithBearer} from "../middleware/authMiddlewareWithBearer";
+import {container} from "../compositionRoot";
+
 
 
 export const postsRouter = Router()
-
+const postControllerInstance = container.resolve(PostController)
 //basic
-postsRouter.get('/',customAuthMiddlewareWithBearer , getAllPostsController)
-postsRouter.post('/',authMiddleware, postsValidationModelMiddleware(), errorMiddleware, createNewPostController)
+postsRouter.get(
+    '/',
+    customAuthMiddlewareWithBearer ,
+    postControllerInstance.getAllPostsController.bind(postControllerInstance)
+)
+postsRouter.post(
+    '/',
+    authMiddleware,
+    postsValidationModelMiddleware(),
+    errorMiddleware,
+    postControllerInstance.createNewPostController.bind(postControllerInstance)
+)
 
 //by id
-postsRouter.get('/:id',customAuthMiddlewareWithBearer, getPostByIdController)
-postsRouter.put('/:id',authMiddleware, postsValidationModelMiddleware(), errorMiddleware, changePostByIdController)
-postsRouter.delete('/:id',authMiddleware, deletePostByIdController)
+postsRouter.get(
+    '/:id',
+    customAuthMiddlewareWithBearer,
+    postControllerInstance.getPostByIdController.bind(postControllerInstance)
+)
+postsRouter.put(
+    '/:id',
+    authMiddleware,
+    postsValidationModelMiddleware(),
+    errorMiddleware,
+    postControllerInstance.changePostByIdController.bind(postControllerInstance)
+)
+postsRouter.delete(
+    '/:id',authMiddleware,
+    postControllerInstance.deletePostByIdController.bind(postControllerInstance)
+)
 
 //comments for post
-postsRouter.post('/:id/comments', authMiddlewareWithBearer, createCommentToPostModelMiddleware(), errorMiddleware, createCommentForPostController)
-postsRouter.get('/:id/comments',customAuthMiddlewareWithBearer, getAllCommentsForPostController)
+postsRouter.post(
+    '/:id/comments',
+    authMiddlewareWithBearer,
+    createCommentToPostModelMiddleware(),
+    errorMiddleware,
+    postControllerInstance.createCommentForPostController.bind(postControllerInstance)
+)
+
+postsRouter.get(
+    '/:id/comments',
+    customAuthMiddlewareWithBearer,
+    postControllerInstance.getAllCommentsForPostController.bind(postControllerInstance)
+)
 
 //likesForPost
-postsRouter.put('/:id/like-status', authMiddlewareWithBearer, likeStatusModelMiddleware(), errorMiddleware, setLikeStatusForPostsController )
+postsRouter.put(
+    '/:id/like-status',
+    authMiddlewareWithBearer,
+    likeStatusModelMiddleware(),
+    errorMiddleware, postControllerInstance.setLikeStatusForPostsController.bind(postControllerInstance)
+)

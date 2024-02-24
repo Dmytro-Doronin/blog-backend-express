@@ -5,10 +5,13 @@ import {CreatePostsServiceType} from "../../services/serviceTypes/postsTypes";
 import {CommentModel, PostModel} from "../../db/schemes";
 import {filterForSort} from "../../utils/sortUtils";
 import {QueryCommentsInputModel, QueryPostInputModel} from "../../types/posts/queryPosts.types";
+import {injectable} from "inversify";
 
 //export const dbPostCollections = client.db('Blogs').collection<PostViewModelType>('posts')
 
-export const postMutation = {
+
+@injectable()
+export class PostMutation {
     async getAllPosts (sortData: QueryPostInputModel, blogId: null | string = null) {
 
         const sortBy = sortData.sortBy ?? 'createdAt'
@@ -45,7 +48,7 @@ export const postMutation = {
         } catch (e) {
             throw new Error('Posts was not get')
         }
-    },
+    }
     async getPostById (id: string) {
         try {
             const result = await PostModel.findOne({id: id}).lean()
@@ -58,7 +61,7 @@ export const postMutation = {
             throw new Error('Post was not found')
         }
 
-    },
+    }
     async createPostInDb (newPost : PostDbModelType) {
         try {
 
@@ -74,7 +77,7 @@ export const postMutation = {
             throw new Error('Post was not add')
         }
 
-    },
+    }
 
     async changePostByIdInDb ({id, title, shortDescription, content, blogId}: CreatePostsServiceType) {
 
@@ -97,7 +100,7 @@ export const postMutation = {
             throw new Error('Blog was not changed by id')
         }
 
-    },
+    }
 
     async deletePostByIdInDb (id: string) {
 
@@ -109,7 +112,7 @@ export const postMutation = {
         } catch (e) {
             throw new Error('Blog was nod deleted')
         }
-    },
+    }
 
     async getAllCommentForPostFromDb(postId: string, sortData: QueryCommentsInputModel) {
         const sortBy = sortData.sortBy ?? 'createdAt'

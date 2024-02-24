@@ -1,9 +1,13 @@
+import "reflect-metadata"
 import {blogMapper, postMapper} from "../../utils/mapper";
 import {BlogViewModelType, ParamsType} from "../../types/commonBlogTypeAndPosts.types";
 import {QueryBlogInputModel} from "../../types/blogs/queryBlog.types";
 import {filterForSort} from "../../utils/sortUtils";
 import {BlogModel, PostModel} from "../../db/schemes";
+import {injectable} from "inversify";
 
+
+@injectable()
 export class BlogQuery {
     async getAllBlogInDb(sortData: QueryBlogInputModel) {
         const searchNameTerm = sortData.searchNameTerm ?? null

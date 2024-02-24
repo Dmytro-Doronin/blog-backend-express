@@ -1,9 +1,17 @@
-import {postQuery} from "../../repositories/queryRepositories/postQuery";
+import {PostQuery} from "../../repositories/queryRepositories/postQuery";
 import {commentsDBType,} from "../../types/commonBlogTypeAndPosts.types";
-import {commentMutation} from "../../repositories/mutationRepositories/commentMutation";
+import {CommentMutation} from "../../repositories/mutationRepositories/commentMutation";
 import {commentMapper} from "../../utils/mapper";
+import {inject, injectable} from "inversify";
+import {PostMutation} from "../../repositories/mutationRepositories/postMutation";
 const { v4: uuidv4 } = require('uuid');
-export const commentsService = {
+
+const postQuery = new PostQuery()
+
+@injectable()
+export class CommentsService {
+
+    constructor(@inject(CommentMutation) protected commentMutation: CommentMutation) {}
 
     async createComment (postId: string, content: string, userId: string, userLogin: string) {
 
@@ -25,7 +33,7 @@ export const commentsService = {
 
         }
 
-        const comment = await commentMutation.createCommentForPostInDb(newComments)
+        const comment = await this.commentMutation.createCommentForPostInDb(newComments)
 
         if (!comment) {
             return null
@@ -33,15 +41,15 @@ export const commentsService = {
 
         return commentMapper(comment)
 
-    },
+    }
 
     async changeComment (id: string, content: string) {
 
-        return await commentMutation.changeCommentByIdInDb(id, content)
-    },
+        return await this.commentMutation.changeCommentByIdInDb(id, content)
+    }
 
     async deleteComment(id: string) {
-        return await commentMutation.deleteCommentById(id)
-    },
+        return await this.commentMutation.deleteCommentById(id)
+    }
 
 }

@@ -1,8 +1,10 @@
 import {likeMutation} from "../../repositories/mutationRepositories/likeMutation";
 import {likeStatusType, LikesType} from "../../types/commonBlogTypeAndPosts.types";
-import {commentMutation} from "../../repositories/mutationRepositories/commentMutation";
+import {CommentMutation} from "../../repositories/mutationRepositories/commentMutation";
 import {userMutation} from "../../repositories/mutationRepositories/userMutation";
 const { v4: uuidv4 } = require('uuid');
+
+const commentMutation = new CommentMutation()
 
 export const likeService = {
 
