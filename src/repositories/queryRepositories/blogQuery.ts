@@ -110,6 +110,5 @@ export class BlogQuery {
         } catch (e) {
             throw new Error('Blog was not found')
         }
-
     }
 }

@@ -72,9 +72,9 @@ export class BlogController {
 
         const {name,description, websiteUrl} = req.body
 
-    const result = await this.blogsService.createBlogService({name, description, websiteUrl})
+        const result = await this.blogsService.createBlogService({name, description, websiteUrl})
 
-    return res.status(201).send(result)
+        return res.status(201).send(result)
 }
 
     async createPostToBlogController(req: RequestWithParamsAndBody<ParamsType, CreatePostToBlogType>, res: Response)  {
@@ -93,25 +93,25 @@ export class BlogController {
 
     async changeBlogsByIdController(req: RequestWithParamsAndBody<ParamsType, BlogInputModelType>, res: Response) {
 
-    const {name, description, websiteUrl} = req.body
-    const id = req.params.id
+        const {name, description, websiteUrl} = req.body
+        const id = req.params.id
 
-    const result = await this.blogsService.changeBlogByIdService({id, name, description, websiteUrl})
+        const result = await this.blogsService.changeBlogByIdService({id, name, description, websiteUrl})
 
-    if (result === null) {
-        return res.sendStatus(404)
-    }
+        if (result === null) {
+            return res.sendStatus(404)
+        }
 
-    return res.sendStatus(204)
+        return res.sendStatus(204)
     }
 
     async deleteBlogsByIdController(req: RequestWithParams<ParamsType>, res: Response)  {
 
-    const result = await this.blogsService.deleteBlogByIdService(req.params.id)
+        const result = await this.blogsService.deleteBlogByIdService(req.params.id)
 
-    if (!result) {
-        return res.sendStatus(404)
-    }
+        if (!result) {
+            return res.sendStatus(404)
+        }
 
     return res.sendStatus(204)
 
